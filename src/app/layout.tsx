@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   description: "",
 };
 
-// const queryClient = new QueryClient();
-
 export default function RootLayout({
   children,
 }: Readonly<{
