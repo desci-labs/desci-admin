@@ -11,43 +11,77 @@ import {
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { getDois } from "@/apis/queries";
-
-interface Doi {
-  id: string;
-  name: string;
-  status: "active" | "inactive";
-}
-const mockDois: Doi[] = [
-  { id: "1", name: "Doi 1", status: "active" },
-  { id: "2", name: "Doi 2", status: "inactive" },
-];
+import Link from "next/link";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import { Loader2Icon } from "lucide-react";
+import { DPID_BASE_URL } from "@/lib/config";
 
 export default function DoiRecords() {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["dois/list"],
     queryFn: getDois,
   });
-  console.log("DOIs", { data, isLoading, isError });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-72 w-96  flex items-center justify-center mx-auto container">
+        <Loader2Icon className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead>ID</TableHead>
+          <TableHead>DOI</TableHead>
+          <TableHead>DPID</TableHead>
+          <TableHead>UUID</TableHead>
+          <TableHead>Registered At</TableHead>
           <TableHead>Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {mockDois.map((node) => (
-          <TableRow key={node.id}>
-            <TableCell>{node.name}</TableCell>
-            <TableCell>{node.status}</TableCell>
+        {data?.map((record) => (
+          <TableRow key={record.id}>
+            <TableCell>{record.id}</TableCell>
             <TableCell>
-              <div className="flex space-x-2">
-                <Button size="sm">View</Button>
-                <Button size="sm">Edit</Button>
-                <Button size="sm" variant="destructive">
-                  Delete
+              <h5 className="w-fit text-sm bg-space-cadet text-btn-txt-primary-neutral uppercase tracking-widest px-2.5 py-0.5 border rounded-full">
+                {record.doi}
+              </h5>
+            </TableCell>
+            <TableCell>
+              <h5 className="w-fit text-sm bg-btn-surface-primary-neutral text-btn-txt-primary-neutral uppercase tracking-widest px-2.5 py-0.5 border border-btn-border-primary-neutral rounded-full">
+                DPID://{record.dpid}
+              </h5>
+            </TableCell>
+            <TableCell>{record.uuid}</TableCell>
+            <TableCell>{new Date(record.createdAt).toDateString()}</TableCell>
+            <TableCell>
+              <div className="flex space-x-2 justify-end">
+                <Link
+                  href={`https://doi.org/${record.doi}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-4 py-2 bg-btn-surface-primary-neutral text-btn-txt-primary-neutral rounded-md text-xs"
+                >
+                  View Doi
+                </Link>
+                <Button
+                  variant="link"
+                  size="sm"
+                  className="flex items-center gap-1"
+                  onClick={() => {
+                    window.open(
+                      `${DPID_BASE_URL}/${record.dpid}`,
+                      "_blank",
+                      "noopener"
+                    );
+                  }}
+                >
+                  <span> View Node</span>
+                  <ExternalLinkIcon className="w-3 h-3" />
                 </Button>
               </div>
             </TableCell>
