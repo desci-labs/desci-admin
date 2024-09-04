@@ -24,7 +24,12 @@ export default function Login() {
         <h1 className="text-4xl font-bold my-4">
           {!state?.email ? "Verify Email" : "Check your inbox"}
         </h1>
-        <LoginForm login={formAction} pending={pending} email={state.email} />
+        <LoginForm
+          login={formAction}
+          pending={pending}
+          email={state.email}
+          message={state.error}
+        />
       </div>
     </div>
   );
