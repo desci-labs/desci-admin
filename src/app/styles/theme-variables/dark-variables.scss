@@ -1,0 +1,61 @@
+@import "@radix-ui/colors/slate-dark.css";
+@import "@radix-ui/colors/slate-dark-alpha.css";
+@import "@radix-ui/colors/cyan-dark.css";
+@import "@radix-ui/colors/cyan-dark-alpha.css";
+@import "../blue-variables/blue-dark.scss";
+
+.dark,
+.dark-theme {
+    --warning-primary: rgba(253, 228, 0, 1);
+    --warning-secondary: rgba(253, 228, 0, 0.3668);
+    --warning-subtle: rgba(253, 228, 0, 0.06);
+
+    --danger-text: rgb(247, 93, 93);
+    --danger-bg: rgba(192, 43, 43, 0.45);
+
+    --inverse-1: rgba(17, 17, 19, 0.24);
+    --inverse-3: rgba(17, 17, 19, 0.55);
+
+    --shadow-viewer: rgba(0, 0, 0, 0.35);
+    --shadow-floating-element: rgba(0, 0, 0, 0.48);
+
+    --background-app: var(--slate-1);
+    --shadow-subdued: var(rgba(0, 0, 0, 0.12));
+
+    --icon-subdued: var(--slate-9);
+    --icon-neutral: var(--slate-11);
+    --icon-focus: var(--slate-12);
+
+    --surface-subdued: var(--slate-a1);
+    --surface-neutral: var(--slate-a2);
+    --surface-focus: var(--slate-a3);
+    --home: var(--inverse-3);
+    --contrast: var(--inverse-1);
+
+    --txt-subdued: var(--slate-10);
+    --txt-neutral: var(--slate-11);
+    --txt-focus: var(--slate-12);
+    --txt-title: var(--blue-12);
+
+    --border-neutral: var(--slate-a3);
+    --border-focus: var(--slate-a4);
+
+    --btn-txt-subdued: var(--slate-10);
+    --btn-txt-primary-neutral: var(--blue-10);
+    --btn-txt-primary-focus: var(--blue-11);
+    --btn-txt-secondary-neutral: var(--blue-2);
+    --btn-txt-secondary-focus: var(--blue-1);
+    --btn-txt-tertiary-neutral: var(--blue-10);
+    --btn-txt-tertiary-focus: var(--blue-8);
+
+    --btn-border-primary-subdued: var(--slate-a5);
+    --btn-border-primary-neutral: var(--blue-3);
+    --btn-border-primary-focus: var(--blue-4);
+
+    --btn-surface-primary-subdued: var(--slate-a1);
+    --btn-surface-primary-neutral: var(--blue-2);
+    --btn-surface-primary-focus: var(--blue-3);
+    --btn-surface-secondary-subdued: var(--inverse-1);
+    --btn-surface-secondary-neutral: var(--blue-10);
+    --btn-surface-secondary-focus: var(--blue-8);
+}
