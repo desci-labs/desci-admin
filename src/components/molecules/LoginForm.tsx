@@ -7,7 +7,7 @@ export default function LoginForm({
   email,
   message,
 }: {
-  login: (formData: FormData) => void;
+  login: (formData: FormData) => Promise<void>;
   pending: boolean;
   email: string;
   message?: string;
@@ -34,7 +34,7 @@ export default function LoginForm({
             id="email"
             name="email"
             type="email"
-            className="text-txt-focus border-2 border-border-neutral border-danger-text"
+            className="text-txt-focus border-2 border-border-neutral invalid:border-danger-text"
             placeholder="user@email.com"
             autoFocus
             required
@@ -58,7 +58,7 @@ export default function LoginForm({
               required
               placeholder="XXXXXX"
               disabled={pending}
-              className="text-txt-focus border-2 border-border-neutral border-danger-text"
+              className="text-txt-focus border-2 border-border-neutral invalid:border-danger-text"
             />
           </div>
         )}

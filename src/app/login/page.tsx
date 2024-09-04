@@ -1,6 +1,7 @@
 "use client";
 
 import LoginForm from "@/components/molecules/LoginForm";
+// @ts-ignore
 import { useFormState, useFormStatus } from "react-dom";
 import { login, LoginUserData } from "@/app/actions";
 

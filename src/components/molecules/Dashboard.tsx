@@ -21,6 +21,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import DoiRecords from "@/components/molecules/DoiRecords";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface Node {
   id: string;
@@ -51,15 +52,21 @@ function Sidebar({
   activeTab: string;
   setActiveTab: (tab: string) => void;
 }) {
+  const router = useRouter();
   return (
     <div className="flex flex-col space-y-2 p-4 h-full">
       <div className="flex flex-col space-y-2 flex-1">
-        {["Nodes", "Users",  "DOIs", "Settings",].map((tab) => (
+        {["Nodes", "Users", "DOIs", "Settings"].map((tab) => (
           <Button
             key={tab}
             variant={activeTab === tab ? "default" : "ghost"}
             onClick={() => setActiveTab(tab)}
-            className={cn("justify-start hover:bg-btn-surface-primary-neutral text-txt-subdued", activeTab === tab ? "bg-btn-surface-primary-focus text-btn-surface-primary-foreground" : "bg-surface-primary-neutral")}
+            className={cn(
+              "justify-start text-txt-subdued",
+              activeTab === tab
+                ? "bg-btn-surface-primary-focus text-btn-surface-primary-foreground hover:bg-btn-surface-primary-focus"
+                : "hover:bg-btn-surface-primary-neutral hover:text-txt-subdued"
+            )}
           >
             {tab}
           </Button>
@@ -68,13 +75,17 @@ function Sidebar({
       <Button
         variant="default"
         className="justify-center text-red-500 bg-red-500/20 hover:bg-red-500/30"
+        onClick={() => {
+          fetch("/api/logout", { method: "DELETE" }).then(() => {
+            router.push("/login");
+          });
+        }}
       >
         Logout
       </Button>
     </div>
   );
 }
-
 
 function NodesTable() {
   return (
