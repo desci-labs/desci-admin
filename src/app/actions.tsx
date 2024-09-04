@@ -13,11 +13,14 @@ export type LoginUserData = {
 };
 
 export async function login(prevState: any, formData: FormData) {
-  const cookie = cookies().get(AUTH_COOKIE_FIELDNAME);
-  console.log("cookie", cookie);
-
   const email = formData.get("email") ?? prevState?.email;
   const code = formData.get("code");
+
+  if (!email?.endsWith("@desci.com"))
+    return {
+      ok: false,
+      error: "Unauthorised email domain (only desci.com emails are allowed)",
+    };
 
   const res = await fetch(`${API_URL}/v1/auth/magic`, {
     method: "POST",
@@ -29,13 +32,7 @@ export async function login(prevState: any, formData: FormData) {
 
   if (response.ok && response.user) {
     // Set cookie
-    cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
-      path: "/",
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 1 month
-      httpOnly: true,
-      secure: process.env.NEXT_ENV === "production",
-      domain: process.env.NODE_ENV === "production" ? ".desci.com" : undefined,
-    });
+    cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token);
     redirect(`/`);
   }
 

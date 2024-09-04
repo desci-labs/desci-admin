@@ -34,7 +34,7 @@ export default function LoginForm({
             id="email"
             name="email"
             type="email"
-            className="text-txt-focus border-2 border-border-neutral border-danger-text"
+            className="text-txt-focus border-2 border-border-neutral focus:invalid:border-red-400 focus-visible:valid:border-btn-surface-primary-focus focus-visible:outline-none focus-visible:ring-0"
             placeholder="user@email.com"
             autoFocus
             required
@@ -58,14 +58,14 @@ export default function LoginForm({
               required
               placeholder="XXXXXX"
               disabled={pending}
-              className="text-txt-focus border-2 border-border-neutral border-danger-text"
+              className="text-txt-focus border-2 border-border-neutral focus:invalid:border-red-400 focus-visible:valid:border-btn-surface-primary-focus focus-visible:outline-none focus-visible:ring-0"
             />
           </div>
         )}
       </div>
-      {message && <p className="text-txt-neutral text-base mb-2">{message}</p>}
+      {message && <p className="text-sm text-red-500 mb-2">{message}</p>}
       <Button
-        className="self-stretch font-semibold text-lg h-12"
+        className="self-stretch font-semibold text-lg h-12 bg-btn-surface-primary-neutral border-btn-border-primary-focus hover:bg-btn-surface-primary-focus "
         variant="outline"
         type="submit"
         disabled={pending}
