@@ -1,0 +1,34 @@
+name: Analyze Bundle
+
+on: [push]
+
+jobs:
+    analyze_bundle:
+        runs-on: ubuntu-16gb
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: ".nvmrc"
+                  cache: "npm"
+
+            # Maybe unnecessary, but prevents this job from racing to set the cache key
+            # with the test workflow
+            - uses: actions/cache/restore@v4
+              id: cache-modules
+              with:
+                  path: node_modules
+                  key: modules-${{ hashFiles('package-lock.json')}}
+
+            # If no full node_modules hit, install and prefer global package cache.
+            - if: steps.cache-modules.outputs.cache-hit != 'true'
+              run: npm ci --prefer-offline --no-audit
+
+            - run: npm run analyze
+
+            - name: Archive bundle analysis
+              uses: actions/upload-artifact@v3
+              with:
+                  name: bundle-analysis.zip
+                  path: .next/analyze/*.html

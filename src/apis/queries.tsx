@@ -4,6 +4,7 @@ import { DoiRecord } from "./types";
 export async function getDois() {
   const response = await fetch(`${NODES_API_URL}/v1/admin/doi/list`, {
     credentials: "include",
+    mode: "cors",
   });
 
   const data = (await response.json()) as
