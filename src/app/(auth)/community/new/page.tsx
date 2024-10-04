@@ -21,6 +21,8 @@ import { Layout, LayoutBody } from "@/components/custom/Layout";
 import { useFormState, useFormStatus } from "react-dom";
 import { createCommunity } from "@/app/actions";
 import { useEffect } from "react";
+import { getQueryClient } from "@/lib/get-query-client";
+import { tags } from "@/lib/tags";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -139,14 +141,12 @@ export default function CommunityForm() {
     formAction(formData);
   }
 
-  console.log("form", state);
-
   useEffect(() => {
     if (formState?.ok) {
-        form.reset();
-        // todo: show success toast
+      form.reset();
+      // todo: show success toast
     }
-  }, [form, formState])
+  }, [form, formState]);
 
   return (
     <Layout>
@@ -154,7 +154,7 @@ export default function CommunityForm() {
         <div className="mb-2 flex items-center justify-between space-y-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">
-              Complete this form to add a new entry
+              Complete this form to add a new Community
             </h2>
           </div>
         </div>
