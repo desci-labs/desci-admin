@@ -1,14 +1,13 @@
-import { DataTable } from "@/components/organisms/users-datatable/data-table";
-import { tasks } from "@/components/organisms/users-datatable/data/tasks";
-import { columns } from "@/components/organisms/users-datatable/columns";
-
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import Communities from "@/components/organisms/Communities";
+import { getQueryClient } from "@/lib/get-query-client";
 
 export default function CommunityPage() {
+  const queryClient = getQueryClient()
+
   return (
-    <>
-      <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <DataTable data={tasks} columns={columns} />
-      </div>
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Communities />
+    </HydrationBoundary>
   );
 }

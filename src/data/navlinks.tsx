@@ -52,13 +52,13 @@ export const sidelinks: SideLink[] = [
       ],
     },
     {
-      title: 'Community',
+      title: 'Desci Communities',
       label: '',
       href: '/community',
       icon: <Globe2Icon size={18} />,
       sub: [
         {
-          title: 'Communities',
+          title: 'Desci Communities',
           label: '',
           href: '/community',
           icon: <IconBuildingCommunity size={18} />,

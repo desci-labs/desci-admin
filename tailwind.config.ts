@@ -61,6 +61,18 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        danger: {
+          DEFAULT: "hsl(var(--danger))",
+          foreground: "hsl(var(--danger-foreground))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
 
         slate: generateScale("slate"),
         cyan: generateScale("cyan"),
@@ -109,7 +121,7 @@ const config: Config = {
         "btn-surface-secondary-focus": "var(--btn-surface-secondary-focus)",
 
         error: "#AF372E",
-        success: "#17251B",
+        // success: "#17251B",
         "space-green": "rgba(36, 131, 123, 0.15)",
         "space-cadet": "#1D3149",
       },
@@ -136,13 +148,13 @@ const config: Config = {
 export default config;
 
 function generateScale(name: string) {
-    let scale = Array.from({ length: 12 }, (_, i) => {
-        let id = i + 1;
-        return [
-            [id, `var(--${name}-${id})`],
-            [`a${id}`, `var(--${name}-a${id})`],
-        ];
-    }).flat();
+  let scale = Array.from({ length: 12 }, (_, i) => {
+    let id = i + 1;
+    return [
+      [id, `var(--${name}-${id})`],
+      [`a${id}`, `var(--${name}-a${id})`],
+    ];
+  }).flat();
 
-    return Object.fromEntries(scale);
+  return Object.fromEntries(scale);
 }
