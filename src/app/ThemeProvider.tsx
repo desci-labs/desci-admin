@@ -36,7 +36,7 @@ function getQueryClient() {
   }
 }
 
-export default function Provider({ children }: PropsWithChildren<{}>) {
+export default function ThemeContext({ children }: PropsWithChildren<{}>) {
   const queryClient = getQueryClient();
   return (
     <ThemeProvider

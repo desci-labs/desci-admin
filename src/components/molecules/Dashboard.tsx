@@ -1,209 +1,169 @@
 "use client";
-
-import { useState } from "react";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import ThemeSwitch from "@/components/atoms/ThemeSwitch";
+import { Layout, LayoutHeader, LayoutBody } from "@/components/custom/Layout";
+// import { TopNav } from "@/components/molecules/TopNav";
+import { UserNav } from "@/components/molecules/UserNav";
 import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import DoiRecords from "@/components/molecules/DoiRecords";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
-
-interface Node {
-  id: string;
-  name: string;
-  status: "active" | "inactive";
-}
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-const mockNodes: Node[] = [
-  { id: "1", name: "Node 1", status: "active" },
-  { id: "2", name: "Node 2", status: "inactive" },
-];
-
-const mockUsers: User[] = [
-  { id: "1", name: "John Doe", email: "john@example.com" },
-  { id: "2", name: "Jane Smith", email: "jane@example.com" },
-];
-
-function Sidebar({
-  activeTab,
-  setActiveTab,
-}: {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-}) {
-  const router = useRouter();
-  return (
-    <div className="flex flex-col space-y-2 p-4 h-full">
-      <div className="flex flex-col space-y-2 flex-1">
-        {["Nodes", "Users", "DOIs", "Settings"].map((tab) => (
-          <Button
-            key={tab}
-            variant={activeTab === tab ? "default" : "ghost"}
-            onClick={() => setActiveTab(tab)}
-            className={cn(
-              "justify-start text-txt-subdued",
-              activeTab === tab
-                ? "bg-btn-surface-primary-focus text-btn-surface-primary-foreground hover:bg-btn-surface-primary-focus"
-                : "hover:bg-btn-surface-primary-neutral hover:text-txt-subdued"
-            )}
-          >
-            {tab}
-          </Button>
-        ))}
-      </div>
-      <Button
-        variant="default"
-        className="justify-center text-red-500 bg-red-500/20 hover:bg-red-500/30"
-        onClick={() => {
-          fetch("/api/logout", { method: "DELETE" }).then(() => {
-            router.push("/login");
-          });
-        }}
-      >
-        Logout
-      </Button>
-    </div>
-  );
-}
-
-function NodesTable() {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {mockNodes.map((node) => (
-          <TableRow key={node.id}>
-            <TableCell>{node.name}</TableCell>
-            <TableCell>{node.status}</TableCell>
-            <TableCell>
-              <div className="flex space-x-2">
-                <Button size="sm">View</Button>
-                <Button size="sm">Edit</Button>
-                <Button size="sm" variant="destructive">
-                  Delete
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}
-
-function UsersTable() {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {mockUsers.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell>{user.name}</TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>
-              <div className="flex space-x-2">
-                <Button size="sm">View</Button>
-                <Button size="sm">Edit</Button>
-                <Button size="sm" variant="destructive">
-                  Delete
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}
-
-function SettingsPage() {
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <span>Theme</span>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select theme" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex items-center justify-between">
-        <span>Language</span>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select language" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="en">English</SelectItem>
-            <SelectItem value="es">Spanish</SelectItem>
-            <SelectItem value="fr">French</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex items-center justify-between">
-        <span>Notifications</span>
-        <Switch />
-      </div>
-    </div>
-  );
-}
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Overview } from "./Overview";
+import { RecentSales } from "./RecentSales";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("Nodes");
-
   return (
-    <PanelGroup direction="horizontal" className="w-full min-h-screen">
-      <Panel defaultSize={20} minSize={15}>
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      </Panel>
-      <PanelResizeHandle className="w-[3px] bg-gray-600 hover:bg-gray-500 transition-colors" />
-      <Panel defaultSize={80} minSize={75}>
-        <div className="p-6">
-          <h1 className="text-2xl font-bold mb-4">{activeTab}</h1>
-          {activeTab === "Nodes" && <NodesTable />}
-          {activeTab === "Users" && <UsersTable />}
-          {activeTab === "Settings" && <SettingsPage />}
-          {activeTab === "DOIs" && <DoiRecords />}
+    <>
+      <div className="mb-2 flex items-center justify-between space-y-2">
+        <h1 className="text-2xl font-bold tracking-tight"></h1>
+        <div className="flex items-center space-x-2">
+          <Button>Download</Button>
         </div>
-      </Panel>
-    </PanelGroup>
+      </div>
+      <Tabs
+        orientation="vertical"
+        defaultValue="overview"
+        className="space-y-4"
+      >
+        <div className="w-full overflow-x-auto pb-2">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          </TabsList>
+        </div>
+        <TabsContent value="overview" className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Revenue
+                </CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">$45,231.89</div>
+                <p className="text-xs text-muted-foreground">
+                  +20.1% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Subscriptions
+                </CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">+2350</div>
+                <p className="text-xs text-muted-foreground">
+                  +180.1% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <rect width="20" height="14" x="2" y="5" rx="2" />
+                  <path d="M2 10h20" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">+12,234</div>
+                <p className="text-xs text-muted-foreground">
+                  +19% from last month
+                </p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Active Now
+                </CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="h-4 w-4 text-muted-foreground"
+                >
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">+573</div>
+                <p className="text-xs text-muted-foreground">
+                  +201 since last hour
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-7">
+            <Card className="col-span-1 lg:col-span-4">
+              <CardHeader>
+                <CardTitle>Overview</CardTitle>
+              </CardHeader>
+              <CardContent className="pl-2">
+                <Overview />
+              </CardContent>
+            </Card>
+            <Card className="col-span-1 lg:col-span-3">
+              <CardHeader>
+                <CardTitle>Recent Sales</CardTitle>
+                <CardDescription>
+                  You made 265 sales this month.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RecentSales />
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+      </>
   );
 }

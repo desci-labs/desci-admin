@@ -10,6 +10,7 @@ const AUTH_COOKIE_DOMAIN_MAPPING: { [key: string]: string } = {
     "https://nodes.desci.com": "auth",
     "https://nodes-dev.desci.com": "auth-dev",
     "https://nodes-staging.desci.com": "auth-stage",
+    "http://localhost:5420": "auth",
 };
 
 export const AUTH_COOKIE_FIELDNAME = AUTH_COOKIE_DOMAIN_MAPPING[NODES_API_URL] || "auth";
