@@ -2,7 +2,6 @@
 
 import { AUTH_COOKIE_FIELDNAME } from "@/lib/constants";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -57,7 +56,12 @@ export async function login(prevState: any, formData: FormData) {
       });
     }
 
-    redirect(`/`);
+    // cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token);
+    return {
+      ok: true,
+      email,
+      user: response.user,
+    };
   }
 
   if (response.ok && !response.user) {
@@ -68,4 +72,41 @@ export async function login(prevState: any, formData: FormData) {
   }
 
   return response;
+}
+
+type CreateCommunityState = {
+  ok: boolean;
+  message?: undefined;
+  error?: undefined;
+} | {
+  ok: boolean;
+  message: string;
+  error: string[] | undefined;
+}
+
+export async function createCommunity(_prevState: any, formData: FormData) {
+  const res = await fetch(`${API_URL}/v1/admin/communities`, {
+    method: "POST",
+    body: formData,
+    headers: { 'cookie': cookies().toString()},
+    credentials: "include",
+  });
+  let response = (await res.json()) as
+    | { data: { community: any } }
+    | { message: string; error?: string[] };
+
+  if (res.ok && "data" in response) {
+    // Set cookie
+    return {
+      ok: true,
+    };
+  } else if (!("data" in response)) {
+    return {
+      ok: false,
+      message: response.message,
+      error: response.error,
+    };
+  } else {
+    return { ok: false, message: "Unknown error occurred", error: [] };
+  }
 }

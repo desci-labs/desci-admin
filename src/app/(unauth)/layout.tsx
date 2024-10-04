@@ -1,8 +1,8 @@
 
 import { Inter } from "next/font/google";
-import "./globals.scss";
+import "../globals.scss";
 
-import ThemeContext from "./ThemeProvider";
+import ThemeContext from "../ThemeProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -11,7 +11,7 @@ export default function RootLayout({
     children: React.ReactNode;
   }>) {
     return (
-      <html lang="en">
+      <html lang="en" className="">
         <body className={inter.className}>
           <ThemeContext>
               {children}

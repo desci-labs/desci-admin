@@ -4,6 +4,8 @@ import LoginForm from "@/components/molecules/LoginForm";
 // @ts-ignore
 import { useFormState, useFormStatus } from "react-dom";
 import { login, LoginUserData } from "@/app/actions";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const initialState: {
   email?: string;
@@ -15,8 +17,14 @@ const initialState: {
 export default function Login() {
   const [state, formAction] = useFormState(login, initialState);
   const { pending } = useFormStatus();
+  const router = useRouter();
 
-  console.log("state", state);
+
+  useEffect(() => {
+    if (state.user) {
+      router.push('/');
+    }
+  }, [router, state.user])
 
   return (
     <div className="container mx-auto max-w-md">
