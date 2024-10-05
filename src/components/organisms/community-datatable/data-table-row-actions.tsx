@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { communitySchema } from './data/schema'
+import { useRouter } from 'next/navigation'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -20,6 +21,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
+  const router = useRouter();
   const community = communitySchema.parse(row.original)
 
   return (
@@ -34,7 +36,8 @@ export function DataTableRowActions<TData>({
         </LoaderButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/community/${community.id}`)}>View</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`community/${community.id}/edit`)}>Edit</DropdownMenuItem>
         <DropdownMenuItem>{community.hidden ? 'Enable' : 'Disable'}</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSeparator />
