@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { tags } from "../tags";
 import { NODES_API_URL } from "../config";
 
-type Community = {
+export interface Community {
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -24,6 +24,14 @@ type Community = {
       userOrganizations: { id: string; name: string }[];
     };
   }[];
+  CommunityEntryAttestation: {
+    id: number;
+    attestationVersion: {
+      id: number;
+      name: string;
+      image_url: string;
+    };
+  }[];
   engagements: {
     reactions: number;
     annotations: number;
@@ -34,15 +42,26 @@ type Community = {
     annotations: number;
     verifications: number;
   };
-};
+}
 
 export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
   queryFn: async () => {
-      const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
-        credentials: "include",
-      });
-      console.log('fetch list', response.ok);
-      return (await response.json()) as { data: Community[] };
+    const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
+      credentials: "include",
+    });
+    console.log("fetch list", response.ok);
+    return (await response.json()) as { data: Community[] };
   },
 });
+
+// export const listAttestationsQuery = queryOptions({
+//   queryKey: [tags.communities],
+//   queryFn: async (communityId: string) => {
+//       const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
+//         credentials: "include",
+//       });
+//       console.log('fetch list', response.ok);
+//       return (await response.json()) as { data: Community[] };
+//   },
+// });
