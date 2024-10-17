@@ -12,6 +12,7 @@ import { Community } from "./data/schema";
 import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export const columns: ColumnDef<Community>[] = [
   // {
@@ -81,11 +82,11 @@ export const columns: ColumnDef<Community>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex space-x-2">
-          <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
+        // <div className="flex space-x-2">
+          <Link href={`/communities/${row.getValue('id')}`} className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem] hover:text-blue-5">
             {row.getValue("name")}
-          </span>
-        </div>
+          </Link>
+        // </div>
       );
     },
     enableHiding: false,

@@ -36,8 +36,8 @@ export function DataTableRowActions<TData>({
         </LoaderButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem onClick={() => router.push(`/community/${community.id}`)}>View</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push(`community/${community.id}/edit`)}>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`/communities/${community.id}`)}>View</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push(`communities/${community.id}/edit`)}>Edit</DropdownMenuItem>
         <DropdownMenuItem>{community.hidden ? 'Enable' : 'Disable'}</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSeparator />
