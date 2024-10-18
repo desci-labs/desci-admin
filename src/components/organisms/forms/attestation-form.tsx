@@ -19,7 +19,14 @@ import { Switch } from "@/components/ui/switch";
 import { Layout, LayoutBody } from "@/components/custom/Layout";
 import { createAttestation } from "@/app/actions";
 import { useFormStatus } from "react-dom";
-import React, { ComponentType, ForwardRefExoticComponent, RefAttributes, useEffect } from "react";
+import React, {
+  ComponentType,
+  ForwardRefExoticComponent,
+  RefAttributes,
+  useEffect,
+} from "react";
+import { getQueryClient } from "@/lib/get-query-client";
+import { tags } from "@/lib/tags";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -36,6 +43,18 @@ const attestationSchema = z.object({
   imageUrl: z.string().url().optional(),
   verifiedImageUrl: z.string().url().optional(),
   image: z
+    .any()
+    .refine((files) => files?.length == 1, "Image is required.")
+    .refine(
+      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
+      `Max file size is 5MB.`
+    )
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      ".jpg, .jpeg, .png, .webp and .gif files are accepted."
+    )
+    .optional(),
+  verifiedImage: z
     .any()
     .refine((files) => files?.length == 1, "Image is required.")
     .refine(
@@ -77,7 +96,7 @@ export default function AttestationForm({
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("protected", data.protected.toString());
-    formData.append('communityId', data.communityId)
+    formData.append("communityId", data.communityId);
 
     if (data.imageUrl) {
       formData.append("imageUrl", data.imageUrl);
@@ -87,6 +106,9 @@ export default function AttestationForm({
     }
     if (data.image && data.image[0]) {
       formData.append("image", data.image[0]);
+    }
+    if (data.verifiedImage && data.verifiedImage[0]) {
+      formData.append("verifiedImage", data.verifiedImage[0]);
     }
 
     // Log the FormData (for demonstration purposes)
@@ -102,11 +124,20 @@ export default function AttestationForm({
   >;
 
   useEffect(() => {
+    console.log("attestationForm", formState);
     if (formState?.ok) {
-      form.reset();
+      // form.reset();
+      getQueryClient().invalidateQueries({
+        queryKey: [tags.attestations],
+      });
+      // getQueryClient().invalidateQueries({
+      //   queryKey: [
+      //     [{ type: tags.attestations, id: defaultValues?.communityId }],
+      //   ],
+      // });
       // todo: show success toast
     }
-  }, [form, formState]);
+  }, [defaultValues?.communityId, form, formState]);
 
   const isProtected = form.watch("protected");
   return (
@@ -172,6 +203,28 @@ export default function AttestationForm({
             />
             <FormField
               control={form.control}
+              name="image"
+              render={({ field: { value, onChange, ...field } }) => (
+                <FormItem>
+                  <FormLabel>Upload Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => onChange(e.target.files)}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Upload an image for your attestation (max 5MB, .jpg, .png,
+                    .webp, .gif)
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="protected"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
@@ -211,28 +264,31 @@ export default function AttestationForm({
                 )}
               />
             )}
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field: { value, onChange, ...field } }) => (
-                <FormItem>
-                  <FormLabel>Upload Image</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => onChange(e.target.files)}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Upload an image for your attestation (max 5MB, .jpg, .png,
-                    .webp, .gif)
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            {isProtected && (
+              <FormField
+                control={form.control}
+                name="verifiedImage"
+                render={({ field: { value, onChange, ...field } }) => (
+                  <FormItem>
+                    <FormLabel>Upload Verified Image Icon</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => onChange(e.target.files)}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Upload an image to signal verification for your
+                      attestation (max 5MB, .jpg, .png, .webp, .gif)
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             {formState?.message && (
               <p className="text-destructive text-lg my-2">
                 {formState.message}
@@ -247,7 +303,9 @@ export default function AttestationForm({
                 ))}
               </ul>
             )}
-            <SubmitButton type="submit" disabled={form.formState.isSubmitting}>Submit Attestation</SubmitButton>
+            <SubmitButton type="submit" disabled={form.formState.isSubmitting}>
+              Submit Attestation
+            </SubmitButton>
           </form>
         </Form>
       </LayoutBody>
@@ -265,14 +323,8 @@ const SubmitButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const { pending } = useFormStatus();
 
-    return (
-      <Button
-        ref={ref}
-        {...props}
-        disabled={pending || props.disabled}
-      />
-    )
+    return <Button ref={ref} {...props} disabled={pending || props.disabled} />;
   }
-)
+);
 
 SubmitButton.displayName = "SubmitButton";

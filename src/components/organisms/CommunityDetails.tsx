@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import {
@@ -37,11 +39,11 @@ import {
   X,
   Settings,
 } from "lucide-react";
-import {
-  Community,
-} from "@/lib/api";
+import { addMember, Community, removeMember, searchUsers } from "@/lib/api";
 import ExpandableMarkdown from "@/components/molecules/ExpandableMarkdown";
 import CommunityAttestations from "@/components/molecules/CommunityAttestations";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { NODES_API_URL } from "@/lib/config";
 
 type User = {
   id: number;
@@ -67,25 +69,6 @@ export default function Component({
 }: CommunityProps) {
   const [open, setOpen] = useState(false);
   const [members, setMembers] = useState(() => community.CommunityMember ?? []);
-
-  const toggleMember = (user: User) => {
-    setMembers((prevMembers) => {
-      const existingMember = prevMembers.find((m) => m.userId === user.id);
-      if (existingMember) {
-        return prevMembers.filter((m) => m.userId !== user.id);
-      } else {
-        return [
-          ...prevMembers,
-          {
-            id: Date.now(),
-            role: "MEMBER",
-            userId: user.id,
-            user: { name: user.name, userOrganizations: [] },
-          },
-        ];
-      }
-    });
-  };
 
   console.log({ users, allAttestations });
 
@@ -192,85 +175,7 @@ export default function Component({
         </div>
 
         <div>
-          <Card className="mb-6">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Members</CardTitle>
-                <CardDescription>{members.length} members</CardDescription>
-              </div>
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                  {/* <Button variant="outline">Manage</Button> */}
-                  <Button variant="outline" size="sm">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Manage
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Manage Community Members</DialogTitle>
-                  </DialogHeader>
-                  <Command className="rounded-lg border shadow-md">
-                    <CommandInput placeholder="Search users..." />
-                    <CommandList>
-                      <CommandEmpty>No users found.</CommandEmpty>
-                      <CommandGroup>
-                        {users?.map((user) => (
-                          <CommandItem
-                            key={user.id}
-                            onSelect={() => toggleMember(user)}
-                            className="flex items-center justify-between"
-                          >
-                            <span>{user.name}</span>
-                            {members.some((m) => m.userId === user.id) ? (
-                              <Check className="h-4 w-4 text-green-600" />
-                            ) : (
-                              <ChevronsUpDown className="h-4 w-4 opacity-50" />
-                            )}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </DialogContent>
-              </Dialog>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[300px]">
-                {members.map((member) => (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between gap-4 mb-4"
-                  >
-                    <div className="flex items-center gap-4">
-                      <Avatar>
-                        <AvatarFallback>{member.user.name[0]}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{member.user.name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {member.role}
-                        </p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() =>
-                        toggleMember({
-                          id: member.userId,
-                          name: member.user.name,
-                        })
-                      }
-                    >
-                      <X className="h-4 w-4" />
-                      <span className="sr-only">Remove member</span>
-                    </Button>
-                  </div>
-                ))}
-              </ScrollArea>
-            </CardContent>
-          </Card>
+          <CommunityMember community={community} />
 
           <Card>
             <CardHeader>
@@ -352,3 +257,173 @@ export default function Component({
   );
 }
 
+function CommunityMember({ community }: { community: Community }) {
+  const members = community.CommunityMember;
+  const [search, setSearch] = useState<string>();
+  const [open, setOpen] = useState(false);
+
+  const addMemberMutation = useMutation({
+    mutationFn: async ({ userId, role }: { communityId: number; userId: number; role: string}) => {
+      const response = await fetch(
+        `${NODES_API_URL}/v1/admin/communities/${community.id}/members`,
+        {
+          body: JSON.stringify({ userId, role }),
+          method: "post",
+          credentials: "include",
+          headers: {
+            "content-type": "application/json",
+            Accept: "*/*",
+          },
+        }
+      );
+
+      return await response.json();
+    },
+  });
+  const removeMemberMutation = useMutation({
+    mutationFn: removeMember,
+  });
+  
+
+  const toggleMember = async (user: User) => {
+    console.log("toggle", user);
+    const existingMember = members.find((m) => m.userId === user.id);
+    if (existingMember) {
+      removeMemberMutation.mutate(
+        {
+          communityId: community.id,
+          memberId: existingMember.id,
+        },
+        {
+          onSuccess(data, variables, context) {
+            // refetchAttestations();
+            // refetchCommunityAttestations();
+          },
+        }
+      );
+    } else {
+      // addMemberMutation.mutate(
+      //   { communityId: community.id, userId: user.id, role: "MEMBER" },
+      //   {
+      //     onSuccess(data, variables, context) {
+      //       // refetchAttestations();
+      //       // refetchCommunityAttestations();
+      //     },
+      //   }
+      // );
+      try {
+        const response = await fetch(
+          `${NODES_API_URL}/v1/admin/communities/${community.id}/members`,
+          {
+            body: JSON.stringify({ userId: user.id, role: 'MEMBER' }),
+            method: "post",
+            credentials: "include",
+            headers: {
+              "content-type": "application/json",
+              Accept: "*/*",
+            },
+          }
+        );
+        console.log('added member', await response.json())
+      } catch (err){
+        console.warn('error', err)
+      }
+      
+    }
+  };
+
+  const {
+    data: users,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["users/search"],
+    queryFn: () => searchUsers({ name: search }),
+    // enabled: !!search,
+  });
+
+  return (
+    <Card className="mb-6">
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>Members</CardTitle>
+          <CardDescription>
+            {community.CommunityMember?.length ?? "No"} members
+          </CardDescription>
+        </div>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            {/* <Button variant="outline">Manage</Button> */}
+            <Button variant="outline" size="sm">
+              <Settings className="h-4 w-4 mr-2" />
+              Manage
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Manage Community Members</DialogTitle>
+            </DialogHeader>
+            <Command className="rounded-lg border shadow-md">
+              <CommandInput
+                placeholder="Search users..."
+                onValueChange={(search) => setSearch(search)}
+              />
+              <CommandList>
+                <CommandEmpty>No users found.</CommandEmpty>
+                <CommandGroup>
+                  {users?.map((user) => (
+                    <CommandItem
+                      key={user.id}
+                      onSelect={() => toggleMember(user)}
+                      className="flex items-center justify-between"
+                    >
+                      <span>{user.name}</span>
+                      {members.some((m) => m.userId === user.id) ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <ChevronsUpDown className="h-4 w-4 opacity-50" />
+                      )}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </DialogContent>
+        </Dialog>
+      </CardHeader>
+      <CardContent>
+        <ScrollArea className="h-[300px]">
+          {members.map((member) => (
+            <div
+              key={member.id}
+              className="flex items-center justify-between gap-4 mb-4"
+            >
+              <div className="flex items-center gap-4">
+                <Avatar>
+                  <AvatarFallback>{member.user.name[0]}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-medium">{member.user.name}</p>
+                  <p className="text-sm text-muted-foreground">{member.role}</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() =>
+                  toggleMember({
+                    id: member.userId,
+                    name: member.user.name,
+                  })
+                }
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Remove member</span>
+              </Button>
+            </div>
+          ))}
+        </ScrollArea>
+      </CardContent>
+    </Card>
+  );
+}

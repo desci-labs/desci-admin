@@ -1,11 +1,12 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { listAttestationsQuery, listCommunitiesQuery } from "@/lib/api";
 import { useFormState } from "react-dom";
 import { createAttestation, updateAttestation } from "@/app/actions";
 import AttestationForm from "@/components/organisms/forms/attestation-form";
 import NotFoundError from "@/app/not-found";
+import { getQueryClient } from "@/lib/get-query-client";
 
 const defaultState: ReturnType<typeof updateAttestation> = Promise.resolve({
   ok: false,
@@ -21,7 +22,7 @@ export default function Page({
   >(updateAttestation, defaultState);
 
   // todo: add skeleton loader
-  const { data, isLoading } = useSuspenseQuery(listAttestationsQuery);
+  const { data, isLoading } = useQuery(listAttestationsQuery, getQueryClient());
   const attestation = data?.find((com) => com.id === parseInt(params.attestationId));
 
   if (!attestation) return <NotFoundError />
@@ -32,7 +33,6 @@ export default function Page({
         formdata.append("attestationId", attestation.id.toString());
         formAction(formdata);
       }}
-      // formAction={formAction}
       state={state}
       defaultValues={{
         name: attestation.name,
@@ -41,8 +41,6 @@ export default function Page({
         communityId: attestation.communityId.toString(),
         imageUrl: attestation.image_url,
         ...(attestation.verified_image_url && { verifiedImageUrl: attestation.verified_image_url})
-
-        // attestationId: params.attestationId
       }}
     />
   );

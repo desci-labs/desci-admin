@@ -16,7 +16,7 @@ export default function CommunityDetailsPage({
   params: { id: string };
 }) {
   const { data, isLoading } = useSuspenseQuery(listCommunitiesQuery);
-  const community = data?.data?.find((com) => com.id === parseInt(params.id));
+  const community = data?.find((com) => com.id === parseInt(params.id));
 
   const [state, formAction] = useFormState<ReturnType<typeof updateCommunity>>(
     updateCommunity,
@@ -25,7 +25,6 @@ export default function CommunityDetailsPage({
 
   const { pending } = useFormStatus();
 
-  console.log("details", { community, id: params.id });
   if (isLoading || !community) {
     return <div>Loading...</div>;
   }

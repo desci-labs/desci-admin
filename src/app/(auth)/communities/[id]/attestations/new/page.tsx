@@ -4,9 +4,10 @@ import { useFormState, useFormStatus } from "react-dom";
 import { createAttestation, createCommunity } from "@/app/actions";
 import CommunityForm from "@/components/organisms/forms/community-form";
 import AttestationForm from "@/components/organisms/forms/attestation-form";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { listCommunitiesQuery } from "@/lib/api";
 import NotFoundError from "@/app/not-found";
+import { getQueryClient } from "@/lib/get-query-client";
 
 const defaultState: ReturnType<typeof createAttestation> = Promise.resolve({
   ok: false,
@@ -22,7 +23,7 @@ export default function Page({
   >(createAttestation, defaultState);
 
   // todo: add skeleton loader
-  const { data, isLoading } = useSuspenseQuery(listCommunitiesQuery);
+  const { data, isLoading } = useQuery(listCommunitiesQuery, getQueryClient());
   const community = data?.find((com) => com.id === parseInt(params.id));
   console.log('communityId', params)
 
