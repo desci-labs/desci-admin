@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { tags } from "../tags";
 import { NODES_API_URL } from "../config";
+// import { cookies } from "next/headers";
 
 export interface Community {
   id: number;
@@ -58,20 +59,25 @@ export interface CommunityAttestation {
   communityName: string;
 }
 
-type ApiResponse<T> = { data: T };
+export type ApiResponse<T> = { data: T };
 type ApiError = { message: string };
+
 export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
-  queryFn: async () => {
-    const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
-      credentials: "include",
-    });
-    console.log("fetch list", response.ok);
-    // if (response.ok) {
-    const json = (await response.json()) as ApiResponse<Community[]>;
-    return json.data;
+  queryFn: async (context) => {
+    console.log('context', context);
+    // try {
+      const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
+        // headers: { cookie: cookies().toString() },
+        credentials: "include",
+      });
+      console.log("fetch list", response.ok, response.status);
+      const json = (await response.json()) as ApiResponse<Community[]>;
+      return json.data ?? [];
+    // } catch (err) {
+    //   console.log("fetch error", err);
+    //   return [];
     // }
-    // return await response.json(); // as ApiError;
   },
 });
 
@@ -82,6 +88,7 @@ export const attestationQueryOptions = (id: number) => {
       const response = await fetch(
         `${NODES_API_URL}/v1/admin/communities/${id}/attestations`,
         {
+          // headers: { cookie: cookies().toString() },
           credentials: "include",
         }
       );
@@ -120,12 +127,9 @@ export const listAttestationsQuery = queryOptions({
     const response = await fetch(`${NODES_API_URL}/v1/admin/attestations`, {
       credentials: "include",
     });
-    console.log("fetch list", response.ok);
-    // if (response.ok) {
+    console.log("fetch list", response.ok, "cookie");
     const json = (await response.json()) as ApiResponse<Attestation[]>;
     return json.data;
-    // }
-    // return await response.json(); // as ApiError
   },
 });
 
@@ -163,3 +167,75 @@ export const removeEntryAttestation = async ({
     }
   );
 };
+
+export const addMember = async ({
+  communityId,
+  userId,
+  role,
+}: {
+  communityId: number;
+  userId: number;
+  role: string;
+}) => {
+  const response = await fetch(
+    `${NODES_API_URL}/v1/admin/communities/${communityId}/members`,
+    {
+      body: JSON.stringify({ userId, role }),
+      method: "post",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+        Accept: "*/*",
+      },
+      mode: "cors",
+    }
+  );
+
+  return await response.json();
+};
+
+export const removeMember = async ({
+  communityId,
+  memberId,
+}: {
+  communityId: number;
+  memberId: number;
+}) => {
+  return fetch(
+    `${NODES_API_URL}/v1/admin/communities/${communityId}/members/${memberId}`,
+    {
+      method: "delete",
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+        Accept: "*/*",
+      },
+      mode: "cors",
+    }
+  );
+};
+
+interface SearchResponse {
+  profiles: [
+    {
+      name: string;
+      id: number;
+      orcid: string; //"0009-0000-3482-812X"
+    }
+  ];
+}
+export async function searchUsers({ name }: { name?: string }) {
+  const response = await fetch(
+    `${NODES_API_URL}/v1/users/search?${name && "name=" + name}`,
+    {
+      credentials: "include",
+      mode: "cors",
+    }
+  );
+
+  const users = response.ok
+    ? ((await response.json()) as SearchResponse)?.profiles ?? []
+    : [];
+
+  return users;
+}

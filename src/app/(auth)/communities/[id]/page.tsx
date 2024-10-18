@@ -1,9 +1,10 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { listCommunitiesQuery } from "@/lib/api";
 import { LoaderCircleIcon } from "lucide-react";
 import CommunityDetails from "@/components/organisms/CommunityDetails";
+import { getQueryClient } from "@/lib/get-query-client";
 
 const attestations = [
   {
@@ -21,11 +22,11 @@ export default function CommunityDetailsPage({
 }: {
   params: { id: string };
 }) {
-  const { data, isLoading } = useSuspenseQuery(listCommunitiesQuery);
+  const { data, isLoading } = useQuery(listCommunitiesQuery, getQueryClient());
   const community = data?.find(
     (community) => community.id === parseInt(params.id)
   );
-  console.log(community)
+
   return (
     <>
       <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
