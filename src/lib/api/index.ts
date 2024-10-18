@@ -44,6 +44,22 @@ export interface Community {
   };
 }
 
+export interface CommunityAttestation {
+  id: number;
+  entryAttestationId?: number;
+  attestationId: number;
+  communityId: number;
+  name: string;
+  imageUrl: string;
+  description: string;
+  protected: boolean;
+  isRequired: boolean;
+  isExternal: boolean;
+  communityName: string;
+}
+
+type ApiResponse<T> = { data: T };
+type ApiError = { message: string };
 export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
   queryFn: async () => {
@@ -51,17 +67,99 @@ export const listCommunitiesQuery = queryOptions({
       credentials: "include",
     });
     console.log("fetch list", response.ok);
-    return (await response.json()) as { data: Community[] };
+    // if (response.ok) {
+    const json = (await response.json()) as ApiResponse<Community[]>;
+    return json.data;
+    // }
+    // return await response.json(); // as ApiError;
   },
 });
 
-// export const listAttestationsQuery = queryOptions({
-//   queryKey: [tags.communities],
-//   queryFn: async (communityId: string) => {
-//       const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
-//         credentials: "include",
-//       });
-//       console.log('fetch list', response.ok);
-//       return (await response.json()) as { data: Community[] };
-//   },
-// });
+export const attestationQueryOptions = (id: number) => {
+  return queryOptions({
+    queryKey: [{ type: tags.attestations, id }],
+    queryFn: async () => {
+      const response = await fetch(
+        `${NODES_API_URL}/v1/admin/communities/${id}/attestations`,
+        {
+          credentials: "include",
+        }
+      );
+      const json = (await response.json()) as ApiResponse<
+        CommunityAttestation[]
+      >;
+      return json.data;
+      // return (await response.json()) // as ApiError
+    },
+    // staleTime: 10 * 1000,
+  });
+};
+
+export interface Attestation {
+  id: number;
+  name: string;
+  communityId: number;
+  description: string;
+  image_url: string;
+  verified_image_url: any;
+  templateId: any;
+  protected: boolean;
+  createdAt: string;
+  updatedAt: string;
+  community: {
+    name: string;
+  };
+  CommunityEntryAttestation: any[];
+}
+
+// export interface Community
+
+export const listAttestationsQuery = queryOptions({
+  queryKey: [tags.attestations],
+  queryFn: async () => {
+    const response = await fetch(`${NODES_API_URL}/v1/admin/attestations`, {
+      credentials: "include",
+    });
+    console.log("fetch list", response.ok);
+    // if (response.ok) {
+    const json = (await response.json()) as ApiResponse<Attestation[]>;
+    return json.data;
+    // }
+    // return await response.json(); // as ApiError
+  },
+});
+
+export const addEntryAttestation = ({
+  communityId,
+  attestationId,
+}: {
+  communityId: number;
+  attestationId: number;
+}) => {
+  return fetch(
+    `${NODES_API_URL}/v1/admin/communities/${communityId}/addEntryAttestation/${attestationId}`,
+    {
+      method: "POST",
+      credentials: "include",
+    }
+  );
+};
+
+export const removeEntryAttestation = async ({
+  communityId,
+  attestationId,
+}: {
+  communityId: number;
+  attestationId: number;
+}) => {
+  return fetch(
+    `${NODES_API_URL}/v1/admin/communities/${communityId}/removeEntryAttestation/${attestationId}`,
+    {
+      method: "POST",
+      credentials: "include",
+      // headers: {
+      //   'credentials': 'include'
+      // }
+    }
+  );
+};
