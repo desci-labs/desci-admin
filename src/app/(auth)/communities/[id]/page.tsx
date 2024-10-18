@@ -22,7 +22,7 @@ export default function CommunityDetailsPage({
   params: { id: string };
 }) {
   const { data, isLoading } = useSuspenseQuery(listCommunitiesQuery);
-  const community = data?.data?.find(
+  const community = data?.find(
     (community) => community.id === parseInt(params.id)
   );
   console.log(community)

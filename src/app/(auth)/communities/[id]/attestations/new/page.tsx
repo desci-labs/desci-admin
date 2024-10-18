@@ -1,35 +1,42 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
-import { createCommunity } from "@/app/actions";
+import { createAttestation, createCommunity } from "@/app/actions";
 import CommunityForm from "@/components/organisms/forms/community-form";
+import AttestationForm from "@/components/organisms/forms/attestation-form";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { listCommunitiesQuery } from "@/lib/api";
+import NotFoundError from "@/app/not-found";
 
-const defaultState: ReturnType<typeof createCommunity> = Promise.resolve({
+const defaultState: ReturnType<typeof createAttestation> = Promise.resolve({
   ok: false,
 });
 
-export default function Page() {
-  const [state, formAction] = useFormState<ReturnType<typeof createCommunity>>(
-    createCommunity,
-    defaultState
-  );
+export default function Page({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const [state, formAction] = useFormState<
+    ReturnType<typeof createAttestation>
+  >(createAttestation, defaultState);
 
-  const { pending } = useFormStatus();
+  // todo: add skeleton loader
+  const { data, isLoading } = useSuspenseQuery(listCommunitiesQuery);
+  const community = data?.find((com) => com.id === parseInt(params.id));
+  console.log('communityId', params)
 
+  if (!community) return <NotFoundError />
   return (
-    <CommunityForm
+    <AttestationForm
       formAction={formAction}
       state={state}
       defaultValues={{
         name: "",
-        subtitle: "",
         description: "",
-        hidden: false,
-        keywords: [],
-        slug: "",
-        links: [""],
+        protected: false,
+        communityId: params.id
       }}
-      pending={pending}
     />
   );
 }

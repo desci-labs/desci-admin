@@ -143,3 +143,73 @@ export async function updateCommunity(_prevState: any, formData: FormData) {
     return { ok: false, message: "Unknown error occurred", error: [] };
   }
 }
+
+export async function createAttestation(_prevState: any, formData: FormData) {
+  const id = formData.get('communityId');
+  formData.delete('communityId');
+
+  if (!id) {
+    return { ok: false, message: 'No community ID', error: []}
+  }
+
+  const res = await fetch(`${API_URL}/v1/admin/communities/${id}/attestations`, {
+    method: "POST",
+    body: formData,
+    headers: { 'cookie': cookies().toString()},
+    credentials: "include",
+  });
+  let response = (await res.json()) as
+    | { data: { community: any } }
+    | { message: string; error?: string[] };
+
+  if (res.ok && "data" in response) {
+    // Set cookie
+    return {
+      ok: true,
+    };
+  } else if (!("data" in response)) {
+    return {
+      ok: false,
+      message: response.message,
+      error: response.error,
+    };
+  } else {
+    return { ok: false, message: "Unknown error occurred", error: [] };
+  }
+}
+
+export async function updateAttestation(_prevState: any, formData: FormData) {
+  const id = formData.get('communityId');
+  const attestationId = formData.get('attestationId');
+  formData.delete('communityId');
+  formData.delete('attestationId');
+
+  if (!id) {
+    return { ok: false, message: 'No community ID', error: []}
+  }
+
+  const res = await fetch(`${API_URL}/v1/admin/communities/${id}/attestations/${attestationId}`, {
+    method: "PUT",
+    body: formData,
+    headers: { 'cookie': cookies().toString()},
+    credentials: "include",
+  });
+  let response = (await res.json()) as
+    | { data: { community: any } }
+    | { message: string; error?: string[] };
+
+  if (res.ok && "data" in response) {
+    // Set cookie
+    return {
+      ok: true,
+    };
+  } else if (!("data" in response)) {
+    return {
+      ok: false,
+      message: response.message,
+      error: response.error,
+    };
+  } else {
+    return { ok: false, message: "Unknown error occurred", error: [] };
+  }
+}

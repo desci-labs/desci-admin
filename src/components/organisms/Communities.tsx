@@ -18,7 +18,7 @@ export default function Communities() {
             <LoaderCircleIcon className="w-18 h-18" />
           </div>
         ) : (
-          <DataTable data={data?.data ?? []} columns={columns} />
+          <DataTable data={data ?? []} columns={columns} />
         )}
       </div>
     </>
