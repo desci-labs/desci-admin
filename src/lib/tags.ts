@@ -1,4 +1,5 @@
 export enum tags {
     communities = 'communities',
-    attestations = 'attestations'
+    attestations = 'attestations',
+    users = 'users',
 }
