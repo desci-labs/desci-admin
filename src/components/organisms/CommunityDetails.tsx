@@ -44,6 +44,9 @@ import ExpandableMarkdown from "@/components/molecules/ExpandableMarkdown";
 import CommunityAttestations from "@/components/molecules/CommunityAttestations";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { NODES_API_URL } from "@/lib/config";
+import { getQueryClient } from "@/lib/get-query-client";
+import axios from "axios";
+import { tags } from "@/lib/tags";
 
 type User = {
   id: number;
@@ -258,32 +261,24 @@ export default function Component({
 }
 
 function CommunityMember({ community }: { community: Community }) {
+  const queryClient = getQueryClient();
+
   const members = community.CommunityMember;
   const [search, setSearch] = useState<string>();
   const [open, setOpen] = useState(false);
 
-  const addMemberMutation = useMutation({
-    mutationFn: async ({ userId, role }: { communityId: number; userId: number; role: string}) => {
-      const response = await fetch(
-        `${NODES_API_URL}/v1/admin/communities/${community.id}/members`,
-        {
-          body: JSON.stringify({ userId, role }),
-          method: "post",
-          credentials: "include",
-          headers: {
-            "content-type": "application/json",
-            Accept: "*/*",
-          },
-        }
-      );
-
-      return await response.json();
+  const addMemberMutation = useMutation(
+    {
+      mutationFn: addMember,
     },
-  });
-  const removeMemberMutation = useMutation({
-    mutationFn: removeMember,
-  });
-  
+    queryClient
+  );
+  const removeMemberMutation = useMutation(
+    {
+      mutationFn: removeMember,
+    },
+    queryClient
+  );
 
   const toggleMember = async (user: User) => {
     console.log("toggle", user);
@@ -295,40 +290,21 @@ function CommunityMember({ community }: { community: Community }) {
           memberId: existingMember.id,
         },
         {
-          onSuccess(data, variables, context) {
-            // refetchAttestations();
-            // refetchCommunityAttestations();
+          onSuccess() {
+            queryClient.invalidateQueries({ queryKey: [tags.communities] });
+            removeMemberMutation.reset();
           },
         }
       );
     } else {
-      // addMemberMutation.mutate(
-      //   { communityId: community.id, userId: user.id, role: "MEMBER" },
-      //   {
-      //     onSuccess(data, variables, context) {
-      //       // refetchAttestations();
-      //       // refetchCommunityAttestations();
-      //     },
-      //   }
-      // );
-      try {
-        const response = await fetch(
-          `${NODES_API_URL}/v1/admin/communities/${community.id}/members`,
-          {
-            body: JSON.stringify({ userId: user.id, role: 'MEMBER' }),
-            method: "post",
-            credentials: "include",
-            headers: {
-              "content-type": "application/json",
-              Accept: "*/*",
-            },
-          }
-        );
-        console.log('added member', await response.json())
-      } catch (err){
-        console.warn('error', err)
-      }
-      
+      addMemberMutation.mutate(
+        { communityId: community.id, userId: user.id, role: "MEMBER" },
+        {
+          onSuccess() {
+            queryClient.invalidateQueries({ queryKey: [tags.communities] });
+          },
+        }
+      );
     }
   };
 

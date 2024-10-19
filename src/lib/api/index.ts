@@ -65,15 +65,15 @@ type ApiError = { message: string };
 export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
   queryFn: async (context) => {
-    console.log('context', context);
+    console.log("context", context);
     // try {
-      const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
-        // headers: { cookie: cookies().toString() },
-        credentials: "include",
-      });
-      console.log("fetch list", response.ok, response.status);
-      const json = (await response.json()) as ApiResponse<Community[]>;
-      return json.data ?? [];
+    const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
+      // headers: { cookie: cookies().toString() },
+      credentials: "include",
+    });
+    console.log("fetch list", response.ok, response.status);
+    const json = (await response.json()) as ApiResponse<Community[]>;
+    return json.data ?? [];
     // } catch (err) {
     //   console.log("fetch error", err);
     //   return [];
@@ -177,19 +177,13 @@ export const addMember = async ({
   userId: number;
   role: string;
 }) => {
-  const response = await fetch(
-    `${NODES_API_URL}/v1/admin/communities/${communityId}/members`,
-    {
-      body: JSON.stringify({ userId, role }),
-      method: "post",
-      credentials: "include",
-      headers: {
-        "content-type": "application/json",
-        Accept: "*/*",
-      },
-      mode: "cors",
-    }
-  );
+  const response = await fetch(`/api/member`, {
+    body: JSON.stringify({ userId, role, communityId }),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   return await response.json();
 };
@@ -202,15 +196,13 @@ export const removeMember = async ({
   memberId: number;
 }) => {
   return fetch(
-    `${NODES_API_URL}/v1/admin/communities/${communityId}/members/${memberId}`,
+    `/api/member`,
     {
-      method: "delete",
-      credentials: "include",
+      method: "DELETE",
+      body: JSON.stringify({ communityId, memberId}),
       headers: {
-        "content-type": "application/json",
-        Accept: "*/*",
+        "Content-Type": "application/json",
       },
-      mode: "cors",
     }
   );
 };
