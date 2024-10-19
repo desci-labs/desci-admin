@@ -19,6 +19,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Check, X, Award, Plus, Settings, Lock, Pen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -29,20 +37,21 @@ import {
   removeEntryAttestation,
 } from "@/lib/api";
 import Link from "next/link";
-import { buttonVariants } from "../custom/LoaderButton";
+import { buttonVariants, LoaderButton } from "../custom/LoaderButton";
 import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 
 export default function CommunityAttestations({
   community,
 }: {
   community: Community;
 }) {
+  const router = useRouter();
   const [attestationOpen, setAttestationOpen] = useState(false);
 
   const {
     data: attestations,
-    isLoading,
-    isError,
     refetch: refetchCommunityAttestations,
   } = useQuery(attestationQueryOptions(community.id));
   const { data: allAttestations, refetch: refetchAttestations } =
@@ -90,10 +99,10 @@ export default function CommunityAttestations({
   };
 
   const isPending = addEntryMutation.isPending || removeEntryMutation.isPending;
-  const hasError = addEntryMutation.isError || removeEntryMutation.isError;
-  const error = addEntryMutation.error || removeEntryMutation.error;
+  // const hasError = addEntryMutation.isError || removeEntryMutation.isError;
+  // const error = addEntryMutation.error || removeEntryMutation.error;
 
-  console.log("states", { isPending, hasError, error });
+  // console.log("states", { isPending, hasError, error });
 
   return (
     <Card className="mb-6">
@@ -185,28 +194,42 @@ export default function CommunityAttestations({
                 </div>
               </div>
               <div className="flex items-center justify-end">
-                
-                {attestation.isRequired && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() =>
-                      toggleEntryAttestation(attestation.attestationId)
-                    }
-                  >
-                    <X className="h-4 w-4 text-error" />
-                    <span className="sr-only">Remove attestation</span>
-                  </Button>
-                )}
-                {!attestation.isExternal && (
-                  <Link
-                    className={cn(buttonVariants({ variant: "ghost" }))}
-                    href={`${attestation.communityId}/attestations/${attestation.attestationId}/edit`}
-                  >
-                    <Pen className="h-4 w-4" />
-                    <span className="sr-only">Edit attestation</span>
-                  </Link>
-                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <LoaderButton
+                      variant="ghost"
+                      className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                    >
+                      <DotsHorizontalIcon className="h-4 w-4" />
+                      <span className="sr-only">Open menu</span>
+                    </LoaderButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-[160px]">
+                    <DropdownMenuItem
+                      onClick={() =>
+                        router.push(
+                          `${attestation.communityId}/attestations/${attestation.attestationId}/edit`
+                        )
+                      }
+                    >
+                      <span>Edit</span>
+                      <span className="sr-only">Edit</span>
+                    </DropdownMenuItem>
+                    {attestation.isRequired && (
+                      <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() =>
+                            toggleEntryAttestation(attestation.attestationId)
+                          }
+                        >
+                          Delete
+                          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           ))}
