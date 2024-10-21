@@ -159,12 +159,11 @@ export default function CommunityMembers({
                           <p className="text-sm font-medium leading-none">
                             {user.name}
                           </p>
-                          {/* {user.organisations.length > 0 && ( */}
+                          {user.organisations.length > 0 && (
                           <p className="text-xs text-muted-foreground">
-                            {/* {user.organisations[0]} */}
-                            Massachusetts Institute of Technology
+                            {user.organisations[0]}
                           </p>
-                          {/* )} */}
+                          )}
                         </div>
                       </div>
                       {members.some((m) => m.userId === user.id) && (
