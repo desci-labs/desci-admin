@@ -353,7 +353,7 @@ function Analytics() {
       <MetricCard
         header="Uploaded Data"
         value={`${byteValueNumberFormatter.format(
-          analytics.bytesInLast7Days
+          analytics.bytesInLast7Days ?? 0
         )}`}
         description="Last 7 days"
         icon="data"
@@ -361,7 +361,7 @@ function Analytics() {
       <MetricCard
         header="Uploaded Data"
         value={`${byteValueNumberFormatter.format(
-          analytics.bytesInLast30Days
+          analytics.bytesInLast30Days ?? 0
         )}`}
         description="Last 30 days"
         icon="data"
