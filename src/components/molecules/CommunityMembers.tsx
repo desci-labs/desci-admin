@@ -28,12 +28,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Check, ChevronsUpDown, X, Settings } from "lucide-react";
-import {
-  addMember,
-  Community,
-  removeMember,
-  searchUsers,
-} from "@/lib/api";
+import { addMember, Community, removeMember, searchUsers } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/get-query-client";
 import { tags } from "@/lib/tags";
@@ -53,7 +48,7 @@ export default function CommunityMembers({
   const members = community.CommunityMember;
   const [search, setSearch] = useState<string>("");
   const [open, setOpen] = useState(false);
-  const [users, setUsers] = useState<User[]>([])
+  const [users, setUsers] = useState<User[]>([]);
 
   const addMemberMutation = useMutation(
     {
@@ -97,23 +92,29 @@ export default function CommunityMembers({
 
   const { mutate } = useMutation(
     {
-    mutationKey: [tags.users],
+      mutationKey: [tags.users],
       mutationFn: searchUsers,
     },
     queryClient
   );
 
   useEffect(() => {
-        mutate({ name: search.trim()}, { onSuccess(data, variables, context) {
-            console.log('Results', { data, variables, context})
-            if (data?.length > 0) setUsers(data ?? [])
-        },})
-  }, [search, mutate])
+    mutate(
+      { name: search.trim() },
+      {
+        onSuccess(data, variables, context) {
+          console.log("Results", { data, variables, context });
+          if (data?.length > 0)
+            setUsers(data.filter((user) => user.name !== null) ?? []);
+        },
+      }
+    );
+  }, [search, mutate]);
 
-//   const isPending =
-//     addMemberMutation.isPending || removeMemberMutation.isPending;
+  //   const isPending =
+  //     addMemberMutation.isPending || removeMemberMutation.isPending;
 
-  console.log('Users', users)
+  console.log("Users", users);
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
