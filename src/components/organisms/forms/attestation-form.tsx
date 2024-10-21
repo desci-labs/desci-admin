@@ -126,15 +126,9 @@ export default function AttestationForm({
   useEffect(() => {
     console.log("attestationForm", formState);
     if (formState?.ok) {
-      // form.reset();
       getQueryClient().invalidateQueries({
         queryKey: [tags.attestations],
       });
-      // getQueryClient().invalidateQueries({
-      //   queryKey: [
-      //     [{ type: tags.attestations, id: defaultValues?.communityId }],
-      //   ],
-      // });
       // todo: show success toast
     }
   }, [defaultValues?.communityId, form, formState]);

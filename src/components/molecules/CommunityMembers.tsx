@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +36,7 @@ import { tags } from "@/lib/tags";
 type User = {
   id: number;
   name: string;
+  organisations: string[];
 };
 
 export default function CommunityMembers({
@@ -63,7 +64,7 @@ export default function CommunityMembers({
     queryClient
   );
 
-  const toggleMember = async (user: User) => {
+  const toggleMember = async (user: Pick<User, "id">) => {
     const existingMember = members.find((m) => m.userId === user.id);
     if (existingMember) {
       removeMemberMutation.mutate(
@@ -131,7 +132,7 @@ export default function CommunityMembers({
               Manage
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[555px]">
             <DialogHeader>
               <DialogTitle>Manage Members</DialogTitle>
             </DialogHeader>
@@ -149,7 +150,23 @@ export default function CommunityMembers({
                       onSelect={() => toggleMember(user)}
                       className="flex items-center justify-between"
                     >
-                      <span>{user.name}</span>
+                      <div className="flex items-center">
+                        <Avatar className="h-9 w-9">
+                          <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                          <AvatarFallback>{getNameTag(user.name)}</AvatarFallback>
+                        </Avatar>
+                        <div className="ml-4 space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {user.name}
+                          </p>
+                          {/* {user.organisations.length > 0 && ( */}
+                          <p className="text-xs text-muted-foreground">
+                            {/* {user.organisations[0]} */}
+                            Massachusetts Institute of Technology
+                          </p>
+                          {/* )} */}
+                        </div>
+                      </div>
                       {members.some((m) => m.userId === user.id) && (
                         <Check className="h-4 w-4 text-green-600" />
                       )}
@@ -170,7 +187,7 @@ export default function CommunityMembers({
             >
               <div className="flex items-center gap-4">
                 <Avatar>
-                  <AvatarFallback>{member.user.name[0]}</AvatarFallback>
+                  <AvatarFallback>{getNameTag(member.user.name)}</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-medium">{member.user.name}</p>
@@ -183,7 +200,7 @@ export default function CommunityMembers({
                 onClick={() =>
                   toggleMember({
                     id: member.userId,
-                    name: member.user.name,
+                    // name: member.user.name,
                   })
                 }
               >
@@ -197,3 +214,8 @@ export default function CommunityMembers({
     </Card>
   );
 }
+
+const getNameTag = (name: string) => {
+  const split = name.split(" ");
+  return (split[0]?.[0] ?? "") + (split?.[1]?.[0] ?? "");
+};

@@ -32,8 +32,8 @@ type AttestationVersion = {
 
 type CommunityProps = {
   community: Community;
-  users: User[];
-  allAttestations: AttestationVersion[];
+  // users: User[];
+  // allAttestations: AttestationVersion[];
 };
 
 export default function Component({ community }: CommunityProps) {

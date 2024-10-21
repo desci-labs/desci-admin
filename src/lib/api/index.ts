@@ -1,7 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { tags } from "../tags";
 import { NODES_API_URL } from "../config";
-// import { cookies } from "next/headers";
 
 export interface Community {
   id: number;
@@ -66,39 +65,36 @@ export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
   queryFn: async (context) => {
     console.log("context", context);
-    // try {
     const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
-      // headers: { cookie: cookies().toString() },
       credentials: "include",
     });
     console.log("fetch list", response.ok, response.status);
     const json = (await response.json()) as ApiResponse<Community[]>;
     return json.data ?? [];
-    // } catch (err) {
-    //   console.log("fetch error", err);
-    //   return [];
-    // }
   },
 });
 
 export const attestationQueryOptions = (id: number) => {
+  console.log()
   return queryOptions({
     queryKey: [{ type: tags.attestations, id }],
     queryFn: async () => {
-      const response = await fetch(
-        `${NODES_API_URL}/v1/admin/communities/${id}/attestations`,
-        {
-          // headers: { cookie: cookies().toString() },
-          credentials: "include",
-        }
-      );
-      const json = (await response.json()) as ApiResponse<
-        CommunityAttestation[]
-      >;
-      return json.data;
-      // return (await response.json()) // as ApiError
+      try {
+        const response = await fetch(
+          `${NODES_API_URL}/v1/admin/communities/${id}/attestations`,
+          {
+            credentials: "include",
+          }
+        );
+        const json = (await response.json()) as ApiResponse<
+          CommunityAttestation[]
+        >;
+        return json.data ?? [];
+      } catch (err) {
+        console.error({ err })
+        return []
+      }
     },
-    // staleTime: 10 * 1000,
   });
 };
 
@@ -124,12 +120,17 @@ export interface Attestation {
 export const listAttestationsQuery = queryOptions({
   queryKey: [tags.attestations],
   queryFn: async () => {
-    const response = await fetch(`${NODES_API_URL}/v1/admin/attestations`, {
-      credentials: "include",
-    });
-    console.log("fetch list", response.ok, "cookie");
-    const json = (await response.json()) as ApiResponse<Attestation[]>;
-    return json.data;
+    try {
+      console.log("[listAttestationsQuery]", tags.attestations);
+      const response = await fetch(`${NODES_API_URL}/v1/admin/attestations`, {
+        credentials: "include",
+      });
+      const json = (await response.json()) as ApiResponse<Attestation[]>;
+      return json.data ?? [];
+    } catch (err) {
+      console.log("[listAttestationsQuery]", err);
+      return [];
+    }
   },
 });
 
@@ -195,16 +196,13 @@ export const removeMember = async ({
   communityId: number;
   memberId: number;
 }) => {
-  return fetch(
-    `/api/member`,
-    {
-      method: "DELETE",
-      body: JSON.stringify({ communityId, memberId}),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return fetch(`/api/member`, {
+    method: "DELETE",
+    body: JSON.stringify({ communityId, memberId }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 interface SearchResponse {
@@ -213,6 +211,7 @@ interface SearchResponse {
       name: string;
       id: number;
       orcid: string; //"0009-0000-3482-812X"
+      organisations: string[]
     }
   ];
 }
@@ -231,3 +230,50 @@ export async function searchUsers({ name }: { name?: string }) {
 
   return users;
 }
+
+export interface Analytics {
+  newUsersInLast30Days: number;
+  newUsersInLast7Days: number;
+  newUsersToday: number;
+  newNodesInLast30Days: number;
+  newNodesInLast7Days: number;
+  newNodesToday: number;
+  activeUsersToday: number;
+  activeUsersInLast7Days: number;
+  activeUsersInLast30Days: number;
+  nodeViewsToday: number;
+  nodeViewsInLast7Days: number;
+  nodeViewsInLast30Days: number;
+  bytesToday: any;
+  bytesInLast7Days: number;
+  bytesInLast30Days: number;
+}
+
+export const getAnalytics = queryOptions({
+  queryKey: [tags.analytics],
+  queryFn: async () => {
+    const response = await fetch(`${NODES_API_URL}/v1/admin/analytics`, {
+      credentials: "include",
+    });
+    const json = (await response.json()) as ApiResponse<Analytics>;
+    return {
+      "newUsersInLast30Days": 5,
+      "newUsersInLast7Days": 2,
+      "newUsersToday": 0,
+      "newNodesInLast30Days": 2292,
+      "newNodesInLast7Days": 454,
+      "newNodesToday": 0,
+      "activeUsersToday": 1,
+      "activeUsersInLast7Days": 11,
+      "activeUsersInLast30Days": 17,
+      "nodeViewsToday": 2,
+      "nodeViewsInLast7Days": 3485,
+      "nodeViewsInLast30Days": 14245,
+      "bytesToday": null,
+      "bytesInLast7Days": 22890864,
+      "bytesInLast30Days": 77358695
+    }
+    // return json.data ?? null;
+  },
+  staleTime: 60 * 1000
+});
