@@ -11,7 +11,6 @@ export async function GET(_request: Request) {
         headers: {
           cookie: cookies().toString(),
           "Content-Type": "application/json",
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYWRyYWNoQGRlc2NpLmNvbSIsImlhdCI6MTcyODM5NjAyMCwiZXhwIjoxNzU5OTUzNjIwfQ.Qck4KQEmraFRaqjtb-fNCUR9aM_tVMWLeQbGwjgs-2k'
         },
       }
     );
