@@ -10,7 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Overview } from "./Overview";
 import { RecentSales } from "./RecentSales";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { getAnalytics } from "@/lib/api";
 import { Activity, Box, HardDrive, LoaderIcon, UsersRound } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -251,9 +251,11 @@ const MetricCard = ({
     </Card>
   );
 };
+const numberValue = (num: number) => num > 0 ? `+${num}` : '0';
 
 function Analytics() {
-  const { data: analytics, isLoading } = useSuspenseQuery(getAnalytics);
+  const { data: analytics, isLoading, error, isError } = useSuspenseQuery(getAnalytics);
+  console.log({ analytics, isLoading, isError, error})
   const byteValueNumberFormatter = Intl.NumberFormat("en", {
     notation: "compact",
     style: "unit",
@@ -270,74 +272,75 @@ function Analytics() {
 
     if (!analytics) return <IncomingFeature />
 
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <MetricCard
         header="New users"
-        value={`+${analytics.newUsersToday}`}
+        value={numberValue(analytics.newUsersToday)}
         description="Today"
       />
       <MetricCard
         header="New users"
-        value={`+${analytics.newUsersInLast7Days}`}
+        value={numberValue(analytics.newUsersInLast7Days)}
         description="Last 7 days"
       />
       <MetricCard
         header="New users"
-        value={`+${analytics.newUsersInLast30Days}`}
+        value={numberValue(analytics.newUsersInLast30Days)}
         description="Last 30 days"
       />
       <MetricCard
         header="Active users"
-        value={`+${analytics.activeUsersToday}`}
+        value={numberValue(analytics.activeUsersToday)}
         description="Today"
         icon="activity"
       />
       <MetricCard
         header="Active users"
-        value={`+${analytics.activeUsersInLast7Days}`}
+        value={numberValue(analytics.activeUsersInLast7Days)}
         description="Last 7 days"
         icon="activity"
       />
       <MetricCard
         header="Active users"
-        value={`+${analytics.activeUsersInLast30Days}`}
+        value={numberValue(analytics.activeUsersInLast30Days)}
         description="Last 30 days"
         icon="activity"
       />
       <MetricCard
         header="New Nodes"
-        value={`+${analytics.newNodesToday}`}
+        value={numberValue(analytics.newNodesToday)}
         description="Today"
         icon="nodes"
       />
       <MetricCard
         header="New Nodes"
-        value={`+${analytics.newNodesInLast7Days}`}
+        value={numberValue(analytics.newNodesInLast7Days)}
         description="Last 7 days"
         icon="nodes"
       />
       <MetricCard
         header="New Nodes"
-        value={`+${analytics.newNodesInLast30Days}`}
+        value={numberValue(analytics.newNodesInLast30Days)}
         description="Last 30 days"
         icon="nodes"
       />
       <MetricCard
         header="Node views"
-        value={`+${analytics.nodeViewsToday}`}
+        value={numberValue(analytics.nodeViewsToday)}
         description="Today"
         icon="nodes"
       />
       <MetricCard
         header="Node views"
-        value={`+${analytics.nodeViewsInLast7Days}`}
+        value={numberValue(analytics.nodeViewsInLast7Days)}
         description="Last 7 days"
         icon="nodes"
       />
       <MetricCard
         header="Node views"
-        value={`+${analytics.nodeViewsInLast30Days}`}
+        value={numberValue(analytics.nodeViewsInLast30Days)}
         description="Last 30 days"
         icon="nodes"
       />
@@ -349,7 +352,7 @@ function Analytics() {
       />
       <MetricCard
         header="Uploaded Data"
-        value={`+${byteValueNumberFormatter.format(
+        value={`${byteValueNumberFormatter.format(
           analytics.bytesInLast7Days
         )}`}
         description="Last 7 days"
@@ -357,7 +360,7 @@ function Analytics() {
       />
       <MetricCard
         header="Uploaded Data"
-        value={`+${byteValueNumberFormatter.format(
+        value={`${byteValueNumberFormatter.format(
           analytics.bytesInLast30Days
         )}`}
         description="Last 30 days"
