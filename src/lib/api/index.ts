@@ -169,6 +169,22 @@ export const removeEntryAttestation = async ({
   );
 };
 
+export const toggleEntryAttestationRequirement = async ({
+  communityId,
+  entryId,
+}: {
+  communityId: number;
+  entryId: number;
+}) => {
+  return fetch(
+    `${NODES_API_URL}/v1/admin/communities/${communityId}/toggleEntryAttestation/${entryId}`,
+    {
+      method: "POST",
+      credentials: "include",
+    }
+  );
+};
+
 export const addMember = async ({
   communityId,
   userId,

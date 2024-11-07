@@ -27,6 +27,7 @@ import React, {
 } from "react";
 import { getQueryClient } from "@/lib/get-query-client";
 import { tags } from "@/lib/tags";
+import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -85,6 +86,8 @@ export default function AttestationForm({
   defaultValues?: FormValues;
   // pending: boolean;
 }) {
+  const router = useRouter();
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(attestationSchema),
     defaultValues,
@@ -124,14 +127,16 @@ export default function AttestationForm({
   >;
 
   useEffect(() => {
-    console.log("attestationForm", formState);
+    console.log("attestationForm", formState.ok, form.formState.isLoading);
     if (formState?.ok) {
       getQueryClient().invalidateQueries({
         queryKey: [tags.attestations],
       });
+      getQueryClient().invalidateQueries({ queryKey: [{ type: tags.attestations, id: defaultValues?.communityId }], });
+      router.back();
       // todo: show success toast
     }
-  }, [defaultValues?.communityId, form, formState]);
+  }, [defaultValues?.communityId, form, formState, router]);
 
   const isProtected = form.watch("protected");
   return (
