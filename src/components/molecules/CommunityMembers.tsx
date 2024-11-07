@@ -186,10 +186,10 @@ export default function CommunityMembers({
             >
               <div className="flex items-center gap-4">
                 <Avatar>
-                  <AvatarFallback>{getNameTag(member.user.name)}</AvatarFallback>
+                  <AvatarFallback>{getNameTag(member?.user?.name)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium">{member.user.name}</p>
+                  <p className="font-medium">{member?.user?.name}</p>
                   <p className="text-sm text-muted-foreground">{member.role}</p>
                 </div>
               </div>
@@ -215,6 +215,7 @@ export default function CommunityMembers({
 }
 
 const getNameTag = (name: string) => {
+  if (!name) return 'ANON'
   const split = name?.split(" ");
   return (split[0]?.[0] ?? "") + (split?.[1]?.[0] ?? "");
 };
