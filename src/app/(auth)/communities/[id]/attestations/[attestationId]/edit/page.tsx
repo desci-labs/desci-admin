@@ -1,9 +1,9 @@
 "use client";
 
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import { listAttestationsQuery, listCommunitiesQuery } from "@/lib/api";
-import { useFormState } from "react-dom";
-import { createAttestation, updateAttestation } from "@/app/actions";
+import { useQuery } from "@tanstack/react-query";
+import { listAttestationsQuery } from "@/lib/api";
+import { useFormState, useFormStatus } from "react-dom";
+import { updateAttestation } from "@/app/actions";
 import AttestationForm from "@/components/organisms/forms/attestation-form";
 import NotFoundError from "@/app/not-found";
 import { getQueryClient } from "@/lib/get-query-client";
@@ -20,13 +20,12 @@ export default function Page({
   const [state, formAction] = useFormState<
     ReturnType<typeof updateAttestation>
   >(updateAttestation, defaultState);
-
+  useFormStatus();
   // todo: add skeleton loader
   const { data, isLoading } = useQuery(listAttestationsQuery, getQueryClient());
   const attestation = data?.find((com) => com.id === parseInt(params.attestationId));
 
   if (!attestation) return <NotFoundError />
-  
   return (
     <AttestationForm
       formAction={(formdata) => {

@@ -35,7 +35,7 @@ import { tags } from "@/lib/tags";
 
 type User = {
   id: number;
-  name: string;
+  name?: string;
   organisations: string[];
 };
 
@@ -153,7 +153,7 @@ export default function CommunityMembers({
                       <div className="flex items-center">
                         <Avatar className="h-9 w-9">
                           <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                          <AvatarFallback>{getNameTag(user.name)}</AvatarFallback>
+                          <AvatarFallback>{getNameTag(user.name ?? '')}</AvatarFallback>
                         </Avatar>
                         <div className="ml-4 space-y-1">
                           <p className="text-sm font-medium leading-none">
@@ -215,6 +215,6 @@ export default function CommunityMembers({
 }
 
 const getNameTag = (name: string) => {
-  const split = name.split(" ");
+  const split = name?.split(" ");
   return (split[0]?.[0] ?? "") + (split?.[1]?.[0] ?? "");
 };

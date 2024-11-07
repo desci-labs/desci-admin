@@ -28,6 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Check, X, Award, Plus, Settings, Lock, Pen } from "lucide-react";
+import { RxAccessibility } from "react-icons/rx";
 import { cn } from "@/lib/utils";
 import {
   addEntryAttestation,
@@ -35,12 +36,15 @@ import {
   Community,
   listAttestationsQuery,
   removeEntryAttestation,
+  toggleEntryAttestationRequirement,
 } from "@/lib/api";
 import Link from "next/link";
 import { buttonVariants, LoaderButton } from "../custom/LoaderButton";
 import { useMutation, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { Tooltip, TooltipContent, TooltipProvider } from "../ui/tooltip";
+import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 export default function CommunityAttestations({
   community,
@@ -50,10 +54,8 @@ export default function CommunityAttestations({
   const router = useRouter();
   const [attestationOpen, setAttestationOpen] = useState(false);
 
-  const {
-    data: attestations,
-    refetch: refetchCommunityAttestations,
-  } = useQuery(attestationQueryOptions(community.id));
+  const { data: attestations, refetch: refetchCommunityAttestations } =
+    useQuery(attestationQueryOptions(community.id));
   const { data: allAttestations, refetch: refetchAttestations } =
     useSuspenseQuery(listAttestationsQuery);
 
@@ -61,15 +63,15 @@ export default function CommunityAttestations({
   const removeEntryMutation = useMutation({
     mutationFn: removeEntryAttestation,
   });
+  const toggleEntryMutation = useMutation({
+    mutationFn: toggleEntryAttestationRequirement,
+  });
 
   const toggleEntryAttestation = (id: number) => {
     if (!attestations) return;
     const isExisting =
       attestations.find(
-        (att) =>
-          att.id === id &&
-          att.isRequired &&
-          att.entryAttestationId !== undefined
+        (att) => att.id === id && att.entryAttestationId !== undefined
       ) !== undefined;
 
     if (isExisting) {
@@ -98,11 +100,29 @@ export default function CommunityAttestations({
     }
   };
 
-  const isPending = addEntryMutation.isPending || removeEntryMutation.isPending;
-  // const hasError = addEntryMutation.isError || removeEntryMutation.isError;
-  // const error = addEntryMutation.error || removeEntryMutation.error;
+  const toggleEntryRequirement = (id: number) => {
+    if (!attestations) return;
+    const entryAttestation = attestations.find(
+      (att) => att.attestationId === id && att.entryAttestationId !== undefined
+    );
 
-  // console.log("states", { isPending, hasError, error });
+    if (entryAttestation?.entryAttestationId) {
+      toggleEntryMutation.mutate(
+        {
+          communityId: community.id,
+          entryId: entryAttestation.entryAttestationId,
+        },
+        {
+          onSuccess() {
+            refetchAttestations();
+            refetchCommunityAttestations();
+          },
+        }
+      );
+    }
+  };
+
+  const isPending = addEntryMutation.isPending || removeEntryMutation.isPending;
 
   return (
     <Card className="mb-6">
@@ -155,7 +175,7 @@ export default function CommunityAttestations({
                           )}
                         </div>
                         {attestations?.some(
-                          (a) => a.id === attestation.id && a.isRequired
+                          (a) => a.attestationId === attestation.id
                         ) && <Check className="h-4 w-4 text-green-600" />}
                       </CommandItem>
                     ))}
@@ -187,6 +207,21 @@ export default function CommunityAttestations({
                   <div className="flex items-center justify-start gap-1">
                     <p className="font-medium">{attestation.name}</p>
                     {attestation.protected && <Lock className="h-3 w-3" />}
+                    {attestation.isRequired && (
+                      <TooltipProvider>
+                        <Tooltip delayDuration={0}>
+                          <TooltipTrigger>
+                            <RxAccessibility className="h-3 w-3" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              This attestation is required strictly required to
+                              join the community
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
                   </div>
                   <p className="font-light text-muted-foreground text-sm">
                     By {attestation.communityName}
@@ -215,16 +250,35 @@ export default function CommunityAttestations({
                       <span>Edit</span>
                       <span className="sr-only">Edit</span>
                     </DropdownMenuItem>
-                    {attestation.isRequired && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={() =>
+                          toggleEntryAttestation(attestation.attestationId)
+                        }
+                      >
+                        {attestation.entryAttestationId ? (
+                          <span>
+                            {attestation.communityName === community.name
+                              ? "Remove from entry"
+                              : "Delete"}
+                          </span>
+                        ) : (
+                          <span>Add to Entry</span>
+                        )}
+                      </DropdownMenuItem>
+                    </>
+                    {attestation.entryAttestationId && (
                       <>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() =>
-                            toggleEntryAttestation(attestation.attestationId)
+                            toggleEntryRequirement(attestation.attestationId)
                           }
                         >
-                          Delete
-                          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                          {attestation.isRequired
+                            ? "Mark as Optional"
+                            : "Mark as required"}
                         </DropdownMenuItem>
                       </>
                     )}

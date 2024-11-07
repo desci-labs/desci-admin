@@ -22,6 +22,7 @@ import { createCommunity } from "@/app/actions";
 import { useEffect } from "react";
 import { getQueryClient } from "@/lib/get-query-client";
 import { tags } from "@/lib/tags";
+import { useRouter } from "next/navigation";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -95,6 +96,7 @@ export default function CommunityForm({
     control: form.control,
     name: "links",
   });
+  const router = useRouter();
 
   function onSubmit(data: FormValues) {
     const formData = new FormData();
@@ -137,8 +139,9 @@ export default function CommunityForm({
     if (formState?.ok) {
       getQueryClient().invalidateQueries({ queryKey: [tags.communities] });
       // todo: show success toast
+      router.back()
     }
-  }, [form, formState]);
+  }, [form, formState, router]);
 
   return (
     <Layout>
