@@ -36,6 +36,8 @@ export default function Page({
         name: "",
         description: "",
         protected: false,
+        canMintDoi: false,
+        canUpdateOrcid: false,
         communityId: params.id
       }}
     />
