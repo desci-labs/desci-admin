@@ -107,6 +107,8 @@ export interface Attestation {
   verified_image_url: any;
   templateId: any;
   protected: boolean;
+  canMintDoi: boolean;
+  canUpdateOrcid: boolean;
   createdAt: string;
   updatedAt: string;
   community: {

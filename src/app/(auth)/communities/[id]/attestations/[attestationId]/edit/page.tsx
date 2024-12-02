@@ -23,9 +23,12 @@ export default function Page({
   useFormStatus();
   // todo: add skeleton loader
   const { data, isLoading } = useQuery(listAttestationsQuery, getQueryClient());
-  const attestation = data?.find((com) => com.id === parseInt(params.attestationId));
+  const attestation = data?.find(
+    (com) => com.id === parseInt(params.attestationId)
+  );
 
-  if (!attestation) return <NotFoundError />
+  if (!attestation) return <NotFoundError />;
+  console.log("Attestation", { attestation });
   return (
     <AttestationForm
       formAction={(formdata) => {
@@ -37,9 +40,13 @@ export default function Page({
         name: attestation.name,
         description: attestation.description,
         protected: attestation.protected,
+        canMintDoi: attestation.canMintDoi,
+        canUpdateOrcid: attestation.canUpdateOrcid,
         communityId: attestation.communityId.toString(),
         imageUrl: attestation.image_url,
-        ...(attestation.verified_image_url && { verifiedImageUrl: attestation.verified_image_url})
+        ...(attestation.verified_image_url && {
+          verifiedImageUrl: attestation.verified_image_url,
+        }),
       }}
     />
   );
