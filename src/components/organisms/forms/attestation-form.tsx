@@ -71,6 +71,14 @@ const attestationSchema = z.object({
     .boolean()
     .transform((value) => (value.toString() === "true" ? true : false))
     .default(false),
+  canMintDoi: z.coerce
+    .boolean()
+    .transform((value) => (value.toString() === "true" ? true : false))
+    .default(false),
+    canUpdateOrcid: z.coerce
+    .boolean()
+    .transform((value) => (value.toString() === "true" ? true : false))
+    .default(false),
 });
 
 type FormValues = z.infer<typeof attestationSchema>;
@@ -87,7 +95,7 @@ export default function AttestationForm({
   // pending: boolean;
 }) {
   const router = useRouter();
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(attestationSchema),
     defaultValues,
@@ -99,6 +107,8 @@ export default function AttestationForm({
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("protected", data.protected.toString());
+    formData.append("canMintDoi", data.canMintDoi.toString());
+    formData.append("canUpdateOrcid", data.canUpdateOrcid.toString());
     formData.append("communityId", data.communityId);
 
     if (data.imageUrl) {
@@ -132,7 +142,9 @@ export default function AttestationForm({
       getQueryClient().invalidateQueries({
         queryKey: [tags.attestations],
       });
-      getQueryClient().invalidateQueries({ queryKey: [{ type: tags.attestations, id: defaultValues?.communityId }], });
+      getQueryClient().invalidateQueries({
+        queryKey: [{ type: tags.attestations, id: defaultValues?.communityId }],
+      });
       router.back();
       // todo: show success toast
     }
@@ -242,6 +254,57 @@ export default function AttestationForm({
                 </FormItem>
               )}
             />
+            {isProtected && (
+              <FormField
+                control={form.control}
+                name="canMintDoi"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        DOI Mint Privilege
+                      </FormLabel>
+                      <FormDescription>
+                        Authorize this attestation to mint DOI, if a claim on
+                        this attestation gets verified it automatically mints a
+                        DOI for the associated research object.
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
+            {isProtected && (
+              <FormField
+                control={form.control}
+                name="canUpdateOrcid"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">
+                        ORCID Work Record Privilege
+                      </FormLabel>
+                      <FormDescription>
+                        Authorize this attestation to update ORCID work record, if a claim on
+                        this attestation gets verified it automatically reflects on the user&apos;s ORCID work record.
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
             {isProtected && (
               <FormField
                 control={form.control}
