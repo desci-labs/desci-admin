@@ -3,9 +3,9 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { getQueryClient } from "@/lib/get-query-client";
 import {
-  defaultShouldDehydrateQuery,
-  isServer,
-  QueryClient,
+  // defaultShouldDehydrateQuery,
+  // isServer,
+  // QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { PropsWithChildren } from "react";

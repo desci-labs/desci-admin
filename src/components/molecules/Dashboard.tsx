@@ -39,7 +39,6 @@ function IncomingFeature() {
 }
 
 export default function Dashboard() {
-  
   const downloadReport = async () => {
     const response = await fetch("/api/download", { credentials: "include" });
     const blob = await response.blob();
@@ -56,27 +55,23 @@ export default function Dashboard() {
   return (
     <>
       <div className="mb-2 flex items-center justify-between space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight"></h1>
-        <div className="flex items-center space-x-2">
-          <Button
-            onClick={downloadReport}
-          >
-            Download
-          </Button>
-        </div>
+        {/* <h1 className="text-2xl font-bold tracking-tight"></h1> */}
       </div>
       <Tabs
         orientation="vertical"
         defaultValue="analytics"
         className="space-y-4"
       >
-        <div className="w-full overflow-x-auto pb-2">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          </TabsList>
+        <div className="flex items-center space-x-2 justify-between">
+          <div className="w-full overflow-x-auto pb-2">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="reports">Reports</TabsTrigger>
+              <TabsTrigger value="notifications">Notifications</TabsTrigger>
+            </TabsList>
+          </div>
+          <Button onClick={downloadReport}>Download</Button>
         </div>
         <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -251,11 +246,16 @@ const MetricCard = ({
     </Card>
   );
 };
-const numberValue = (num: number) => num > 0 ? `+${num}` : '0';
+const numberValue = (num: number) => (num > 0 ? `+${num}` : "0");
 
 function Analytics() {
-  const { data: analytics, isLoading, error, isError } = useSuspenseQuery(getAnalytics);
-  console.log({ analytics, isLoading, isError, error})
+  const {
+    data: analytics,
+    isLoading,
+    error,
+    isError,
+  } = useSuspenseQuery(getAnalytics);
+  console.log({ analytics, isLoading, isError, error });
   const byteValueNumberFormatter = Intl.NumberFormat("en", {
     notation: "compact",
     style: "unit",
@@ -270,8 +270,7 @@ function Analytics() {
       </div>
     );
 
-    if (!analytics) return <IncomingFeature />
-
+  if (!analytics) return <IncomingFeature />;
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

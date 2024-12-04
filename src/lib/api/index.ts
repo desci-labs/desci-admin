@@ -278,20 +278,14 @@ export const getAnalytics = queryOptions({
   },
   staleTime: 60 * 1000
 });
-// return {
-//   "newUsersInLast30Days": 5,
-//   "newUsersInLast7Days": 2,
-//   "newUsersToday": 0,
-//   "newNodesInLast30Days": 2292,
-//   "newNodesInLast7Days": 454,
-//   "newNodesToday": 0,
-//   "activeUsersToday": 1,
-//   "activeUsersInLast7Days": 11,
-//   "activeUsersInLast30Days": 17,
-//   "nodeViewsToday": 2,
-//   "nodeViewsInLast7Days": 3485,
-//   "nodeViewsInLast30Days": 14245,
-//   "bytesToday": null,
-//   "bytesInLast7Days": 22890864,
-//   "bytesInLast30Days": 77358695
-// }
+
+export const validateAuth = queryOptions({
+  queryKey: [],
+  queryFn: async () => {
+    const response = await fetch(`${NODES_API_URL}/v1/auth/check`, {
+      credentials: "include",
+    });
+    const json = (await response.json()) as { ok: boolean };
+    return json.ok || false;
+  },
+});
