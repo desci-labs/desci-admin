@@ -35,7 +35,7 @@ export default function Login() {
 
   useEffect(() => {
     if (state.user) {
-      // router.push('/');
+      // router.refresh();
       window.location.reload();
     }
   }, [router, state.user])

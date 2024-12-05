@@ -57,7 +57,8 @@ export default function Sidebar() {
           )}
           onClick={() => {
             fetch("/api/logout", { method: "DELETE" }).then(() => {
-              router.push("/login");
+              window.location.reload();
+              // router.push("/login");
             });
           }}
         >
