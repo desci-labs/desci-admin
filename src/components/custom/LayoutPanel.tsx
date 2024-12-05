@@ -25,7 +25,7 @@ export default function LayoutPanel({ children }: PropsWithChildren<unknown>) {
     if (!isLoading && !isLoggedIn) {
       console.log("[auth]", { isLoggedIn });
       // redirect to auth page
-      router.push('/login')
+      // router.push('/login')
     }
   }, [isLoggedIn, isLoading, router]);
 
