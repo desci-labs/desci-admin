@@ -38,7 +38,7 @@ const addCommunitySchema = z.object({
   description: z.string().min(1, "Description cannot be empty"),
   hidden: z.boolean().default(false),
   keywords: z
-    .array(z.string())
+    .array(z.string().min(1, 'Keyword cannot be an empty string'))
     .min(1, "Community must have at least one keyword"),
   image_url: z.string().url().optional(),
   image: z

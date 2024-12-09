@@ -27,7 +27,7 @@ export default function Page() {
         hidden: false,
         keywords: [],
         slug: "",
-        links: [""],
+        links: [],
       }}
       pending={pending}
     />
