@@ -8,10 +8,10 @@ export default function Providers(props: PropsWithChildren<unknown>) {
   const queryClient = getQueryClient()
 
   return (
-    <ThemeContext>
+    // <ThemeContext>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <PanelProvider>{props.children}</PanelProvider>
       </HydrationBoundary>
-    </ThemeContext>
+    // </ThemeContext>
   );
 }

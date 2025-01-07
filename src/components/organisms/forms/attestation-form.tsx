@@ -13,21 +13,29 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Layout, LayoutBody } from "@/components/custom/Layout";
 import { createAttestation } from "@/app/actions";
 import { useFormStatus } from "react-dom";
-import React, {
-  ComponentType,
-  ForwardRefExoticComponent,
-  RefAttributes,
-  useEffect,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getQueryClient } from "@/lib/get-query-client";
 import { tags } from "@/lib/tags";
 import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -75,7 +83,7 @@ const attestationSchema = z.object({
     .boolean()
     .transform((value) => (value.toString() === "true" ? true : false))
     .default(false),
-    canUpdateOrcid: z.coerce
+  canUpdateOrcid: z.coerce
     .boolean()
     .transform((value) => (value.toString() === "true" ? true : false))
     .default(false),
@@ -87,21 +95,28 @@ export default function AttestationForm({
   formAction,
   defaultValues,
   state,
+  isEdit = false,
 }: // pending,
 {
   formAction: (formData: FormData) => void;
   state: ReturnType<typeof createAttestation>;
   defaultValues?: FormValues;
+  isEdit?: boolean;
   // pending: boolean;
 }) {
   const router = useRouter();
+  const [showDialog, setShowDialog] = useState(false);
+  const [publishNew, setPublishNew] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(attestationSchema),
     defaultValues,
   });
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   function onSubmit(data: FormValues) {
+    console.log("onSubmit");
     const formData = new FormData();
 
     formData.append("name", data.name);
@@ -110,6 +125,10 @@ export default function AttestationForm({
     formData.append("canMintDoi", data.canMintDoi.toString());
     formData.append("canUpdateOrcid", data.canUpdateOrcid.toString());
     formData.append("communityId", data.communityId);
+
+    if (isEdit) {
+      formData.append("publishNew", publishNew.toString());
+    }
 
     if (data.imageUrl) {
       formData.append("imageUrl", data.imageUrl);
@@ -129,6 +148,7 @@ export default function AttestationForm({
       console.log(`${key}: ${value}`);
     }
 
+    setShowDialog(false);
     formAction(formData);
   }
 
@@ -150,7 +170,20 @@ export default function AttestationForm({
     }
   }, [defaultValues?.communityId, form, formState, router]);
 
+  const presubmit = () => {
+    if (
+      form.formState.dirtyFields.name ||
+      form.formState.dirtyFields.description
+    ) {
+      setShowDialog(true);
+    } else {
+      formRef.current?.submit();
+    }
+  };
   const isProtected = form.watch("protected");
+
+  const isIntentChanged =
+    form.formState.dirtyFields.name || form.formState.dirtyFields.description;
   return (
     <Layout>
       <LayoutBody className="max-w-4xl mx-auto">
@@ -162,7 +195,12 @@ export default function AttestationForm({
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            ref={formRef}
+            className="space-y-8"
+            id="attestationForm"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -291,8 +329,10 @@ export default function AttestationForm({
                         ORCID Work Record Privilege
                       </FormLabel>
                       <FormDescription>
-                        Authorize this attestation to update ORCID work record, if a claim on
-                        this attestation gets verified it automatically reflects on the user&apos;s ORCID work record.
+                        Authorize this attestation to update ORCID work record,
+                        if a claim on this attestation gets verified it
+                        automatically reflects on the user&apos;s ORCID work
+                        record.
                       </FormDescription>
                     </div>
                     <FormControl>
@@ -365,9 +405,68 @@ export default function AttestationForm({
                 ))}
               </ul>
             )}
-            <SubmitButton type="submit" disabled={form.formState.isSubmitting}>
-              Submit Attestation
-            </SubmitButton>
+
+            {!isEdit && (
+              <SubmitButton
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
+                Submit Attestation
+              </SubmitButton>
+            )}
+
+            {isEdit && (
+              <AlertDialog
+                open={showDialog}
+                onOpenChange={(open) => setShowDialog(open)}
+              >
+                <AlertDialogTrigger asChild>
+                  <SubmitButton disabled={form.formState.isSubmitting}>
+                    Submit Attestation
+                  </SubmitButton>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    {isIntentChanged && (
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will publish a new
+                        version of this attestation and require all submissions
+                        to reclaim the updated attestation to rejoin the
+                        community.
+                      </AlertDialogDescription>
+                    )}
+                  </AlertDialogHeader>
+                  {isIntentChanged && (
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="intent"
+                        checked={publishNew}
+                        onCheckedChange={(checked) =>
+                          setPublishNew(checked as boolean)
+                        }
+                      />
+                      <label
+                        htmlFor="intent"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Publish new version of attestation
+                      </label>
+                    </div>
+                  )}
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <SubmitButton
+                      type="submit"
+                      disabled={form.formState.isSubmitting}
+                      form="attestationForm"
+                    >
+                      Continue
+                    </SubmitButton>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
           </form>
         </Form>
       </LayoutBody>

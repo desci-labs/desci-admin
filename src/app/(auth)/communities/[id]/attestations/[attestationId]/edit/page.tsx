@@ -35,6 +35,7 @@ export default function Page({
         formdata.append("attestationId", attestation.id.toString());
         formAction(formdata);
       }}
+      isEdit={true}
       state={state}
       defaultValues={{
         name: attestation.name,
