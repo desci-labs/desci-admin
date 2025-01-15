@@ -8,6 +8,7 @@ import {
   QuestionMarkCircledIcon,
   StopwatchIcon,
 } from '@radix-ui/react-icons'
+import { UserIcon, UserRoundPlusIcon } from 'lucide-react'
 
 export const labels = [
   {
@@ -50,6 +51,19 @@ export const statuses = [
     label: 'Canceled',
     icon: CrossCircledIcon,
   },
+]
+
+export const roles = [
+  {
+    value: 'admin',
+    label: 'Admin',
+    icon: UserRoundPlusIcon
+  },
+  {
+    value: 'user',
+    label: 'User',
+    icon: UserIcon
+  }
 ]
 
 export const priorities = [

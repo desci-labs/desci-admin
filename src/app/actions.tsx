@@ -15,12 +15,6 @@ export async function login(prevState: any, formData: FormData) {
   const email = formData.get("email") ?? prevState?.email;
   const code = formData.get("code");
 
-  if (!email?.endsWith("@desci.com"))
-    return {
-      ok: false,
-      error: "Unauthorised email domain (only desci.com emails are allowed)",
-    };
-
   const res = await fetch(`${API_URL}/v1/auth/magic`, {
     method: "POST",
     body: JSON.stringify({ email, code }),

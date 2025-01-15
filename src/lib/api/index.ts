@@ -59,6 +59,13 @@ export interface CommunityAttestation {
 }
 
 export type ApiResponse<T> = { data: T };
+export type PaginatedApiResponse<T> = {
+  data: T;
+  count: number;
+  page: number;
+  cursor: number;
+};
+
 type ApiError = { message: string };
 
 export const listCommunitiesQuery = queryOptions({
@@ -75,7 +82,7 @@ export const listCommunitiesQuery = queryOptions({
 });
 
 export const attestationQueryOptions = (id: number) => {
-  console.log()
+  console.log();
   return queryOptions({
     queryKey: [{ type: tags.attestations, id }],
     queryFn: async () => {
@@ -91,8 +98,8 @@ export const attestationQueryOptions = (id: number) => {
         >;
         return json.data ?? [];
       } catch (err) {
-        console.error({ err })
-        return []
+        console.error({ err });
+        return [];
       }
     },
   });
@@ -223,32 +230,6 @@ export const removeMember = async ({
   });
 };
 
-interface SearchResponse {
-  profiles: [
-    {
-      name: string;
-      id: number;
-      orcid: string; //"0009-0000-3482-812X"
-      organisations: string[]
-    }
-  ];
-}
-export async function searchUsers({ name }: { name?: string }) {
-  const response = await fetch(
-    `${NODES_API_URL}/v1/users/search?${name && "name=" + name}`,
-    {
-      credentials: "include",
-      mode: "cors",
-    }
-  );
-
-  const users = response.ok
-    ? ((await response.json()) as SearchResponse)?.profiles ?? []
-    : [];
-
-  return users;
-}
-
 export interface Analytics {
   newUsersInLast30Days: number;
   newUsersInLast7Days: number;
@@ -276,7 +257,7 @@ export const getAnalytics = queryOptions({
     const json = (await response.json()) as Analytics;
     return json || null;
   },
-  staleTime: 60 * 1000
+  staleTime: 60 * 1000,
 });
 
 export const validateAuth = queryOptions({
@@ -289,3 +270,69 @@ export const validateAuth = queryOptions({
     return json.ok || false;
   },
 });
+
+interface UserProfile {
+  id: number;
+  name: string;
+  email: string;
+  orcid: string;
+  isAdmin: boolean;
+  createdAt: string;
+}
+
+export const searchUsers = queryOptions({
+  queryKey: [tags.users],
+  queryFn: async (context) => {
+    console.log("context", context);
+    const response = await fetch(`${NODES_API_URL}/v1/admin/users/search`, {
+      credentials: "include",
+    });
+    console.log("fetch users", response.ok, response.status);
+    const json = (await response.json()) as {
+      data: PaginatedApiResponse<UserProfile[]>;
+    };
+    return json;
+  },
+});
+
+
+export const toggleUserRole = async ({
+  userId,
+}: {
+  userId: number;
+}) => {
+  return fetch(
+    `${NODES_API_URL}/v1/admin/users/${userId}/toggleRole`,
+    {
+      method: "PATCH",
+      credentials: "include",
+    }
+  );
+};
+
+interface SearchResponse {
+  profiles: [
+    {
+      name: string;
+      id: number;
+      orcid: string; //"0009-0000-3482-812X"
+      organisations: string[];
+    }
+  ];
+}
+
+export async function searchUsersProfiles({ name }: { name?: string }) {
+  const response = await fetch(
+    `${NODES_API_URL}/v1/admin/users/search?${name ? "name=" + name : ""}`,
+    {
+      credentials: "include",
+      mode: "cors",
+    }
+  );
+
+  const users = response.ok
+    ? ((await response.json()) as SearchResponse)?.profiles ?? []
+    : [];
+
+  return users;
+}

@@ -28,7 +28,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Check, ChevronsUpDown, X, Settings } from "lucide-react";
-import { addMember, Community, removeMember, searchUsers } from "@/lib/api";
+import { addMember, Community, removeMember, searchUsers, searchUsersProfiles } from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/get-query-client";
 import { tags } from "@/lib/tags";
@@ -94,7 +94,7 @@ export default function CommunityMembers({
   const { mutate } = useMutation(
     {
       mutationKey: [tags.users],
-      mutationFn: searchUsers,
+      mutationFn: searchUsersProfiles,
     },
     queryClient
   );

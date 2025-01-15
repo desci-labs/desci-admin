@@ -152,23 +152,23 @@ export const columns: ColumnDef<Community>[] = [
     },
     enableSorting: false,
   },
-  {
-    accessorKey: "description",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Description" />
-    ),
-    cell: ({ row }) => {
-      const label = row.original.description;
+  // {
+  //   accessorKey: "description",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Description" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const label = row.original.description;
 
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
-            {label}
-          </span>
-        </div>
-      );
-    },
-  },
+  //     return (
+  //       <div className="flex space-x-2">
+  //         <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
+  //           {label}
+  //         </span>
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "keywords",
     header: ({ column }) => (
@@ -200,22 +200,22 @@ export const columns: ColumnDef<Community>[] = [
     enableSorting: false,
     // enableResizing: true,
   },
-  {
-    accessorKey: "image_url",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Image url" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
-            {row.getValue("image_url")}
-          </span>
-        </div>
-      );
-    },
-    enableSorting: false,
-  },
+  // {
+  //   accessorKey: "image_url",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Image url" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="flex space-x-2">
+  //         <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
+  //           {row.getValue("image_url")}
+  //         </span>
+  //       </div>
+  //     );
+  //   },
+  //   enableSorting: false,
+  // },
   {
     accessorKey: "createdAt",
     header: ({ column }) => (
@@ -231,21 +231,21 @@ export const columns: ColumnDef<Community>[] = [
       );
     },
   },
-  {
-    accessorKey: "updatedAt",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last Updated" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
-            {row.getValue("updatedAt")}
-          </span>
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "updatedAt",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Last Updated" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="flex space-x-2">
+  //         <span className="max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]">
+  //           {row.getValue("updatedAt")}
+  //         </span>
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => <DataTableRowActions row={row} />,
