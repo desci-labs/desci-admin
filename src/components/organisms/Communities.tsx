@@ -11,6 +11,12 @@ const queryClient = getQueryClient();
 
 export default function Communities() {
   const { data, isLoading, error } = useQuery(listCommunitiesQuery, queryClient);
+  // const {
+  //   data,
+  //   isLoading,
+  //   error,
+  //   isError,
+  // } = useSuspenseQuery(listCommunitiesQuery);
 
   console.log('data', {data, isLoading, error})
   return (

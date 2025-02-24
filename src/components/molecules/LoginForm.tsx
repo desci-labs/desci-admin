@@ -1,17 +1,19 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useFormStatus } from "react-dom";
+import { HTMLProps, useMemo } from "react";
+import { Loader, Loader2Icon, LoaderIcon } from "lucide-react";
 
 export default function LoginForm({
   login,
-  pending,
   email,
   message,
 }: {
   login: (formData: FormData) => void;
-  pending: boolean;
   email: string;
   message?: string;
 }) {
+  const pending = false;
   return (
     <form
       action={login}
@@ -64,14 +66,31 @@ export default function LoginForm({
         )}
       </div>
       {message && <p className="text-sm text-red-500 mb-2">{message}</p>}
-      <Button
-        className="self-stretch font-semibold text-lg h-12 bg-btn-surface-primary-neutral border-btn-border-primary-focus hover:bg-btn-surface-primary-focus "
-        variant="outline"
-        type="submit"
-        disabled={pending}
-      >
-        {email ? "Send Code" : "Verify email"}
-      </Button>
+      <SubmitButton email={email} />
     </form>
   );
 }
+
+const SubmitButton = (
+  props: HTMLProps<HTMLButtonElement> & { email?: string }
+) => {
+  const { pending } = useFormStatus();
+
+  const message = useMemo(() => {
+    if (props.email && pending) return "Verifying code";
+    if (!props.email && pending) return "Verifying email";
+    if (!props.email && !pending) return "Verify email";
+    if (props.email && !pending) return "Send code";
+  }, [props.email, pending]);
+  return (
+    <Button
+      className="self-stretch font-semibold text-lg h-12 bg-btn-surface-primary-neutral border-btn-border-primary-focus hover:bg-btn-surface-primary-focus "
+      variant="outline"
+      type="submit"
+      disabled={pending}
+    >
+      <span className="mr-1">{message} </span>{" "}
+      {pending && <Loader2Icon className="size-5 animate-spin" />}
+    </Button>
+  );
+};

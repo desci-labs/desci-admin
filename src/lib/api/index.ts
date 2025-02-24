@@ -1,6 +1,9 @@
 import { queryOptions } from "@tanstack/react-query";
 import { tags } from "../tags";
 import { NODES_API_URL } from "../config";
+import { AUTH_COOKIE_FIELDNAME } from "../constants";
+import { getHeaders } from "../utils";
+// import { cookies } from "next/headers";
 
 export interface Community {
   id: number;
@@ -70,10 +73,11 @@ type ApiError = { message: string };
 
 export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
+  retry: 1,
   queryFn: async (context) => {
-    console.log("context", context);
     const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
       credentials: "include",
+      // headers: getHeaders(),
     });
     console.log("fetch list", response.ok, response.status);
     const json = (await response.json()) as ApiResponse<Community[]>;
@@ -82,7 +86,6 @@ export const listCommunitiesQuery = queryOptions({
 });
 
 export const attestationQueryOptions = (id: number) => {
-  console.log();
   return queryOptions({
     queryKey: [{ type: tags.attestations, id }],
     queryFn: async () => {
@@ -91,6 +94,7 @@ export const attestationQueryOptions = (id: number) => {
           `${NODES_API_URL}/v1/admin/communities/${id}/attestations`,
           {
             credentials: "include",
+            // headers: getHeaders(),
           }
         );
         const json = (await response.json()) as ApiResponse<
@@ -124,8 +128,6 @@ export interface Attestation {
   CommunityEntryAttestation: any[];
 }
 
-// export interface Community
-
 export const listAttestationsQuery = queryOptions({
   queryKey: [tags.attestations],
   queryFn: async () => {
@@ -133,6 +135,7 @@ export const listAttestationsQuery = queryOptions({
       console.log("[listAttestationsQuery]", tags.attestations);
       const response = await fetch(`${NODES_API_URL}/v1/admin/attestations`, {
         credentials: "include",
+        // headers: getHeaders(),
       });
       const json = (await response.json()) as ApiResponse<Attestation[]>;
       return json.data ?? [];
@@ -155,6 +158,7 @@ export const addEntryAttestation = ({
     {
       method: "POST",
       credentials: "include",
+      // headers: getHeaders(),
     }
   );
 };
@@ -171,9 +175,7 @@ export const removeEntryAttestation = async ({
     {
       method: "POST",
       credentials: "include",
-      // headers: {
-      //   'credentials': 'include'
-      // }
+      // headers: getHeaders(),
     }
   );
 };
@@ -190,6 +192,7 @@ export const toggleEntryAttestationRequirement = async ({
     {
       method: "POST",
       credentials: "include",
+      // headers: getHeaders(),
     }
   );
 };
@@ -208,6 +211,7 @@ export const addMember = async ({
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      ...getHeaders(),
     },
   });
 
@@ -226,6 +230,7 @@ export const removeMember = async ({
     body: JSON.stringify({ communityId, memberId }),
     headers: {
       "Content-Type": "application/json",
+      ...getHeaders(),
     },
   });
 };
@@ -251,8 +256,10 @@ export interface Analytics {
 export const getAnalytics = queryOptions({
   queryKey: [tags.analytics],
   queryFn: async () => {
+    // console.log('[cookies]', cookies().toString())
     const response = await fetch(`${NODES_API_URL}/v1/admin/analytics`, {
       credentials: "include",
+      // headers: getHeaders(),
     });
     const json = (await response.json()) as Analytics;
     return json || null;
@@ -265,6 +272,7 @@ export const validateAuth = queryOptions({
   queryFn: async () => {
     const response = await fetch(`${NODES_API_URL}/v1/auth/check`, {
       credentials: "include",
+      // headers: getHeaders(),
     });
     const json = (await response.json()) as { ok: boolean };
     return json.ok || false;
@@ -286,6 +294,7 @@ export const searchUsers = queryOptions({
     console.log("context", context);
     const response = await fetch(`${NODES_API_URL}/v1/admin/users/search`, {
       credentials: "include",
+      // headers: getHeaders(),
     });
     console.log("fetch users", response.ok, response.status);
     const json = (await response.json()) as {
@@ -295,19 +304,12 @@ export const searchUsers = queryOptions({
   },
 });
 
-
-export const toggleUserRole = async ({
-  userId,
-}: {
-  userId: number;
-}) => {
-  return fetch(
-    `${NODES_API_URL}/v1/admin/users/${userId}/toggleRole`,
-    {
-      method: "PATCH",
-      credentials: "include",
-    }
-  );
+export const toggleUserRole = async ({ userId }: { userId: number }) => {
+  return fetch(`${NODES_API_URL}/v1/admin/users/${userId}/toggleRole`, {
+    method: "PATCH",
+    credentials: "include",
+    // headers: getHeaders(),
+  });
 };
 
 interface SearchResponse {
@@ -326,6 +328,7 @@ export async function searchUsersProfiles({ name }: { name?: string }) {
     `${NODES_API_URL}/v1/admin/users/search?${name ? "name=" + name : ""}`,
     {
       credentials: "include",
+      // headers: getHeaders(),
       mode: "cors",
     }
   );

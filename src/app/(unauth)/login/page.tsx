@@ -6,9 +6,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { login, LoginUserData } from "@/app/actions";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { validateAuth } from "@/lib/api";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { LoaderCircleIcon } from "lucide-react";
+import { AUTH_COOKIE_FIELDNAME } from "@/lib/constants";
 
 const initialState: {
   email?: string;
@@ -19,34 +17,17 @@ const initialState: {
 
 export default function Login() {
   const [state, formAction] = useFormState(login, initialState);
-  const { pending } = useFormStatus();
-  const { data: isLoggedIn, isLoading, refetch } = useSuspenseQuery(validateAuth);
   const router = useRouter();
 
-  // const checkAuth = async () => {};
-
-  useEffect(() => {
-    console.log("[auth]", { isLoggedIn, isLoading });
-    if (!isLoading && isLoggedIn) {
-      // redirect to auth page
-      router.push("/");
-    }
-  }, [isLoggedIn, isLoading, router]);
+  console.log('[login]', { state })
 
   useEffect(() => {
     if (state.user) {
-      // router.refresh();
-      window.location.reload();
+      console.log('[auth]', state.user);
+      localStorage.setItem(AUTH_COOKIE_FIELDNAME, state.user.token)
+      router.refresh();
     }
   }, [router, state.user])
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center w-full h-full">
-        <LoaderCircleIcon className="w-10 h-10" />
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto max-w-md">
@@ -56,7 +37,6 @@ export default function Login() {
         </h1>
         <LoginForm
           login={formAction}
-          pending={pending}
           email={state.email}
           message={state.error}
         />

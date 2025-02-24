@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import { PropsWithChildren, useEffect } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -9,25 +9,10 @@ import ThemeSwitch from "@/components/atoms/ThemeSwitch";
 import { Layout, LayoutHeader, LayoutBody } from "@/components/custom/Layout";
 import { UserNav } from "@/components/molecules/UserNav";
 import DynamicTopNav from "../molecules/DynamicTopNav";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { validateAuth } from "@/lib/api";
-import { useRouter } from "next/navigation";
 
 export default function LayoutPanel({ children }: PropsWithChildren<unknown>) {
   const { attachHandle, onResize } = useSetLayout();
   const { minSize, maxSize } = useGetLayout();
-  const { data: isLoggedIn, isLoading } = useSuspenseQuery(validateAuth);
-  const router = useRouter();
-
-  // const checkAuth = async () => {};
-
-  useEffect(() => {
-    if (!isLoading && !isLoggedIn) {
-      console.log("[auth]", { isLoggedIn });
-      // redirect to auth page
-      router.push('/login')
-    }
-  }, [isLoggedIn, isLoading, router]);
 
   return (
     <div className="overflow-y-hidden">
@@ -58,7 +43,6 @@ export default function LayoutPanel({ children }: PropsWithChildren<unknown>) {
             <LayoutHeader sticky>
               <DynamicTopNav />
               <div className="ml-auto flex items-center space-x-4">
-                {/* <Search /> */}
                 <ThemeSwitch />
                 <UserNav />
               </div>

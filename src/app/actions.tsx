@@ -2,6 +2,7 @@
 
 import { AUTH_COOKIE_FIELDNAME } from "@/lib/constants";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -33,6 +34,20 @@ export async function login(prevState: any, formData: FormData) {
       domain: process.env.NODE_ENV === "production" ? ".desci.com" : undefined,
     });
 
+    if (
+      AUTH_COOKIE_FIELDNAME === "auth-dev" &&
+      process.env.NEXT_ENV === "development"
+    ) {
+      console.log('[cookie]', AUTH_COOKIE_FIELDNAME, process.env.NEXT_ENV)
+      cookies().set('auth', response.user.token, {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 1 month
+        httpOnly: true,
+        secure: true,
+        // domain: '.desci.com',
+      });
+    }
+
     if (process.env.NEXT_ENV === "production") {
       cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
         path: "/",
@@ -56,33 +71,36 @@ export async function login(prevState: any, formData: FormData) {
       email,
       user: response.user,
     };
-  }
-
-  if (response.ok && !response.user) {
+    // redirect("/");
+  } else if (response.ok && !response.user) {
     return {
       ok: true,
       email,
     };
+  } else {
+    return response;
   }
 
-  return response;
+  // return response;
 }
 
-type CreateCommunityState = {
-  ok: boolean;
-  message?: undefined;
-  error?: undefined;
-} | {
-  ok: boolean;
-  message: string;
-  error: string[] | undefined;
-}
+type CreateCommunityState =
+  | {
+      ok: boolean;
+      message?: undefined;
+      error?: undefined;
+    }
+  | {
+      ok: boolean;
+      message: string;
+      error: string[] | undefined;
+    };
 
 export async function createCommunity(_prevState: any, formData: FormData) {
   const res = await fetch(`${API_URL}/v1/admin/communities`, {
     method: "POST",
     body: formData,
-    headers: { 'cookie': cookies().toString()},
+    headers: { cookie: cookies().toString() },
     credentials: "include",
   });
   let response = (await res.json()) as
@@ -106,16 +124,16 @@ export async function createCommunity(_prevState: any, formData: FormData) {
 }
 
 export async function updateCommunity(_prevState: any, formData: FormData) {
-  const id = formData.get('communityId');
-  formData.delete('communityId');
+  const id = formData.get("communityId");
+  formData.delete("communityId");
 
   if (!id) {
-    return { ok: false, message: 'No community ID', error: []}
+    return { ok: false, message: "No community ID", error: [] };
   }
   const res = await fetch(`${API_URL}/v1/admin/communities/${id}`, {
     method: "PUT",
     body: formData,
-    headers: { 'cookie': cookies().toString()},
+    headers: { cookie: cookies().toString() },
     credentials: "include",
   });
   let response = (await res.json()) as
@@ -139,19 +157,22 @@ export async function updateCommunity(_prevState: any, formData: FormData) {
 }
 
 export async function createAttestation(_prevState: any, formData: FormData) {
-  const id = formData.get('communityId');
-  formData.delete('communityId');
+  const id = formData.get("communityId");
+  formData.delete("communityId");
 
   if (!id) {
-    return { ok: false, message: 'No community ID', error: []}
+    return { ok: false, message: "No community ID", error: [] };
   }
 
-  const res = await fetch(`${API_URL}/v1/admin/communities/${id}/attestations`, {
-    method: "POST",
-    body: formData,
-    headers: { 'cookie': cookies().toString()},
-    credentials: "include",
-  });
+  const res = await fetch(
+    `${API_URL}/v1/admin/communities/${id}/attestations`,
+    {
+      method: "POST",
+      body: formData,
+      headers: { cookie: cookies().toString() },
+      credentials: "include",
+    }
+  );
   let response = (await res.json()) as
     | { data: { community: any } }
     | { message: string; error?: string[] };
@@ -173,21 +194,24 @@ export async function createAttestation(_prevState: any, formData: FormData) {
 }
 
 export async function updateAttestation(_prevState: any, formData: FormData) {
-  const id = formData.get('communityId');
-  const attestationId = formData.get('attestationId');
-  formData.delete('communityId');
-  formData.delete('attestationId');
+  const id = formData.get("communityId");
+  const attestationId = formData.get("attestationId");
+  formData.delete("communityId");
+  formData.delete("attestationId");
 
   if (!id) {
-    return { ok: false, message: 'No community ID', error: []}
+    return { ok: false, message: "No community ID", error: [] };
   }
 
-  const res = await fetch(`${API_URL}/v1/admin/communities/${id}/attestations/${attestationId}`, {
-    method: "PUT",
-    body: formData,
-    headers: { 'cookie': cookies().toString()},
-    credentials: "include",
-  });
+  const res = await fetch(
+    `${API_URL}/v1/admin/communities/${id}/attestations/${attestationId}`,
+    {
+      method: "PUT",
+      body: formData,
+      headers: { cookie: cookies().toString() },
+      credentials: "include",
+    }
+  );
   let response = (await res.json()) as
     | { data: { community: any } }
     | { message: string; error?: string[] };

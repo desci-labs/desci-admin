@@ -14,43 +14,43 @@ export interface NavLink {
 
 export const sidelinks: SideLink[] = [
     {
-      title: 'Dashboard',
+      title: 'Overview',
       label: '',
       href: '/',
       icon: <LayoutDashboardIcon size={18} />,
     },
-    {
-      title: 'Nodes',
-      label: '',
-      href: '/nodes',
-      icon: <ListCheckIcon size={18} />,
-    },
+    // {
+    //   title: 'Nodes',
+    //   label: '',
+    //   href: '/nodes',
+    //   icon: <ListCheckIcon size={18} />,
+    // },
     {
       title: 'Users',
       label: '',
       href: '/users',
       icon: <UsersIcon size={18} />,
     },
-    {
-      title: 'DOI Services',
-      label: '',
-      href: '',
-      icon: <DatabaseZapIcon size={18} />,
-      sub: [
-        {
-          title: 'Records',
-          label: '',
-          href: '/doi',
-          icon: <ListCheckIcon size={18} />,
-        },
-        {
-          title: 'Pending',
-          label: '',
-          href: '/doi/pending',
-          icon: <IconParkingCircle size={18} />,
-        },
-      ],
-    },
+    // {
+    //   title: 'DOI Services',
+    //   label: '',
+    //   href: '',
+    //   icon: <DatabaseZapIcon size={18} />,
+    //   sub: [
+    //     {
+    //       title: 'Records',
+    //       label: '',
+    //       href: '/doi',
+    //       icon: <ListCheckIcon size={18} />,
+    //     },
+    //     {
+    //       title: 'Pending',
+    //       label: '',
+    //       href: '/doi/pending',
+    //       icon: <IconParkingCircle size={18} />,
+    //     },
+    //   ],
+    // },
     {
       title: 'Desci Communities',
       label: '',
@@ -71,16 +71,16 @@ export const sidelinks: SideLink[] = [
         },
       ],
     },
-    {
-      title: 'Analysis',
-      label: '',
-      href: '/analysis',
-      icon: <ChartNoAxesColumnIncreasing size={18} />,
-    },
-    {
-      title: 'Settings',
-      label: '',
-      href: '/settings',
-      icon: <SettingsIcon size={18} />,
-    },
+    // {
+    //   title: 'Analysis',
+    //   label: '',
+    //   href: '/analysis',
+    //   icon: <ChartNoAxesColumnIncreasing size={18} />,
+    // },
+    // {
+    //   title: 'Settings',
+    //   label: '',
+    //   href: '/settings',
+    //   icon: <SettingsIcon size={18} />,
+    // },
   ]
