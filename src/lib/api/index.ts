@@ -251,6 +251,18 @@ export interface Analytics {
   bytesToday: number;
   bytesInLast7Days: number;
   bytesInLast30Days: number;
+
+  newOrcidUsersToday: number | string;
+  newOrcidUsersInLast7Days: number | string;
+  newOrcidUsersInLast30Days: number | string;
+
+  activeOrcidUsersToday: number;
+  activeOrcidUsersInLast7Days: number;
+  activeOrcidUsersInLast30Days: number;
+
+  allUsers: number;
+  allOrcidUsers: number;
+  allExternalUsers: number;
 }
 
 export const getAnalytics = queryOptions({

@@ -1,16 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getAnalytics } from "@/lib/api";
 import { Activity, Box, HardDrive, LoaderIcon, UsersRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getHeaders } from "@/lib/utils";
+import { Overview } from "./Overview";
+import IconOrcid from "@/lib/icons/a-icon-orcid.svg";
+import { ReactElement } from "react";
 
 function IncomingFeature() {
   const router = useRouter();
@@ -36,7 +35,10 @@ function IncomingFeature() {
 
 export default function Dashboard() {
   const downloadReport = async () => {
-    const response = await fetch("/api/download", { credentials: "include", headers: getHeaders() });
+    const response = await fetch("/api/download", {
+      credentials: "include",
+      headers: getHeaders(),
+    });
     const blob = await response.blob();
     const fileURL = URL.createObjectURL(blob);
 
@@ -52,7 +54,9 @@ export default function Dashboard() {
     <>
       <div className="flex flex-col space-y-4 w-full">
         {/* <h1 className="text-2xl font-bold tracking-tight"></h1> */}
-        <Button className="place-content-end self-end" onClick={downloadReport}>Download</Button>
+        <Button className="place-content-end self-end" onClick={downloadReport}>
+          Download
+        </Button>
         <div className="flex w-full">
           <Analytics />
         </div>
@@ -73,12 +77,18 @@ const MetricCard = ({
   value,
   description,
   icon = "users",
+  subValue,
+  subIcon,
+  sub = false,
 }: {
   header: string;
   value: string;
   description: string;
   activity?: boolean;
   icon?: keyof typeof metricIcons;
+  sub?: boolean;
+  subValue?: string | number;
+  subIcon?: ReactElement;
 }) => {
   const Icons = metricIcons[icon];
   return (
@@ -88,7 +98,17 @@ const MetricCard = ({
         <Icons className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="flex items-center justify-between">
+          <div className="text-2xl font-bold">{value}</div>
+          {sub ? (
+            <div className="flex items-center justify-end gap-2">
+              {/* <img src="/a-icon-orcid.svg" /> */}
+              {subIcon}
+              {/* <IconOrcid />  */}
+              <span className="">{subValue}</span>
+            </div>
+          ) : null}
+        </div>
         <p className="text-xs text-muted-foreground">{description}</p>
       </CardContent>
     </Card>
@@ -122,39 +142,96 @@ function Analytics() {
 
   return (
     <div className="w-full grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* new users */}
       <MetricCard
         header="New users"
         value={numberValue(analytics.newUsersToday)}
         description="Today"
+        sub={true}
+        subValue={analytics.newOrcidUsersToday}
+        subIcon={
+          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+        }
       />
       <MetricCard
         header="New users"
         value={numberValue(analytics.newUsersInLast7Days)}
         description="Last 7 days"
+        sub={true}
+        subValue={analytics.newOrcidUsersInLast7Days}
+        subIcon={
+          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+        }
       />
       <MetricCard
         header="New users"
         value={numberValue(analytics.newUsersInLast30Days)}
         description="Last 30 days"
+        sub={true}
+        subValue={analytics.newOrcidUsersInLast30Days}
+        subIcon={
+          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+        }
       />
+
+      {/* active users */}
       <MetricCard
         header="Active users"
         value={numberValue(analytics.activeUsersToday)}
         description="Today"
         icon="activity"
+        sub={true}
+        subValue={analytics.activeOrcidUsersToday}
+        subIcon={
+          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+        }
       />
       <MetricCard
         header="Active users"
         value={numberValue(analytics.activeUsersInLast7Days)}
         description="Last 7 days"
         icon="activity"
+        sub={true}
+        subValue={analytics.activeOrcidUsersInLast7Days}
+        subIcon={
+          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+        }
       />
       <MetricCard
         header="Active users"
         value={numberValue(analytics.activeUsersInLast30Days)}
         description="Last 30 days"
         icon="activity"
+        sub={true}
+        subValue={analytics.activeOrcidUsersInLast30Days}
+        subIcon={
+          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+        }
       />
+      
+      {/* All users */}
+      <MetricCard
+        header="All Users"
+        value={numberValue(analytics.allUsers)}
+        description="Platform"
+        sub={true}
+        subValue={analytics.allOrcidUsers}
+        subIcon={
+          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+        }
+      />
+      <MetricCard
+        header="All External Users"
+        value={numberValue(analytics.activeUsersInLast7Days)}
+        description="Non Desci users"
+      />
+      <MetricCard
+        header=""
+        value=""
+        description=""
+      />
+
+      {/* new nodes */}
       <MetricCard
         header="New Nodes"
         value={numberValue(analytics.newNodesToday)}
@@ -173,6 +250,8 @@ function Analytics() {
         description="Last 30 days"
         icon="nodes"
       />
+
+      {/* nodes views */}
       <MetricCard
         header="Node views"
         value={numberValue(analytics.nodeViewsToday)}
@@ -191,6 +270,8 @@ function Analytics() {
         description="Last 30 days"
         icon="nodes"
       />
+
+      {/* Data views */}
       <MetricCard
         header="Uploaded Data"
         value={`${byteValueNumberFormatter.format(analytics.bytesToday ?? 0)}`}
