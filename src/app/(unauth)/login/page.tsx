@@ -22,12 +22,12 @@ export default function Login() {
   console.log('[login]', { state })
 
   useEffect(() => {
-    if (state.user) {
-      console.log('[auth]', state.user);
-      localStorage.setItem(AUTH_COOKIE_FIELDNAME, state.user.token)
+    if (state?.user) {
+      // console.log('[auth]', state.user);
+      // localStorage.setItem(AUTH_COOKIE_FIELDNAME, state.user.token)
       router.refresh();
     }
-  }, [router, state.user])
+  }, [router, state?.user])
 
   return (
     <div className="container mx-auto max-w-md">

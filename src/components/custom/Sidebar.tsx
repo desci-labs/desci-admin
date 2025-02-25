@@ -19,7 +19,6 @@ export default function Sidebar() {
   return (
     <Layout fixed>
       <div className="flex flex-col space-y-2 h-full pb-4">
-        
         {/* Desci logo  */}
         <LayoutHeader
           sticky
@@ -57,8 +56,7 @@ export default function Sidebar() {
           )}
           onClick={() => {
             fetch("/api/logout", { method: "DELETE" }).then(() => {
-              window.location.reload();
-              // router.push("/login");
+              router.refresh();
             });
           }}
         >

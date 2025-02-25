@@ -292,6 +292,28 @@ export const getAnalytics = queryOptions({
   staleTime: 60 * 1000,
 });
 
+export const authUser = queryOptions({
+  queryKey: [tags.profile],
+  queryFn: async () => {
+    const response = await fetch(`${NODES_API_URL}/v1/auth/profile`, {
+      credentials: "include",
+    });
+    const json = (await response.json()) as {
+      userId: number;
+      email: string;
+        profile: {
+          name?: string;
+          googleScholarUrl: string;
+          orcid?: string;
+          // userOrganization: Organization[];
+          consent: boolean;
+          // notificationSettings: any;
+        };
+    };
+    return json || false;
+  },
+});
+
 export const validateAuth = queryOptions({
   queryKey: [],
   queryFn: async () => {
