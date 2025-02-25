@@ -265,6 +265,19 @@ export interface Analytics {
   allExternalUsers: number;
 }
 
+export interface AnalyticsUser {
+  id: number;
+  email: string;
+  orcid?: string;
+  publications?: number;
+  dateJoined?: string;
+}
+
+export interface AnalyticsOrcidUser extends AnalyticsUser {
+  publications?: number;
+  dateJoined?: string;
+}
+
 export const getAnalytics = queryOptions({
   queryKey: [tags.analytics],
   queryFn: async () => {

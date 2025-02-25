@@ -2,14 +2,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { getAnalytics } from "@/lib/api";
 import { Activity, Box, HardDrive, LoaderIcon, UsersRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getHeaders } from "@/lib/utils";
-import { Overview } from "./Overview";
-import IconOrcid from "@/lib/icons/a-icon-orcid.svg";
 import { ReactElement } from "react";
+import { useGetModal, useSetModal } from "@/contexts/ModalContext";
+import UserStatsModal from "./UserStatsModal";
 
 function IncomingFeature() {
   const router = useRouter();
@@ -64,6 +64,7 @@ export default function Dashboard() {
     </>
   );
 }
+const orcidIcon = <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />;
 
 const metricIcons = {
   activity: Activity,
@@ -80,6 +81,7 @@ const MetricCard = ({
   subValue,
   subIcon,
   sub = false,
+  onClick,
 }: {
   header: string;
   value: string;
@@ -89,10 +91,14 @@ const MetricCard = ({
   sub?: boolean;
   subValue?: string | number;
   subIcon?: ReactElement;
+  onClick?: () => void;
 }) => {
   const Icons = metricIcons[icon];
   return (
-    <Card className="group hover:border-btn-surface-primary-focus duration-150">
+    <Card
+      className="group hover:border-btn-surface-primary-focus duration-150 cursor-pointer"
+      onClick={onClick}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{header}</CardTitle>
         <Icons className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
@@ -123,7 +129,11 @@ function Analytics() {
     error,
     isError,
   } = useSuspenseQuery(getAnalytics);
-  // console.log({ analytics, isLoading, isError, error });
+  
+  const { active } = useGetModal();
+  const router = useRouter();
+  const { showModal, closeModal } = useSetModal();
+
   const byteValueNumberFormatter = Intl.NumberFormat("en", {
     notation: "compact",
     style: "unit",
@@ -150,7 +160,10 @@ function Analytics() {
         sub={true}
         subValue={analytics.newOrcidUsersToday}
         subIcon={
-          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+          orcidIcon
+        }
+        onClick={() =>
+          showModal("new-users", { filter: { unit: "days", value: 1 } })
         }
       />
       <MetricCard
@@ -160,7 +173,10 @@ function Analytics() {
         sub={true}
         subValue={analytics.newOrcidUsersInLast7Days}
         subIcon={
-          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+          orcidIcon
+        }
+        onClick={() =>
+          showModal("new-users", { filter: { unit: "days", value: 7 } })
         }
       />
       <MetricCard
@@ -170,7 +186,10 @@ function Analytics() {
         sub={true}
         subValue={analytics.newOrcidUsersInLast30Days}
         subIcon={
-          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+          orcidIcon
+        }
+        onClick={() =>
+          showModal("new-users", { filter: { unit: "days", value: 30 } })
         }
       />
 
@@ -183,7 +202,10 @@ function Analytics() {
         sub={true}
         subValue={analytics.activeOrcidUsersToday}
         subIcon={
-          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+          orcidIcon
+        }
+        onClick={() =>
+          showModal("active-users", { filter: { unit: "days", value: 1 } })
         }
       />
       <MetricCard
@@ -194,7 +216,10 @@ function Analytics() {
         sub={true}
         subValue={analytics.activeOrcidUsersInLast7Days}
         subIcon={
-          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+          orcidIcon
+        }
+        onClick={() =>
+          showModal("active-users", { filter: { unit: "days", value: 7 } })
         }
       />
       <MetricCard
@@ -205,10 +230,13 @@ function Analytics() {
         sub={true}
         subValue={analytics.activeOrcidUsersInLast30Days}
         subIcon={
-          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+          orcidIcon
+        }
+        onClick={() =>
+          showModal("active-users", { filter: { unit: "days", value: 30 } })
         }
       />
-      
+
       {/* All users */}
       <MetricCard
         header="All Users"
@@ -217,19 +245,16 @@ function Analytics() {
         sub={true}
         subValue={analytics.allOrcidUsers}
         subIcon={
-          <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+          orcidIcon
         }
+        onClick={() => router.push('/users')}
       />
       <MetricCard
         header="All External Users"
         value={numberValue(analytics.activeUsersInLast7Days)}
         description="Non Desci users"
       />
-      <MetricCard
-        header=""
-        value=""
-        description=""
-      />
+      <MetricCard header="" value="" description="" />
 
       {/* new nodes */}
       <MetricCard
@@ -294,6 +319,13 @@ function Analytics() {
         description="Last 30 days"
         icon="data"
       />
+
+      {active && <UserStatsModal
+        open={!!active}
+        onOpenChange={(open) => {
+          if (!open) closeModal();
+        }}
+      />}
     </div>
   );
 }
