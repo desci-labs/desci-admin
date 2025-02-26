@@ -13,9 +13,10 @@ export async function DELETE(_request: Request) {
       },
     });
 
+    cookies().delete(AUTH_COOKIE_FIELDNAME);
     if (logoutRes.ok && logoutRes.status === 200) {
       for (const field of Array.from(cookies().getAll())) {
-        cookies().delete(field.name)
+        cookies().delete(field.name);
       }
     }
     return NextResponse.json({ ok: logoutRes.ok });
