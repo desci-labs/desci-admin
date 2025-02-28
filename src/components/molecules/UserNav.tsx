@@ -13,6 +13,7 @@ import {
 import { authUser } from "@/lib/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function UserNav() {
   const { data: user } = useSuspenseQuery(authUser);
@@ -46,6 +47,7 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
+            toast.info('Signing out...')
             fetch("/api/logout", { method: "DELETE" }).then(() => {
               router.refresh();
             });

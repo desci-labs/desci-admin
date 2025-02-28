@@ -10,6 +10,7 @@ import NodesLogo from "@/components/atoms/NodesLogo";
 import { useGetLayout, useSetLayout } from "@/contexts/resizeable-panels";
 import { LogOutIcon } from "lucide-react";
 import { Layout, LayoutHeader } from "./Layout";
+import { toast } from "sonner";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -55,6 +56,7 @@ export default function Sidebar() {
             isOpen ? "m-4 bg-red-500/20" : "m-.5 bg-transparent shadow-none"
           )}
           onClick={() => {
+            toast.info('Signing out...')
             fetch("/api/logout", { method: "DELETE" }).then(() => {
               router.refresh();
             });

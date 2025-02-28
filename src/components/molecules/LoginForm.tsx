@@ -3,15 +3,18 @@ import { Button } from "@/components/ui/button";
 import { useFormStatus } from "react-dom";
 import { HTMLProps, useMemo } from "react";
 import { Loader, Loader2Icon, LoaderIcon } from "lucide-react";
+import { toast } from "sonner";
 
 export default function LoginForm({
   login,
   email,
   message,
+  disabled
 }: {
   login: (formData: FormData) => void;
   email: string;
   message?: string;
+  disabled: boolean
 }) {
   const pending = false;
   return (
@@ -66,7 +69,7 @@ export default function LoginForm({
         )}
       </div>
       {message && <p className="text-sm text-red-500 mb-2">{message}</p>}
-      <SubmitButton email={email} />
+      <SubmitButton disabled={disabled} email={email} />
     </form>
   );
 }
@@ -87,7 +90,7 @@ const SubmitButton = (
       className="self-stretch font-semibold text-lg h-12 bg-btn-surface-primary-neutral border-btn-border-primary-focus hover:bg-btn-surface-primary-focus "
       variant="outline"
       type="submit"
-      disabled={pending}
+      disabled={pending || props.disabled}
     >
       <span className="mr-1">{message} </span>{" "}
       {pending && <Loader2Icon className="size-5 animate-spin" />}

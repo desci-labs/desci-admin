@@ -7,6 +7,7 @@ import { login, LoginUserData } from "@/app/actions";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AUTH_COOKIE_FIELDNAME } from "@/lib/constants";
+import { toast } from "sonner";
 
 const initialState: {
   email?: string;
@@ -23,8 +24,7 @@ export default function Login() {
 
   useEffect(() => {
     if (state?.user) {
-      // console.log('[auth]', state.user);
-      // localStorage.setItem(AUTH_COOKIE_FIELDNAME, state.user.token)
+      toast.success('Login in successful 🎉')
       router.refresh();
     }
   }, [router, state?.user])
@@ -37,8 +37,9 @@ export default function Login() {
         </h1>
         <LoginForm
           login={formAction}
-          email={state.email}
-          message={state.error}
+          email={state?.email}
+          message={state?.error}
+          disabled={state?.user !== undefined}
         />
       </div>
     </div>
