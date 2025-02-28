@@ -28,37 +28,37 @@ export async function login(prevState: any, formData: FormData) {
     // Set cookie
     cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
       path: "/",
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 1 month
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
       httpOnly: true,
       secure: process.env.NEXT_ENV === "production",
       domain: process.env.NODE_ENV === "production" ? ".desci.com" : undefined,
     });
 
-    if (
-      AUTH_COOKIE_FIELDNAME === "auth-dev" &&
-      process.env.NEXT_ENV === "development"
-    ) {
-      console.log('[cookie]', AUTH_COOKIE_FIELDNAME, process.env.NEXT_ENV)
-      cookies().set('auth', response.user.token, {
-        path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 1 month
-        httpOnly: true,
-        secure: true,
-        // domain: '.desci.com',
-      });
-    }
+    // if (
+    //   AUTH_COOKIE_FIELDNAME === "auth-dev" &&
+    //   process.env.NEXT_ENV === "development"
+    // ) {
+    //   console.log('[cookie]', AUTH_COOKIE_FIELDNAME, process.env.NEXT_ENV)
+    //   cookies().set('auth', response.user.token, {
+    //     path: "/",
+    //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 2 hours
+    //     httpOnly: true,
+    //     secure: true,
+    //     // domain: '.desci.com',
+    //   });
+    // }
 
     if (process.env.NEXT_ENV === "production") {
       cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 1 month
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
         httpOnly: true,
         secure: true,
         domain: "nodes.desci.com",
       });
       cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 1 month
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
         httpOnly: true,
         secure: true,
         domain: ".desci.com",
