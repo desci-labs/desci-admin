@@ -7,7 +7,7 @@ import { getAnalytics } from "@/lib/api";
 import { Activity, Box, HardDrive, LoaderIcon, UsersRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getHeaders } from "@/lib/utils";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { useGetModal, useSetModal } from "@/contexts/ModalContext";
 import UserStatsModal from "./UserStatsModal";
 
@@ -34,28 +34,39 @@ function IncomingFeature() {
 }
 
 export default function Dashboard() {
+  const [isDownloading, setIsDownloading] = useState(false);
   const downloadReport = async () => {
-    const response = await fetch("/api/download", {
-      credentials: "include",
-      headers: getHeaders(),
-    });
-    const blob = await response.blob();
-    const fileURL = URL.createObjectURL(blob);
+    try {
+      setIsDownloading(true);
+      const response = await fetch("/api/download", {
+        credentials: "include",
+        headers: getHeaders(),
+      });
+      const blob = await response.blob();
+      const fileURL = URL.createObjectURL(blob);
 
-    const downloadLink = document.createElement("a");
-    downloadLink.href = fileURL;
-    downloadLink.download = "report.csv";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    URL.revokeObjectURL(fileURL);
+      const downloadLink = document.createElement("a");
+      downloadLink.href = fileURL;
+      downloadLink.download = "report.csv";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      URL.revokeObjectURL(fileURL);
+    } catch (err) {
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
     <>
       <div className="flex flex-col space-y-4 w-full">
         {/* <h1 className="text-2xl font-bold tracking-tight"></h1> */}
-        <Button className="place-content-end self-end" onClick={downloadReport}>
-          Download
+        <Button
+          disabled={isDownloading}
+          className="place-content-end self-end"
+          onClick={downloadReport}
+        >
+          {isDownloading ? "downlading..." : "Download Report"}
         </Button>
         <div className="flex w-full">
           <Analytics />
@@ -64,7 +75,9 @@ export default function Dashboard() {
     </>
   );
 }
-const orcidIcon = <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />;
+const orcidIcon = (
+  <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
+);
 
 const metricIcons = {
   activity: Activity,
@@ -129,7 +142,7 @@ function Analytics() {
     error,
     isError,
   } = useSuspenseQuery(getAnalytics);
-  
+
   const { active } = useGetModal();
   const router = useRouter();
   const { showModal, closeModal } = useSetModal();
@@ -159,9 +172,7 @@ function Analytics() {
         description="Today"
         sub={true}
         subValue={analytics.newOrcidUsersToday}
-        subIcon={
-          orcidIcon
-        }
+        subIcon={orcidIcon}
         onClick={() =>
           showModal("new-users", { filter: { unit: "days", value: 1 } })
         }
@@ -172,9 +183,7 @@ function Analytics() {
         description="Last 7 days"
         sub={true}
         subValue={analytics.newOrcidUsersInLast7Days}
-        subIcon={
-          orcidIcon
-        }
+        subIcon={orcidIcon}
         onClick={() =>
           showModal("new-users", { filter: { unit: "days", value: 7 } })
         }
@@ -185,9 +194,7 @@ function Analytics() {
         description="Last 30 days"
         sub={true}
         subValue={analytics.newOrcidUsersInLast30Days}
-        subIcon={
-          orcidIcon
-        }
+        subIcon={orcidIcon}
         onClick={() =>
           showModal("new-users", { filter: { unit: "days", value: 30 } })
         }
@@ -201,9 +208,7 @@ function Analytics() {
         icon="activity"
         sub={true}
         subValue={analytics.activeOrcidUsersToday}
-        subIcon={
-          orcidIcon
-        }
+        subIcon={orcidIcon}
         onClick={() =>
           showModal("active-users", { filter: { unit: "days", value: 1 } })
         }
@@ -215,9 +220,7 @@ function Analytics() {
         icon="activity"
         sub={true}
         subValue={analytics.activeOrcidUsersInLast7Days}
-        subIcon={
-          orcidIcon
-        }
+        subIcon={orcidIcon}
         onClick={() =>
           showModal("active-users", { filter: { unit: "days", value: 7 } })
         }
@@ -229,9 +232,7 @@ function Analytics() {
         icon="activity"
         sub={true}
         subValue={analytics.activeOrcidUsersInLast30Days}
-        subIcon={
-          orcidIcon
-        }
+        subIcon={orcidIcon}
         onClick={() =>
           showModal("active-users", { filter: { unit: "days", value: 30 } })
         }
@@ -244,10 +245,8 @@ function Analytics() {
         description="Platform"
         sub={true}
         subValue={analytics.allOrcidUsers}
-        subIcon={
-          orcidIcon
-        }
-        onClick={() => router.push('/users')}
+        subIcon={orcidIcon}
+        onClick={() => router.push("/users")}
       />
       <MetricCard
         header="All External Users"
@@ -320,12 +319,14 @@ function Analytics() {
         icon="data"
       />
 
-      {active && <UserStatsModal
-        open={!!active}
-        onOpenChange={(open) => {
-          if (!open) closeModal();
-        }}
-      />}
+      {active && (
+        <UserStatsModal
+          open={!!active}
+          onOpenChange={(open) => {
+            if (!open) closeModal();
+          }}
+        />
+      )}
     </div>
   );
 }
