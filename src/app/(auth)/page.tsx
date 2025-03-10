@@ -1,11 +1,11 @@
 import ThemeSwitch from "@/components/atoms/ThemeSwitch";
 import { Layout, LayoutHeader, LayoutBody } from "@/components/custom/Layout";
-import Dashboard from "@/components/molecules/Dashboard";
+import Analysis from "@/components/molecules/Analysis";
 import { TopNav } from "@/components/molecules/TopNav";
 import { UserNav } from "@/components/molecules/UserNav";
 
 export default function Home() {
-  return <Dashboard />;
+  return <Analysis />;
 }
 
 const topNav = [
