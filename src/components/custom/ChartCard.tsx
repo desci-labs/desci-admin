@@ -1,26 +1,34 @@
 import { Badge } from "@/components/custom/Badge";
 import { LineChart } from "@/components/custom/LineChart";
-import { overviews } from "@/data/analysis-data";
-import { OverviewData } from "@/data/schema";
+import { AnalyticsData } from "@/data/schema";
 import { cn, formatters, getBadgeType, percentageFormatter } from "@/lib/utils";
 import {
   eachDayOfInterval,
+  eachWeekOfInterval,
+  eachMonthOfInterval,
+  eachYearOfInterval,
   formatDate,
   interval,
   isWithinInterval,
+  eachHourOfInterval,
 } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { getPeriod } from "@/lib/utils";
 import { PeriodValue } from "@/lib/chartUtils";
+import { useMemo } from "react";
 
 export type CardProps = {
-  title: keyof OverviewData;
+  categoryId: keyof AnalyticsData;
+  title: string;
   type: "currency" | "unit" | "data";
   selectedDates: DateRange | undefined;
   selectedPeriod: PeriodValue;
   isThumbnail?: boolean;
   xAxisLabel: string;
   yAxisLabel: string;
+  interval: "hourly" | "daily" | "weekly" | "monthly" | "yearly";
+  data: AnalyticsData[];
+  loading: boolean;
 };
 
 const formattingMap = {
@@ -30,6 +38,7 @@ const formattingMap = {
 };
 
 export function ChartCard({
+  categoryId,
   title,
   type,
   selectedDates,
@@ -37,16 +46,46 @@ export function ChartCard({
   isThumbnail,
   xAxisLabel,
   yAxisLabel,
+  interval: dataInterval,
+  data: overviews,
+  loading,
 }: CardProps) {
+console.log('[overview]', overviews)
   const formatter = formattingMap[type];
   const selectedDatesInterval =
     selectedDates?.from && selectedDates?.to
       ? interval(selectedDates.from, selectedDates.to)
       : null;
-  const allDatesInInterval =
-    selectedDates?.from && selectedDates?.to
-      ? eachDayOfInterval(interval(selectedDates.from, selectedDates.to))
-      : null;
+
+  const allDatesInInterval = useMemo(() => {
+    switch (dataInterval) {
+      case "hourly":
+        return selectedDates?.from && selectedDates?.to
+          ? eachHourOfInterval(interval(selectedDates.from, selectedDates.to))
+          : null;
+      case "daily":
+        return selectedDates?.from && selectedDates?.to
+          ? eachDayOfInterval(interval(selectedDates.from, selectedDates.to))
+          : null;
+      case "weekly":
+        return selectedDates?.from && selectedDates?.to
+          ? eachWeekOfInterval(interval(selectedDates.from, selectedDates.to))
+          : null;
+      case "monthly":
+        return selectedDates?.from && selectedDates?.to
+          ? eachMonthOfInterval(interval(selectedDates.from, selectedDates.to))
+          : null;
+      case "yearly":
+        return selectedDates?.from && selectedDates?.to
+          ? eachYearOfInterval(interval(selectedDates.from, selectedDates.to))
+          : null;
+      default:
+        return selectedDates?.from && selectedDates?.to
+          ? eachDayOfInterval(interval(selectedDates.from, selectedDates.to))
+          : null;
+    }
+  }, [dataInterval, selectedDates?.from, selectedDates?.to]);
+
   const prevDates = getPeriod(selectedDates);
 
   const prevDatesInterval =
@@ -56,6 +95,10 @@ export function ChartCard({
 
   const data = overviews
     .filter((overview) => {
+      console.log("[check interval]", {
+        isWithin: isWithinInterval(overview.date, selectedDatesInterval!),
+        overview,
+      });
       if (selectedDatesInterval) {
         return isWithinInterval(overview.date, selectedDatesInterval);
       }
@@ -76,17 +119,17 @@ export function ChartCard({
     ?.map((date, index) => {
       const overview = data[index];
       const prevOverview = prevData[index];
-      const value = (overview?.[title] as number) || null;
-      const previousValue = (prevOverview?.[title] as number) || null;
+      const value = (overview?.[categoryId] as number) || null;
+      const previousValue = (prevOverview?.[categoryId] as number) || null;
 
       return {
         title,
         date: date,
-        formattedDate: formatDate(date, "dd/MM/yyyy"),
+        formattedDate: formatDate(date, "dd MMM"),
         value,
         previousDate: prevOverview?.date,
         previousFormattedDate: prevOverview
-          ? formatDate(prevOverview.date, "dd/MM/yyyy")
+          ? formatDate(prevOverview.date, "dd MMM")
           : null,
         previousValue:
           selectedPeriod !== "no-comparison" ? previousValue : null,
@@ -109,6 +152,8 @@ export function ChartCard({
       ? (value - previousValue) / previousValue
       : 0;
 
+//   console.log("[categories]", { data, prevData, chartData });
+
   return (
     <div className={cn("transition")}>
       <div className="flex items-center justify-between gap-x-2">
@@ -118,7 +163,7 @@ export function ChartCard({
           </dt>
           {selectedPeriod !== "no-comparison" && (
             <Badge variant={getBadgeType(evolution)}>
-              {percentageFormatter(evolution)}
+              {percentageFormatter(Number.isNaN(evolution) ? 0 : evolution)}
             </Badge>
           )}
         </div>
@@ -134,19 +179,20 @@ export function ChartCard({
         )}
       </div>
       <LineChart
-        className="mt-6 h-52"
+        className="mt-6 h-52 relative"
         data={chartData || []}
         index="formattedDate"
         colors={["indigo", "gray"]}
-        // startEndOnly={false}
+        startEndOnly={false}
         valueFormatter={(value) => formatter(value as number)}
         showYAxis={true}
         showLegend={true}
-        xAxisLabel={xAxisLabel}
+        xAxisLabel=""
         yAxisLabel={yAxisLabel}
         categories={categories}
         showTooltip={isThumbnail ? false : true}
         autoMinValue
+        loading={loading}
         // onValueChange={}
       />
     </div>

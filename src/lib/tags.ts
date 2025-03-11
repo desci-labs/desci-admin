@@ -5,4 +5,5 @@ export enum tags {
     profile = 'profile',
     usersAnalytics = 'users-analytics',
     analytics = 'analytics',
+    analyticsChartData = 'analytics-chart-data',
 }

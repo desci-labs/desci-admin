@@ -3,6 +3,10 @@ import { tags } from "../tags";
 import { NODES_API_URL } from "../config";
 import { AUTH_COOKIE_FIELDNAME } from "../constants";
 import { getHeaders } from "../utils";
+import { overviews } from "@/data/analysis-data";
+import { DateRange } from "react-day-picker";
+import { AnalyticsData } from "@/data/schema";
+
 // import { cookies } from "next/headers";
 
 export interface Community {
@@ -292,6 +296,19 @@ export const getAnalytics = queryOptions({
   staleTime: 60 * 1000,
 });
 
+// export const getAnalyticsData = queryOptions({
+//   queryKey: [tags.analyticsChartData],
+//   queryFn: async (range: DateRange) => {
+//     // const response = await fetch(`${NODES_API_URL}/v1/admin/analyticsChartData`, {
+//     //   credentials: "include",
+//     // });
+//     // const json = (await response.json()) as Analytics;
+//     // return json || null;
+//     await new Promise((resolve) => setTimeout(resolve, 3000));
+//     return overviews;
+//   },
+// });
+
 export const authUser = queryOptions({
   queryKey: [tags.profile],
   queryFn: async () => {
@@ -301,14 +318,14 @@ export const authUser = queryOptions({
     const json = (await response.json()) as {
       userId: number;
       email: string;
-        profile: {
-          name?: string;
-          googleScholarUrl: string;
-          orcid?: string;
-          // userOrganization: Organization[];
-          consent: boolean;
-          // notificationSettings: any;
-        };
+      profile: {
+        name?: string;
+        googleScholarUrl: string;
+        orcid?: string;
+        // userOrganization: Organization[];
+        consent: boolean;
+        // notificationSettings: any;
+      };
     };
     return json || false;
   },
@@ -385,4 +402,23 @@ export async function searchUsersProfiles({ name }: { name?: string }) {
     : [];
 
   return users;
+}
+
+export async function getAnalyticsData(range: DateRange) {
+  const response = await fetch(
+    `${NODES_API_URL}/v1/admin/analytics/query?from=${range.from}&to=${range.to}`,
+    {
+      credentials: "include",
+      mode: "cors",
+    }
+  );
+
+  const data = response.ok
+    ? ((await response.json()) as {
+        data: { analytics: AnalyticsData[]; meta: any };
+      }) ?? []
+    : undefined;
+
+  console.log("[data]", data?.data.analytics);
+  return data?.data.analytics;
 }

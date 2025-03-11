@@ -7,15 +7,15 @@ export type Usage = {
   lastEdited: string;
 };
 
-export type OverviewData = {
+export type AnalyticsData = {
   date: string;
-  "New nodes": number;
-  "Published nodes": number;
-  "Node views": number;
-  'Uploaded data': number;
+  "newNodes": number;
+  "publishedNodes": number;
+  "nodeViews": number;
+  'bytes': number;
   "Downloaded data": number;
-  "New users": number;
-  "New orcid users": number;
-  'Active users': number;
-  'Active orcid users': number;
+  "newUsers": number;
+  "newOrcidUsers": number;
+  'activeUsers': number;
+  'activeOrcidUsers': number;
 };
