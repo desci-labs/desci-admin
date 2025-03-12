@@ -31,6 +31,7 @@ import { formatDistanceToNow, format } from "date-fns";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { Skeleton } from "../ui/skeleton";
+import Image from "next/image";
 
 interface Filters {
   email: string;
@@ -84,10 +85,12 @@ const UserTable = ({
           <TableHead>
             <div className="space-y-2">
               <p className="flex items-center gap-2">
-                <img
+                <Image
                   src="/a-icon-orcid.svg"
                   className="w-5 h-5"
                   alt="orcid icon"
+                  width={10}
+                  height={10}
                 />
                 <span>ORCID</span>
               </p>

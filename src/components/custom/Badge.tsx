@@ -42,7 +42,7 @@ interface BadgeProps
   extends React.ComponentPropsWithoutRef<"span">,
     VariantProps<typeof badgeVariants> {}
 
-const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
+export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant, ...props }: BadgeProps, forwardedRef) => {
     return (
       <span
@@ -56,4 +56,4 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
 Badge.displayName = "Badge"
 
-export { Badge, badgeVariants, type BadgeProps }
+// export { Badge, badgeVariants, type BadgeProps }
