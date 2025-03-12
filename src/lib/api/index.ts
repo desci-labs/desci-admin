@@ -404,9 +404,9 @@ export async function searchUsersProfiles({ name }: { name?: string }) {
   return users;
 }
 
-export async function getAnalyticsData(range: DateRange) {
+export async function getAnalyticsData(range: DateRange, interval: string) {
   const response = await fetch(
-    `${NODES_API_URL}/v1/admin/analytics/query?from=${range.from}&to=${range.to}`,
+    `${NODES_API_URL}/v1/admin/analytics/query?from=${range.from}&to=${range.to}&interval=${interval}`,
     {
       credentials: "include",
       mode: "cors",

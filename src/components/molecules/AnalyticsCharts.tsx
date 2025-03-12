@@ -104,7 +104,13 @@ type Interval = "daily" | "weekly" | "monthly" | "yearly";
 const overviewsDates = overviews.map((item) => toDate(item.date).getTime());
 const maxDate = new Date(); // toDate(Math.max(...overviewsDates));
 
-export default function AnalyticsCharts() {
+export default function AnalyticsCharts(props: {
+  onQueryChange: (props: {
+    from: string;
+    to: string;
+    interval?: string;
+  }) => void;
+}) {
   const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
     from: subDays(maxDate, 30),
     to: maxDate,
@@ -118,8 +124,8 @@ export default function AnalyticsCharts() {
     error,
     isError,
   } = useQuery({
-    queryKey: [tags.analyticsChartData, selectedDates?.from, selectedDates?.to],
-    queryFn: () => getAnalyticsData(selectedDates!),
+    queryKey: [tags.analyticsChartData, selectedDates?.from, selectedDates?.to, interval],
+    queryFn: () => getAnalyticsData(selectedDates!, interval),
   });
 
   const lastDataRef = useRef<AnalyticsData[]>([]);
@@ -129,6 +135,15 @@ export default function AnalyticsCharts() {
       lastDataRef.current = data;
     }
   }, [isFetching, data]);
+
+  useEffect(() => {
+    if (selectedDates?.from && selectedDates?.to)
+      props.onQueryChange({
+        from: selectedDates.from.toISOString(),
+        to: selectedDates.to.toISOString(),
+        interval,
+      });
+  }, [selectedDates?.from, selectedDates?.to, interval]);
 
   return (
     <section aria-labelledby="analytics-charts">
