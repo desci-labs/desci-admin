@@ -50,7 +50,6 @@ export function ChartCard({
   data: overviews,
   loading,
 }: CardProps) {
-console.log('[overview]', overviews)
   const formatter = formattingMap[type];
   const selectedDatesInterval =
     selectedDates?.from && selectedDates?.to
@@ -95,10 +94,10 @@ console.log('[overview]', overviews)
 
   const data = overviews
     .filter((overview) => {
-      console.log("[check interval]", {
-        isWithin: isWithinInterval(overview.date, selectedDatesInterval!),
-        overview,
-      });
+    //   console.log("[check interval]", {
+    //     isWithin: isWithinInterval(overview.date, selectedDatesInterval!),
+    //     overview,
+    //   });
       if (selectedDatesInterval) {
         return isWithinInterval(overview.date, selectedDatesInterval);
       }

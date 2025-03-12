@@ -17,7 +17,7 @@ export function Filterbar({
   onDatesChange,
 }: FilterbarProps) {
   return (
-    <div className="w-full sm:flex sm:items-center sm:gap-2">
+    <div className="sm:flex sm:items-center sm:gap-2">
       <DateRangePicker
         value={selectedDates}
         onChange={onDatesChange}

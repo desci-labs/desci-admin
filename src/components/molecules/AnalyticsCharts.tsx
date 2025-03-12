@@ -2,6 +2,16 @@ import { overviews } from "@/data/analysis-data";
 import { AnalyticsData } from "@/data/schema";
 import { subDays, toDate } from "date-fns";
 import { Filterbar } from "./DateFilterbar";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { DateRange } from "react-day-picker";
 import { useEffect, useRef, useState } from "react";
 import { ChartCard } from "../custom/ChartCard";
@@ -52,13 +62,13 @@ const categories: {
     xAxisLabel: "Date",
     yAxisLabel: "Nodes",
   },
-//   {
-//     id: "publishedNodes",
-//     title: "Published nodes",
-//     type: "unit",
-//     xAxisLabel: "Date",
-//     yAxisLabel: "Nodes",
-//   },
+  //   {
+  //     id: "publishedNodes",
+  //     title: "Published nodes",
+  //     type: "unit",
+  //     xAxisLabel: "Date",
+  //     yAxisLabel: "Nodes",
+  //   },
   {
     id: "nodeViews",
     title: "Node views",
@@ -89,6 +99,8 @@ export type KpiEntry = {
   unit?: string;
 };
 
+type Interval = "daily" | "weekly" | "monthly" | "yearly";
+
 const overviewsDates = overviews.map((item) => toDate(item.date).getTime());
 const maxDate = new Date(); // toDate(Math.max(...overviewsDates));
 
@@ -97,6 +109,7 @@ export default function AnalyticsCharts() {
     from: subDays(maxDate, 30),
     to: maxDate,
   });
+  const [interval, setInterval] = useState<Interval>("daily");
 
   const {
     data = [],
@@ -119,20 +132,37 @@ export default function AnalyticsCharts() {
 
   return (
     <section aria-labelledby="analytics-charts">
-      <div className="sticky top-16 z-20 flex items-center justify-between border-b border-gray-200 bg-white pb-4 pt-4 sm:pt-6 lg:top-0 lg:mx-0 lg:px-0 lg:pt-8 dark:border-gray-800 dark:bg-gray-950">
+      <div className="sticky top-16 z-20 flex items-center justify-between border-b border-gray-200 pb-4 pt-4 sm:pt-6 lg:top-0 lg:mx-0 lg:px-0 lg:pt-8 dark:border-gray-800 ">
         <h1
           id="usage-overview"
           className="scroll-mt-8 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50"
         >
           Analytic Charts
         </h1>
-        <div className="sticky top-16 z-20 flex items-center justify-between ">
+        <div className="flex items-center justify-end space-x-4">
           <Filterbar
             maxDate={maxDate}
             minDate={new Date(2023, 0, 1)}
             selectedDates={selectedDates}
             onDatesChange={(dates) => setSelectedDates(dates)}
           />
+          <Select
+            defaultValue={interval}
+            onValueChange={(interval) => setInterval(interval as Interval)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select Interval" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {/* <SelectLabel>Select Interval</SelectLabel> */}
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
+                <SelectItem value="yearly">Yearly</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -146,7 +176,7 @@ export default function AnalyticsCharts() {
             <ChartCard
               categoryId={category.id}
               loading={isLoading || isFetching}
-              interval="daily"
+              interval={interval}
               key={category.title}
               title={category.title}
               type={category.type}
