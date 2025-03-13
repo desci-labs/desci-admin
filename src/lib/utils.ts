@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
-import { subYears } from "date-fns";
+import { differenceInDays, subDays, subYears } from "date-fns";
 import { twMerge } from "tailwind-merge";
 import { DateRange } from "react-day-picker";
 import { AUTH_COOKIE_FIELDNAME } from "./constants";
@@ -105,15 +105,16 @@ export const getPeriod = (
   if (!dateRange) return undefined;
   const from = dateRange.from;
   const to = dateRange.to;
-  let lastYearFrom;
-  let lastYearTo;
+  let lastPeriodFrom;
+  let lastPeriodTo;
+  let diffInDays = differenceInDays(to!, from!);
   if (from) {
-    lastYearFrom = subYears(from, 1);
+    lastPeriodFrom = subDays(from, diffInDays);
   }
   if (to) {
-    lastYearTo = subYears(to, 1);
+    lastPeriodTo = subDays(to, diffInDays + 1);
   }
-  return { from: lastYearFrom, to: lastYearTo };
+  return { from: lastPeriodFrom, to: lastPeriodTo };
 };
 
 export const getBadgeType = (value: number) => {

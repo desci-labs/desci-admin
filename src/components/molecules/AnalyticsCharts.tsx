@@ -196,7 +196,7 @@ export default function AnalyticsCharts(props: {
               title={category.title}
               type={category.type}
               selectedDates={selectedDates}
-              selectedPeriod="last-year"
+              selectedPeriod="previous-period"
               xAxisLabel={category.xAxisLabel}
               yAxisLabel={category.yAxisLabel}
               data={isFetching ? lastDataRef.current : data}

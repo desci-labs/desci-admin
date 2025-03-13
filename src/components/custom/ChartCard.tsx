@@ -86,7 +86,6 @@ export function ChartCard({
   }, [dataInterval, selectedDates?.from, selectedDates?.to]);
 
   const prevDates = getPeriod(selectedDates);
-
   const prevDatesInterval =
     prevDates?.from && prevDates?.to
       ? interval(prevDates.from, prevDates.to)
@@ -94,10 +93,6 @@ export function ChartCard({
 
   const data = overviews
     .filter((overview) => {
-    //   console.log("[check interval]", {
-    //     isWithin: isWithinInterval(overview.date, selectedDatesInterval!),
-    //     overview,
-    //   });
       if (selectedDatesInterval) {
         return isWithinInterval(overview.date, selectedDatesInterval);
       }
@@ -151,7 +146,7 @@ export function ChartCard({
       ? (value - previousValue) / previousValue
       : 0;
 
-//   console.log("[categories]", { data, prevData, chartData });
+  console.log("[categories]", { data, prevData, chartData });
 
   return (
     <div className={cn("transition")}>
