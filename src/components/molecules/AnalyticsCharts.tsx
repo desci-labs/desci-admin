@@ -62,13 +62,13 @@ const categories: {
     xAxisLabel: "Date",
     yAxisLabel: "Nodes",
   },
-  //   {
-  //     id: "publishedNodes",
-  //     title: "Published nodes",
-  //     type: "unit",
-  //     xAxisLabel: "Date",
-  //     yAxisLabel: "Nodes",
-  //   },
+  {
+    id: "publishedNodes",
+    title: "Published nodes",
+    type: "unit",
+    xAxisLabel: "Date",
+    yAxisLabel: "Nodes",
+  },
   {
     id: "nodeViews",
     title: "Node views",
@@ -124,7 +124,12 @@ export default function AnalyticsCharts(props: {
     error,
     isError,
   } = useQuery({
-    queryKey: [tags.analyticsChartData, selectedDates?.from, selectedDates?.to, interval],
+    queryKey: [
+      tags.analyticsChartData,
+      selectedDates?.from,
+      selectedDates?.to,
+      interval,
+    ],
     queryFn: () => getAnalyticsData(selectedDates!, interval),
   });
 
@@ -143,6 +148,7 @@ export default function AnalyticsCharts(props: {
         to: selectedDates.to.toISOString(),
         interval,
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDates?.from, selectedDates?.to, interval]);
 
   return (
