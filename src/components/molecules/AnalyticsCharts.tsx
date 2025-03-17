@@ -1,6 +1,6 @@
 import { overviews } from "@/data/analysis-data";
 import { AnalyticsData } from "@/data/schema";
-import { subDays, toDate } from "date-fns";
+import { formatDate, subDays, toDate } from "date-fns";
 import { Filterbar } from "./DateFilterbar";
 import {
   Select,
@@ -15,10 +15,11 @@ import {
 import { DateRange } from "react-day-picker";
 import { useEffect, useRef, useState } from "react";
 import { ChartCard } from "../custom/ChartCard";
-import { cn } from "@/lib/utils";
+import { cn, getPeriod } from "@/lib/utils";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { getAnalyticsData } from "@/lib/api";
 import { tags } from "@/lib/tags";
+import { PeriodValue } from "@/lib/chartUtils";
 
 const categories: {
   id: keyof AnalyticsData;
@@ -116,6 +117,8 @@ export default function AnalyticsCharts(props: {
     to: maxDate,
   });
   const [interval, setInterval] = useState<Interval>("weekly");
+  const [periodValue, setPeriodValue] =
+    useState<PeriodValue>("previous-period");
 
   const {
     data = [],
@@ -151,6 +154,8 @@ export default function AnalyticsCharts(props: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDates?.from, selectedDates?.to, interval]);
 
+  const prevDates = getPeriod(selectedDates);
+
   return (
     <section aria-labelledby="analytics-charts">
       <div className="sticky top-16 z-20 flex items-center justify-between border-b border-gray-200 pb-4 pt-4 sm:pt-6 lg:top-0 lg:mx-0 lg:px-0 lg:pt-8 dark:border-gray-800 ">
@@ -161,12 +166,38 @@ export default function AnalyticsCharts(props: {
           Analytic Charts
         </h1>
         <div className="flex items-center justify-end space-x-4">
-          <Filterbar
-            maxDate={maxDate}
-            minDate={new Date(2023, 0, 1)}
-            selectedDates={selectedDates}
-            onDatesChange={(dates) => setSelectedDates(dates)}
-          />
+          <div className="flex items-center justify-start gap-3">
+            <Filterbar
+              maxDate={maxDate}
+              minDate={new Date(2023, 0, 1)}
+              selectedDates={selectedDates}
+              onDatesChange={(dates) => setSelectedDates(dates)}
+            />
+            <p className="text-muted-foreground text-sm">Compared to</p>
+            <Select
+              defaultValue={periodValue}
+              onValueChange={(period) => setPeriodValue(period as PeriodValue)}
+            >
+              <SelectTrigger className="w-fit">
+                <SelectValue placeholder="Select Period" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem
+                  className="px-2"
+                  value="previous-period"
+                  title={`${formatDate(
+                    prevDates?.from ?? "",
+                    "MMM dd, yyyy"
+                  )} - ${formatDate(prevDates?.to ?? "", "MMM dd, yyyy")}`}
+                >
+                  Previous period
+                </SelectItem>
+                <SelectItem className="px-2" value="no-comparison">
+                  No comparison
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <Select
             defaultValue={interval}
             onValueChange={(interval) => setInterval(interval as Interval)}
@@ -202,7 +233,7 @@ export default function AnalyticsCharts(props: {
               title={category.title}
               type={category.type}
               selectedDates={selectedDates}
-              selectedPeriod="previous-period"
+              selectedPeriod={periodValue}
               xAxisLabel={category.xAxisLabel}
               yAxisLabel={category.yAxisLabel}
               data={isFetching ? lastDataRef.current : data}
