@@ -115,7 +115,7 @@ export default function AnalyticsCharts(props: {
     from: subDays(maxDate, 30),
     to: maxDate,
   });
-  const [interval, setInterval] = useState<Interval>("daily");
+  const [interval, setInterval] = useState<Interval>("weekly");
 
   const {
     data = [],
