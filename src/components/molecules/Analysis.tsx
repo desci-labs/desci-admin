@@ -8,7 +8,7 @@ import Overview from "./Overview";
 import AnalyticsCharts from "./AnalyticsCharts";
 
 export default function Dashboard() {
-  const [tab, setTab] = useState<"analytics" | "overview">("analytics");
+  const [tab, setTab] = useState<"analytics" | "overview">("overview");
   const [isDownloading, setIsDownloading] = useState(false);
   const [analyticsQuery, setAnalyticsQuery] = useState<{
     from: string;

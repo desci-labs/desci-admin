@@ -267,6 +267,10 @@ export interface Analytics {
   allUsers: number;
   allOrcidUsers: number;
   allExternalUsers: number;
+
+  publishedNodesToday: number;
+  publishedNodesInLast7Days: number;
+  publishedNodesInLast30Days: number;
 }
 
 export interface AnalyticsUser {

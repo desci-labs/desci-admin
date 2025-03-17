@@ -237,6 +237,26 @@ export default function Overview() {
         description="Last 30 days"
         icon="nodes"
       />
+     
+      {/* published nodes */}
+      <MetricCard
+        header="Published Nodes"
+        value={numberValue(analytics.publishedNodesToday)}
+        description="Today"
+        icon="nodes"
+      />
+      <MetricCard
+        header="Published Nodes"
+        value={numberValue(analytics.publishedNodesInLast7Days)}
+        description="Last 7 days"
+        icon="nodes"
+      />
+      <MetricCard
+        header="Published Nodes"
+        value={numberValue(analytics.publishedNodesInLast30Days)}
+        description="Last 30 days"
+        icon="nodes"
+      />
 
       {/* Data views */}
       <MetricCard
