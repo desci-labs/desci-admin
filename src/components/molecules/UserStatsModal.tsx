@@ -68,7 +68,7 @@ const UserTable = ({
   return (
     <Table>
       <TableHeader>
-        <TableRow>
+        <TableRow className="sticky top-0 bg-background">
           <TableHead>
             <div className="space-y-2 mb-1">
               <div>Email</div>
@@ -215,8 +215,8 @@ export default function UserStatsModal(props: DialogProps) {
 
   return (
     <Dialog {...props}>
-      <DialogContent className="w-full max-w-[900px]">
-        <DialogHeader>
+      <DialogContent className="w-full max-w-[900px] max-h-[95%] overflow-scroll">
+        <DialogHeader className="sticky top-0 bg-background">
           <DialogTitle>
             {active === "active-users" ? "Active Users" : "New Users"}
           </DialogTitle>
