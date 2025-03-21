@@ -28,7 +28,13 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Check, ChevronsUpDown, X, Settings } from "lucide-react";
-import { addMember, Community, removeMember, searchUsers, searchUsersProfiles } from "@/lib/api";
+import {
+  addMember,
+  Community,
+  removeMember,
+  searchUsers,
+  searchUsersProfiles,
+} from "@/lib/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/get-query-client";
 import { tags } from "@/lib/tags";
@@ -36,7 +42,9 @@ import { tags } from "@/lib/tags";
 type User = {
   id: number;
   name?: string;
-  organisations: string[];
+  organisations?: string[];
+  email: string;
+  isAdmin: boolean;
 };
 
 export default function CommunityMembers({
@@ -104,9 +112,10 @@ export default function CommunityMembers({
       { name: search.trim() },
       {
         onSuccess(data, variables, context) {
-          console.log("Results", { data, variables, context });
-          if (data?.length > 0)
-            setUsers(data.filter((user) => user.name !== null) ?? []);
+          console.log("Results", data?.data);
+          if (data?.data) {
+            setUsers(data.data.data.filter((user) => user.name !== null) ?? []);
+          }
         },
       }
     );
@@ -153,17 +162,20 @@ export default function CommunityMembers({
                       <div className="flex items-center">
                         <Avatar className="h-9 w-9">
                           <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                          <AvatarFallback>{getNameTag(user.name ?? '')}</AvatarFallback>
+                          <AvatarFallback>
+                            {getNameTag(user.name ?? "")}
+                          </AvatarFallback>
                         </Avatar>
                         <div className="ml-4 space-y-1">
                           <p className="text-sm font-medium leading-none">
                             {user.name}
                           </p>
-                          {user.organisations.length > 0 && (
-                          <p className="text-xs text-muted-foreground">
-                            {user.organisations[0]}
-                          </p>
-                          )}
+                          {user?.organisations &&
+                            user.organisations.length > 0 && (
+                              <p className="text-xs text-muted-foreground">
+                                {user.organisations[0]}
+                              </p>
+                            )}
                         </div>
                       </div>
                       {members.some((m) => m.userId === user.id) && (
@@ -186,7 +198,9 @@ export default function CommunityMembers({
             >
               <div className="flex items-center gap-4">
                 <Avatar>
-                  <AvatarFallback>{getNameTag(member?.user?.name)}</AvatarFallback>
+                  <AvatarFallback>
+                    {getNameTag(member?.user?.name)}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-medium">{member?.user?.name}</p>
@@ -215,7 +229,7 @@ export default function CommunityMembers({
 }
 
 const getNameTag = (name: string) => {
-  if (!name) return 'ANON'
+  if (!name) return "ANON";
   const split = name?.split(" ");
   return (split[0]?.[0] ?? "") + (split?.[1]?.[0] ?? "");
 };

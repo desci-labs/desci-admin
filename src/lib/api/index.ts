@@ -381,14 +381,21 @@ export const toggleUserRole = async ({ userId }: { userId: number }) => {
 };
 
 interface SearchResponse {
-  profiles: [
-    {
-      name: string;
-      id: number;
-      orcid: string; //"0009-0000-3482-812X"
-      organisations: string[];
-    }
-  ];
+    data: {
+      count: number;
+      cursor: number;
+      page: number;
+      data: [
+        {
+          name: string;
+          id: number;
+          email: string;
+          isAdmin: boolean;
+          orcid: string; //"0009-0000-3482-812X"
+          organisations?: string[];
+        }
+      ];
+    };
 }
 
 export async function searchUsersProfiles({ name }: { name?: string }) {
@@ -402,8 +409,8 @@ export async function searchUsersProfiles({ name }: { name?: string }) {
   );
 
   const users = response.ok
-    ? ((await response.json()) as SearchResponse)?.profiles ?? []
-    : [];
+    ? ((await response.json()) as SearchResponse) ?? []
+    : null;
 
   return users;
 }

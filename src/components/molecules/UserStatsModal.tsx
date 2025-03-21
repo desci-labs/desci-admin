@@ -20,7 +20,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { useGetModal } from "@/contexts/ModalContext";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Input } from "../ui/input";
 import { tags } from "@/lib/tags";
 import { NODES_API_URL } from "@/lib/config";
@@ -32,6 +32,7 @@ import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { Skeleton } from "../ui/skeleton";
 import Image from "next/image";
+import { getHeaders } from "@/lib/utils";
 
 interface Filters {
   email: string;
@@ -183,6 +184,8 @@ export default function UserStatsModal(props: DialogProps) {
   const value = extra?.filter.value;
   const orcid = extra?.filter.orcid;
 
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const { data: newUsers, isLoading } = useQuery({
     queryKey: [tags.users, `unit=${unit}&value=${value}`],
     queryFn: async ({}) => {
@@ -213,17 +216,54 @@ export default function UserStatsModal(props: DialogProps) {
     staleTime: 60 * 1000,
   });
 
+  const onHandleExport = useCallback(async () => {
+    try {
+      setIsDownloading(true);
+      const response = await fetch(
+        `/api/downloadAnalyticsUsers?resource=${active}&unit=${unit}&value=${value}`,
+        {
+          credentials: "include",
+          headers: getHeaders(),
+        }
+      );
+      const blob = await response.blob();
+      const fileURL = URL.createObjectURL(blob);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = fileURL;
+      downloadLink.download = `${active}.csv`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      URL.revokeObjectURL(fileURL);
+    } catch (err) {
+    } finally {
+      setIsDownloading(false);
+    }
+  }, [active, unit, value]);
+
   return (
     <Dialog {...props}>
       <DialogContent className="w-full max-w-[900px] max-h-[95%] overflow-scroll">
         <DialogHeader className="sticky top-0 bg-background">
-          <DialogTitle>
-            {active === "active-users" ? "Active Users" : "New Users"}
-          </DialogTitle>
-          <DialogDescription>
-            List of {active === "active-users" ? "Active Users" : "New Users"}{" "}
-            {` In ${value} ${unit}`}
-          </DialogDescription>
+          <div className="flex items-center justify-between mr-3">
+            <div>
+              <DialogTitle>
+                {active === "active-users" ? "Active Users" : "New Users"}
+              </DialogTitle>
+              <DialogDescription>
+                List of{" "}
+                {active === "active-users" ? "Active Users" : "New Users"}{" "}
+                {` In ${value} ${unit}`}
+              </DialogDescription>
+            </div>
+            <Button
+              disabled={isDownloading}
+              className="place-content-end self-end"
+              onClick={onHandleExport}
+            >
+              {isDownloading ? "exporting..." : "Export data"}
+            </Button>
+          </div>
         </DialogHeader>
         {active === "new-users" && (
           <UserTable
