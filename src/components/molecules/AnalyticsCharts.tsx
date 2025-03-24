@@ -84,12 +84,13 @@ const categories: {
     xAxisLabel: "Date",
     yAxisLabel: "Data Uploaded",
   },
-  //   {
-  //     title: "Downloaded data",
-  //     type: "data",
-  //     xAxisLabel: "Date",
-  //     yAxisLabel: "Data downloaded",
-  //   },
+  {
+    id: "downloadedBytes",
+    title: "Downloaded data",
+    type: "data",
+    xAxisLabel: "Date",
+    yAxisLabel: "Data downloaded",
+  },
 ];
 
 export type KpiEntry = {

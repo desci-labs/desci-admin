@@ -16,6 +16,7 @@ import { DateRange } from "react-day-picker";
 import { getPeriod } from "@/lib/utils";
 import { PeriodValue } from "@/lib/chartUtils";
 import { useMemo } from "react";
+import { SparkAreaChart } from "./SparkAreaChart";
 
 export type CardProps = {
   categoryId: keyof AnalyticsData;
@@ -113,9 +114,10 @@ export function ChartCard({
     ?.map((date, index) => {
       const overview = data[index];
       const prevOverview = prevData[index];
-      const value = (overview?.[categoryId] as number) || null;
-      const previousValue = (prevOverview?.[categoryId] as number) || null;
-
+      const value = (overview?.[categoryId] as number) || 0;
+      const previousValue = (prevOverview?.[categoryId] as number) || 0;
+      if (categoryId === "downloadedBytes")
+        console.log("[chartData]", { categoryId, index, value, date });
       return {
         title,
         date: date,
@@ -172,6 +174,24 @@ export function ChartCard({
           </dd>
         )}
       </div>
+      {/* <SparkAreaChart
+        className="mt-6 h-52 relative"
+        data={chartData || []}
+        index="formattedDate"
+        colors={["indigo", "gray"]}
+        // startEndOnly={false}
+        // valueFormatter={(value: any) => formatter(value as number)}
+        barCategoryGap='percent'
+        showYAxis={true}
+        showLegend={true}
+        xAxisLabel=""
+        yAxisLabel={yAxisLabel}
+        categories={categories}
+        showTooltip={isThumbnail ? false : true}
+        autoMinValue
+        loading={loading}
+        // onValueChange={}
+      /> */}
       <LineChart
         className="mt-6 h-52 relative"
         data={chartData || []}

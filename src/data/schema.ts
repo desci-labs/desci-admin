@@ -18,4 +18,5 @@ export type AnalyticsData = {
   "newOrcidUsers": number;
   'activeUsers': number;
   'activeOrcidUsers': number;
+  'downloadedBytes': number;
 };
