@@ -5,8 +5,6 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    // const queries = Object.entries(url.searchParams).map(([key, value]) => `${key}=${value}`).join('&')
-    console.log('params: ',url)
     const response = await fetch(
       `${NODES_API_URL}/v1/admin/analytics/querycsv${url.search}`,
       {

@@ -237,7 +237,7 @@ export default function Overview() {
         description="Last 30 days"
         icon="nodes"
       />
-     
+
       {/* published nodes */}
       <MetricCard
         header="Published Nodes"
@@ -277,6 +277,32 @@ export default function Overview() {
         header="Uploaded Data"
         value={`${byteValueNumberFormatter.format(
           analytics.bytesInLast30Days ?? 0
+        )}`}
+        description="Last 30 days"
+        icon="data"
+      />
+
+      {/* Downloaded Data analytics Overview */}
+      <MetricCard
+        header="Downloaded Data"
+        value={`${byteValueNumberFormatter.format(
+          analytics.downloadedBytesToday ?? 0
+        )}`}
+        description="Today"
+        icon="data"
+      />
+      <MetricCard
+        header="Downloaded Data"
+        value={`${byteValueNumberFormatter.format(
+          analytics.downloadedBytesInLast7Days ?? 0
+        )}`}
+        description="Last 7 days"
+        icon="data"
+      />
+      <MetricCard
+        header="Downloaded Data"
+        value={`${byteValueNumberFormatter.format(
+          analytics.downloadedBytesInLast30Days ?? 0
         )}`}
         description="Last 30 days"
         icon="data"

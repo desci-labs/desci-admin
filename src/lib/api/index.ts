@@ -252,9 +252,14 @@ export interface Analytics {
   nodeViewsToday: number;
   nodeViewsInLast7Days: number;
   nodeViewsInLast30Days: number;
+ 
   bytesToday: number;
   bytesInLast7Days: number;
   bytesInLast30Days: number;
+  
+  downloadedBytesToday: number;
+  downloadedBytesInLast7Days: number;
+  downloadedBytesInLast30Days: number;
 
   newOrcidUsersToday: number | string;
   newOrcidUsersInLast7Days: number | string;

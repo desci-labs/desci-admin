@@ -116,8 +116,7 @@ export function ChartCard({
       const prevOverview = prevData[index];
       const value = (overview?.[categoryId] as number) || 0;
       const previousValue = (prevOverview?.[categoryId] as number) || 0;
-      if (categoryId === "downloadedBytes")
-        console.log("[chartData]", { categoryId, index, value, date });
+      
       return {
         title,
         date: date,
@@ -147,8 +146,6 @@ export function ChartCard({
     selectedPeriod !== "no-comparison"
       ? (value - previousValue) / previousValue
       : 0;
-
-  console.log("[categories]", { data, prevData, chartData });
 
   return (
     <div className={cn("transition")}>

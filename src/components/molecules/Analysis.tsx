@@ -99,7 +99,10 @@ export default function Dashboard() {
           </div>
           <TabsContent value="analytics" className="space-y-4">
             <AnalyticsCharts
-              onQueryChange={(query) => setAnalyticsQuery(query)}
+              onQueryChange={(query) => {
+                console.log("[analytics]", query);
+                setAnalyticsQuery(query);
+              }}
             />
           </TabsContent>
           <TabsContent value="overview" className="space-y-4">

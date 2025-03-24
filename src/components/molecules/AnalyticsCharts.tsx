@@ -1,6 +1,6 @@
 import { overviews } from "@/data/analysis-data";
 import { AnalyticsData } from "@/data/schema";
-import { formatDate, subDays, toDate } from "date-fns";
+import { endOfDay, formatDate, subDays, toDate } from "date-fns";
 import { Filterbar } from "./DateFilterbar";
 import {
   Select,
@@ -146,16 +146,19 @@ export default function AnalyticsCharts(props: {
   }, [isFetching, data]);
 
   useEffect(() => {
-    if (selectedDates?.from && selectedDates?.to)
+    if (selectedDates?.from && selectedDates?.to) {
+      console.log("[analyticsCharts]", selectedDates);
       props.onQueryChange({
         from: selectedDates.from.toISOString(),
-        to: selectedDates.to.toISOString(),
+        to: endOfDay(selectedDates.to).toISOString(),
         interval,
       });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDates?.from, selectedDates?.to, interval]);
 
   const prevDates = getPeriod(selectedDates);
+
 
   return (
     <section aria-labelledby="analytics-charts">
@@ -170,7 +173,7 @@ export default function AnalyticsCharts(props: {
           <div className="flex items-center justify-start gap-3">
             <Filterbar
               maxDate={maxDate}
-              minDate={new Date(2023, 0, 1)}
+              minDate={new Date(2022, 0, 1)}
               selectedDates={selectedDates}
               onDatesChange={(dates) => setSelectedDates(dates)}
             />
