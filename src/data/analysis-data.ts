@@ -12,6 +12,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1664,
     "activeOrcidUsers": 1664,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-02T00:00:00",
@@ -24,6 +25,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1642,
     "activeOrcidUsers": 1642,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-03T00:00:00",
@@ -36,6 +38,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 1525,
     "activeOrcidUsers": 1525,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-04T00:00:00",
@@ -48,6 +51,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1211,
     "activeOrcidUsers": 1211,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-05T00:00:00",
@@ -60,6 +64,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 991,
     "activeOrcidUsers": 991,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-06T00:00:00",
@@ -72,6 +77,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 855,
     "activeOrcidUsers": 855,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-07T00:00:00",
@@ -84,6 +90,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 875,
     "activeOrcidUsers": 875,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-08T00:00:00",
@@ -96,6 +103,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 47,
     "activeUsers": 867,
     "activeOrcidUsers": 867,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-09T00:00:00",
@@ -108,6 +116,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 853,
     "activeOrcidUsers": 853,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-10T00:00:00",
@@ -120,6 +129,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 976,
     "activeOrcidUsers": 976,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-11T00:00:00",
@@ -132,6 +142,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 1191,
     "activeOrcidUsers": 1191,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-12T00:00:00",
@@ -144,6 +155,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1235,
     "activeOrcidUsers": 1235,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-13T00:00:00",
@@ -156,6 +168,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1060,
     "activeOrcidUsers": 1060,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-14T00:00:00",
@@ -168,6 +181,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 915,
     "activeOrcidUsers": 915,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-15T00:00:00",
@@ -180,6 +194,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 46,
     "activeUsers": 1026,
     "activeOrcidUsers": 1026,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-16T00:00:00",
@@ -192,6 +207,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1199,
     "activeOrcidUsers": 1199,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-17T00:00:00",
@@ -204,6 +220,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1344,
     "activeOrcidUsers": 1344,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-18T00:00:00",
@@ -216,6 +233,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1203,
     "activeOrcidUsers": 1203,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-19T00:00:00",
@@ -228,6 +246,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1351,
     "activeOrcidUsers": 1351,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-20T00:00:00",
@@ -240,6 +259,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1379,
     "activeOrcidUsers": 1379,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-21T00:00:00",
@@ -252,6 +272,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1460,
     "activeOrcidUsers": 1460,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-22T00:00:00",
@@ -264,6 +285,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 1704,
     "activeOrcidUsers": 1704,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-23T00:00:00",
@@ -276,6 +298,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1951,
     "activeOrcidUsers": 1951,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-24T00:00:00",
@@ -288,6 +311,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1768,
     "activeOrcidUsers": 1768,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-25T00:00:00",
@@ -300,6 +324,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1811,
     "activeOrcidUsers": 1811,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-26T00:00:00",
@@ -312,6 +337,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 2048,
     "activeOrcidUsers": 2048,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-27T00:00:00",
@@ -324,6 +350,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1853,
     "activeOrcidUsers": 1853,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-28T00:00:00",
@@ -336,6 +363,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1693,
     "activeOrcidUsers": 1693,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-29T00:00:00",
@@ -348,6 +376,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 1637,
     "activeOrcidUsers": 1637,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-30T00:00:00",
@@ -360,6 +389,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1847,
     "activeOrcidUsers": 1847,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-01-31T00:00:00",
@@ -372,6 +402,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1972,
     "activeOrcidUsers": 1972,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-01T00:00:00",
@@ -384,6 +415,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1818,
     "activeOrcidUsers": 1818,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-02T00:00:00",
@@ -396,6 +428,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1437,
     "activeOrcidUsers": 1437,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-03T00:00:00",
@@ -408,6 +441,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1420,
     "activeOrcidUsers": 1420,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-04T00:00:00",
@@ -420,6 +454,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 56,
     "activeUsers": 1622,
     "activeOrcidUsers": 1622,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-05T00:00:00",
@@ -432,6 +467,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1847,
     "activeOrcidUsers": 1847,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-06T00:00:00",
@@ -444,6 +480,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 2020,
     "activeOrcidUsers": 2020,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-07T00:00:00",
@@ -456,6 +493,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 2035,
     "activeOrcidUsers": 2035,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-08T00:00:00",
@@ -468,6 +506,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 2044,
     "activeOrcidUsers": 2044,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-09T00:00:00",
@@ -480,6 +519,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1899,
     "activeOrcidUsers": 1899,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-10T00:00:00",
@@ -492,6 +532,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1478,
     "activeOrcidUsers": 1478,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-11T00:00:00",
@@ -504,6 +545,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1158,
     "activeOrcidUsers": 1158,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-12T00:00:00",
@@ -516,6 +558,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 850,
     "activeOrcidUsers": 850,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-13T00:00:00",
@@ -528,6 +571,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 871,
     "activeOrcidUsers": 871,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-14T00:00:00",
@@ -540,6 +584,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 849,
     "activeOrcidUsers": 849,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-15T00:00:00",
@@ -552,6 +597,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 874,
     "activeOrcidUsers": 874,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-16T00:00:00",
@@ -564,6 +610,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 862,
     "activeOrcidUsers": 862,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-17T00:00:00",
@@ -576,6 +623,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 864,
     "activeOrcidUsers": 864,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-18T00:00:00",
@@ -588,6 +636,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 918,
     "activeOrcidUsers": 918,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-19T00:00:00",
@@ -600,6 +649,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 968,
     "activeOrcidUsers": 968,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-20T00:00:00",
@@ -612,6 +662,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 1142,
     "activeOrcidUsers": 1142,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-21T00:00:00",
@@ -624,6 +675,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1360,
     "activeOrcidUsers": 1360,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-22T00:00:00",
@@ -636,6 +688,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 1691,
     "activeOrcidUsers": 1691,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-23T00:00:00",
@@ -648,6 +701,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1862,
     "activeOrcidUsers": 1862,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-24T00:00:00",
@@ -660,6 +714,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 2003,
     "activeOrcidUsers": 2003,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-25T00:00:00",
@@ -672,6 +727,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 2006,
     "activeOrcidUsers": 2006,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-26T00:00:00",
@@ -684,6 +740,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 2007,
     "activeOrcidUsers": 2007,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-27T00:00:00",
@@ -696,6 +753,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1742,
     "activeOrcidUsers": 1742,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-02-28T00:00:00",
@@ -708,6 +766,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1910,
     "activeOrcidUsers": 1910,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-01T00:00:00",
@@ -720,6 +779,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1766,
     "activeOrcidUsers": 1766,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-02T00:00:00",
@@ -732,6 +792,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1674,
     "activeOrcidUsers": 1674,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-03T00:00:00",
@@ -744,6 +805,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1785,
     "activeOrcidUsers": 1785,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-04T00:00:00",
@@ -756,6 +818,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1732,
     "activeOrcidUsers": 1732,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-05T00:00:00",
@@ -768,6 +831,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 47,
     "activeUsers": 1813,
     "activeOrcidUsers": 1813,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-06T00:00:00",
@@ -780,6 +844,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1938,
     "activeOrcidUsers": 1938,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-07T00:00:00",
@@ -792,6 +857,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 1798,
     "activeOrcidUsers": 1798,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-08T00:00:00",
@@ -804,6 +870,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 1866,
     "activeOrcidUsers": 1866,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-09T00:00:00",
@@ -816,6 +883,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1640,
     "activeOrcidUsers": 1640,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-10T00:00:00",
@@ -828,6 +896,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1274,
     "activeOrcidUsers": 1274,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-11T00:00:00",
@@ -840,6 +909,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 895,
     "activeOrcidUsers": 895,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-12T00:00:00",
@@ -852,6 +922,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 50,
     "activeUsers": 861,
     "activeOrcidUsers": 861,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-13T00:00:00",
@@ -864,6 +935,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 853,
     "activeOrcidUsers": 853,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-14T00:00:00",
@@ -876,6 +948,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 860,
     "activeOrcidUsers": 860,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-15T00:00:00",
@@ -888,6 +961,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 922,
     "activeOrcidUsers": 922,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-16T00:00:00",
@@ -900,6 +974,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1127,
     "activeOrcidUsers": 1127,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-17T00:00:00",
@@ -912,6 +987,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1055,
     "activeOrcidUsers": 1055,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-18T00:00:00",
@@ -924,6 +1000,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1158,
     "activeOrcidUsers": 1158,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-19T00:00:00",
@@ -936,6 +1013,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 58,
     "activeUsers": 1438,
     "activeOrcidUsers": 1438,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-20T00:00:00",
@@ -948,6 +1026,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 1332,
     "activeOrcidUsers": 1332,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-21T00:00:00",
@@ -960,6 +1039,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 1102,
     "activeOrcidUsers": 1102,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-22T00:00:00",
@@ -972,6 +1052,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 951,
     "activeOrcidUsers": 951,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-23T00:00:00",
@@ -984,6 +1065,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 846,
     "activeOrcidUsers": 846,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-24T00:00:00",
@@ -996,6 +1078,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 850,
     "activeOrcidUsers": 850,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-25T00:00:00",
@@ -1008,6 +1091,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 878,
     "activeOrcidUsers": 878,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-26T00:00:00",
@@ -1020,6 +1104,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 851,
     "activeOrcidUsers": 851,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-26T00:00:00",
@@ -1032,6 +1117,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 872,
     "activeOrcidUsers": 872,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-27T00:00:00",
@@ -1044,6 +1130,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 863,
     "activeOrcidUsers": 863,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-28T00:00:00",
@@ -1056,6 +1143,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 901,
     "activeOrcidUsers": 901,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-29T00:00:00",
@@ -1068,6 +1156,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-30T00:00:00",
@@ -1080,6 +1169,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 869,
     "activeOrcidUsers": 869,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-03-31T00:00:00",
@@ -1092,6 +1182,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 53,
     "activeUsers": 865,
     "activeOrcidUsers": 865,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-01T00:00:00",
@@ -1104,6 +1195,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 860,
     "activeOrcidUsers": 860,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-02T00:00:00",
@@ -1116,6 +1208,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 867,
     "activeOrcidUsers": 867,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-03T00:00:00",
@@ -1128,6 +1221,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 867,
     "activeOrcidUsers": 867,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-04T00:00:00",
@@ -1140,6 +1234,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 963,
     "activeOrcidUsers": 963,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-05T00:00:00",
@@ -1152,6 +1247,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1027,
     "activeOrcidUsers": 1027,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-06T00:00:00",
@@ -1164,6 +1260,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1171,
     "activeOrcidUsers": 1171,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-07T00:00:00",
@@ -1176,6 +1273,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 1199,
     "activeOrcidUsers": 1199,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-08T00:00:00",
@@ -1188,6 +1286,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1208,
     "activeOrcidUsers": 1208,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-09T00:00:00",
@@ -1200,6 +1299,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1452,
     "activeOrcidUsers": 1452,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-10T00:00:00",
@@ -1212,6 +1312,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1464,
     "activeOrcidUsers": 1464,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-11T00:00:00",
@@ -1224,6 +1325,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1512,
     "activeOrcidUsers": 1512,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-12T00:00:00",
@@ -1236,6 +1338,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1360,
     "activeOrcidUsers": 1360,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-13T00:00:00",
@@ -1248,6 +1351,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 1038,
     "activeOrcidUsers": 1038,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-14T00:00:00",
@@ -1260,6 +1364,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 844,
     "activeOrcidUsers": 844,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-15T00:00:00",
@@ -1272,6 +1377,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 855,
     "activeOrcidUsers": 855,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-16T00:00:00",
@@ -1284,6 +1390,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 973,
     "activeOrcidUsers": 973,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-17T00:00:00",
@@ -1296,6 +1403,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1065,
     "activeOrcidUsers": 1065,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-18T00:00:00",
@@ -1308,6 +1416,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1071,
     "activeOrcidUsers": 1071,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-19T00:00:00",
@@ -1320,6 +1429,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 1065,
     "activeOrcidUsers": 1065,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-20T00:00:00",
@@ -1332,6 +1442,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1191,
     "activeOrcidUsers": 1191,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-21T00:00:00",
@@ -1344,6 +1455,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 51,
     "activeUsers": 1415,
     "activeOrcidUsers": 1415,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-22T00:00:00",
@@ -1356,6 +1468,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 57,
     "activeUsers": 1744,
     "activeOrcidUsers": 1744,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-23T00:00:00",
@@ -1368,6 +1481,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 2017,
     "activeOrcidUsers": 2017,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-24T00:00:00",
@@ -1380,6 +1494,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1911,
     "activeOrcidUsers": 1911,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-25T00:00:00",
@@ -1392,6 +1507,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 2014,
     "activeOrcidUsers": 2014,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-26T00:00:00",
@@ -1404,6 +1520,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 2004,
     "activeOrcidUsers": 2004,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-27T00:00:00",
@@ -1416,6 +1533,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 2029,
     "activeOrcidUsers": 2029,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-28T00:00:00",
@@ -1428,6 +1546,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 50,
     "activeUsers": 2012,
     "activeOrcidUsers": 2012,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-29T00:00:00",
@@ -1440,6 +1559,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 1745,
     "activeOrcidUsers": 1745,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-04-30T00:00:00",
@@ -1452,6 +1572,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1784,
     "activeOrcidUsers": 1784,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-01T00:00:00",
@@ -1464,6 +1585,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1883,
     "activeOrcidUsers": 1883,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-02T00:00:00",
@@ -1476,6 +1598,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1806,
     "activeOrcidUsers": 1806,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-03T00:00:00",
@@ -1488,6 +1611,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1967,
     "activeOrcidUsers": 1967,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-04T00:00:00",
@@ -1500,6 +1624,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1956,
     "activeOrcidUsers": 1956,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-05T00:00:00",
@@ -1512,6 +1637,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 53,
     "activeUsers": 2032,
     "activeOrcidUsers": 2032,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-06T00:00:00",
@@ -1524,6 +1650,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 47,
     "activeUsers": 1984,
     "activeOrcidUsers": 1984,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-07T00:00:00",
@@ -1536,6 +1663,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 2021,
     "activeOrcidUsers": 2021,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-08T00:00:00",
@@ -1548,6 +1676,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1641,
     "activeOrcidUsers": 1641,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-09T00:00:00",
@@ -1560,6 +1689,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 1286,
     "activeOrcidUsers": 1286,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-10T00:00:00",
@@ -1572,6 +1702,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 987,
     "activeOrcidUsers": 987,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-11T00:00:00",
@@ -1584,6 +1715,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 953,
     "activeOrcidUsers": 953,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-12T00:00:00",
@@ -1596,6 +1728,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 1059,
     "activeOrcidUsers": 1059,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-13T00:00:00",
@@ -1608,6 +1741,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1153,
     "activeOrcidUsers": 1153,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-14T00:00:00",
@@ -1620,6 +1754,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1033,
     "activeOrcidUsers": 1033,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-15T00:00:00",
@@ -1632,6 +1767,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 846,
     "activeOrcidUsers": 846,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-16T00:00:00",
@@ -1644,6 +1780,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 891,
     "activeOrcidUsers": 891,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-17T00:00:00",
@@ -1656,6 +1793,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 923,
     "activeOrcidUsers": 923,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-18T00:00:00",
@@ -1668,6 +1806,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1115,
     "activeOrcidUsers": 1115,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-19T00:00:00",
@@ -1680,6 +1819,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1374,
     "activeOrcidUsers": 1374,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-20T00:00:00",
@@ -1692,6 +1832,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 1622,
     "activeOrcidUsers": 1622,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-21T00:00:00",
@@ -1704,6 +1845,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1612,
     "activeOrcidUsers": 1612,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-22T00:00:00",
@@ -1716,6 +1858,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1668,
     "activeOrcidUsers": 1668,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-23T00:00:00",
@@ -1728,6 +1871,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1579,
     "activeOrcidUsers": 1579,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-24T00:00:00",
@@ -1740,6 +1884,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 1294,
     "activeOrcidUsers": 1294,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-25T00:00:00",
@@ -1752,6 +1897,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1214,
     "activeOrcidUsers": 1214,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-26T00:00:00",
@@ -1764,6 +1910,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1054,
     "activeOrcidUsers": 1054,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-27T00:00:00",
@@ -1776,6 +1923,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1034,
     "activeOrcidUsers": 1034,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-28T00:00:00",
@@ -1788,6 +1936,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-29T00:00:00",
@@ -1800,6 +1949,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 881,
     "activeOrcidUsers": 881,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-30T00:00:00",
@@ -1812,6 +1962,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 925,
     "activeOrcidUsers": 925,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-05-31T00:00:00",
@@ -1824,6 +1975,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 879,
     "activeOrcidUsers": 879,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-01T00:00:00",
@@ -1836,6 +1988,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 924,
     "activeOrcidUsers": 924,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-02T00:00:00",
@@ -1848,6 +2001,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 853,
     "activeOrcidUsers": 853,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-03T00:00:00",
@@ -1860,6 +2014,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 877,
     "activeOrcidUsers": 877,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-04T00:00:00",
@@ -1872,6 +2027,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 896,
     "activeOrcidUsers": 896,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-05T00:00:00",
@@ -1884,6 +2040,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1053,
     "activeOrcidUsers": 1053,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-06T00:00:00",
@@ -1896,6 +2053,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1009,
     "activeOrcidUsers": 1009,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-07T00:00:00",
@@ -1908,6 +2066,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 884,
     "activeOrcidUsers": 884,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-08T00:00:00",
@@ -1920,6 +2079,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1003,
     "activeOrcidUsers": 1003,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-09T00:00:00",
@@ -1932,6 +2092,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 1182,
     "activeOrcidUsers": 1182,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-10T00:00:00",
@@ -1944,6 +2105,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1129,
     "activeOrcidUsers": 1129,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-11T00:00:00",
@@ -1956,6 +2118,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1009,
     "activeOrcidUsers": 1009,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-12T00:00:00",
@@ -1968,6 +2131,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 924,
     "activeOrcidUsers": 924,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-13T00:00:00",
@@ -1980,6 +2144,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 870,
     "activeOrcidUsers": 870,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-14T00:00:00",
@@ -1992,6 +2157,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 877,
     "activeOrcidUsers": 877,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-15T00:00:00",
@@ -2004,6 +2170,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 853,
     "activeOrcidUsers": 853,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-16T00:00:00",
@@ -2016,6 +2183,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 965,
     "activeOrcidUsers": 965,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-17T00:00:00",
@@ -2028,6 +2196,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 1101,
     "activeOrcidUsers": 1101,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-18T00:00:00",
@@ -2040,6 +2209,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1335,
     "activeOrcidUsers": 1335,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-19T00:00:00",
@@ -2052,6 +2222,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 1406,
     "activeOrcidUsers": 1406,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-20T00:00:00",
@@ -2064,6 +2235,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1378,
     "activeOrcidUsers": 1378,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-21T00:00:00",
@@ -2076,6 +2248,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 1294,
     "activeOrcidUsers": 1294,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-22T00:00:00",
@@ -2088,6 +2261,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1318,
     "activeOrcidUsers": 1318,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-23T00:00:00",
@@ -2100,6 +2274,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 57,
     "activeUsers": 1076,
     "activeOrcidUsers": 1076,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-24T00:00:00",
@@ -2112,6 +2287,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 59,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-25T00:00:00",
@@ -2124,6 +2300,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 881,
     "activeOrcidUsers": 881,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-26T00:00:00",
@@ -2136,6 +2313,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 914,
     "activeOrcidUsers": 914,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-27T00:00:00",
@@ -2148,6 +2326,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 855,
     "activeOrcidUsers": 855,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-28T00:00:00",
@@ -2160,6 +2339,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 876,
     "activeOrcidUsers": 876,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-29T00:00:00",
@@ -2172,6 +2352,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 900,
     "activeOrcidUsers": 900,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-06-30T00:00:00",
@@ -2184,6 +2365,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-01T00:00:00",
@@ -2196,6 +2378,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 856,
     "activeOrcidUsers": 856,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-02T00:00:00",
@@ -2208,6 +2391,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 878,
     "activeOrcidUsers": 878,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-03T00:00:00",
@@ -2220,6 +2404,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 936,
     "activeOrcidUsers": 936,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-04T00:00:00",
@@ -2232,6 +2417,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1006,
     "activeOrcidUsers": 1006,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-05T00:00:00",
@@ -2244,6 +2430,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1049,
     "activeOrcidUsers": 1049,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-06T00:00:00",
@@ -2256,6 +2443,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1092,
     "activeOrcidUsers": 1092,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-07T00:00:00",
@@ -2268,6 +2456,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 56,
     "activeUsers": 1210,
     "activeOrcidUsers": 1210,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-08T00:00:00",
@@ -2280,6 +2469,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 1292,
     "activeOrcidUsers": 1292,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-09T00:00:00",
@@ -2292,6 +2482,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1354,
     "activeOrcidUsers": 1354,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-10T00:00:00",
@@ -2304,6 +2495,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1513,
     "activeOrcidUsers": 1513,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-11T00:00:00",
@@ -2316,6 +2508,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 1546,
     "activeOrcidUsers": 1546,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-12T00:00:00",
@@ -2328,6 +2521,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1819,
     "activeOrcidUsers": 1819,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-13T00:00:00",
@@ -2340,6 +2534,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1954,
     "activeOrcidUsers": 1954,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-14T00:00:00",
@@ -2352,6 +2547,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 59,
     "activeUsers": 1701,
     "activeOrcidUsers": 1701,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-15T00:00:00",
@@ -2364,6 +2560,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 1309,
     "activeOrcidUsers": 1309,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-16T00:00:00",
@@ -2376,6 +2573,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1329,
     "activeOrcidUsers": 1329,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-17T00:00:00",
@@ -2388,6 +2586,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1447,
     "activeOrcidUsers": 1447,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-18T00:00:00",
@@ -2400,6 +2599,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1759,
     "activeOrcidUsers": 1759,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-19T00:00:00",
@@ -2412,6 +2612,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 1931,
     "activeOrcidUsers": 1931,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-20T00:00:00",
@@ -2424,6 +2625,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 2044,
     "activeOrcidUsers": 2044,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-21T00:00:00",
@@ -2436,6 +2638,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 2014,
     "activeOrcidUsers": 2014,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-22T00:00:00",
@@ -2448,6 +2651,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 1729,
     "activeOrcidUsers": 1729,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-23T00:00:00",
@@ -2460,6 +2664,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1423,
     "activeOrcidUsers": 1423,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-24T00:00:00",
@@ -2472,6 +2677,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1490,
     "activeOrcidUsers": 1490,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-25T00:00:00",
@@ -2484,6 +2690,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1458,
     "activeOrcidUsers": 1458,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-26T00:00:00",
@@ -2496,6 +2703,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1156,
     "activeOrcidUsers": 1156,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-27T00:00:00",
@@ -2508,6 +2716,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1031,
     "activeOrcidUsers": 1031,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-28T00:00:00",
@@ -2520,6 +2729,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 966,
     "activeOrcidUsers": 966,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-29T00:00:00",
@@ -2532,6 +2742,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 57,
     "activeUsers": 896,
     "activeOrcidUsers": 896,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-30T00:00:00",
@@ -2544,6 +2755,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1026,
     "activeOrcidUsers": 1026,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-07-31T00:00:00",
@@ -2556,6 +2768,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 961,
     "activeOrcidUsers": 961,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-01T00:00:00",
@@ -2568,6 +2781,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 850,
     "activeOrcidUsers": 850,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-02T00:00:00",
@@ -2580,6 +2794,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 868,
     "activeOrcidUsers": 868,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-03T00:00:00",
@@ -2592,6 +2807,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 939,
     "activeOrcidUsers": 939,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-04T00:00:00",
@@ -2604,6 +2820,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-05T00:00:00",
@@ -2616,6 +2833,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 867,
     "activeOrcidUsers": 867,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-06T00:00:00",
@@ -2628,6 +2846,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-07T00:00:00",
@@ -2640,6 +2859,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 899,
     "activeOrcidUsers": 899,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-08T00:00:00",
@@ -2652,6 +2872,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 941,
     "activeOrcidUsers": 941,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-09T00:00:00",
@@ -2664,6 +2885,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 1132,
     "activeOrcidUsers": 1132,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-10T00:00:00",
@@ -2676,6 +2898,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1101,
     "activeOrcidUsers": 1101,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-11T00:00:00",
@@ -2688,6 +2911,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 993,
     "activeOrcidUsers": 993,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-12T00:00:00",
@@ -2700,6 +2924,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 858,
     "activeOrcidUsers": 858,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-13T00:00:00",
@@ -2712,6 +2937,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 885,
     "activeOrcidUsers": 885,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-14T00:00:00",
@@ -2724,6 +2950,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 912,
     "activeOrcidUsers": 912,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-15T00:00:00",
@@ -2736,6 +2963,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-16T00:00:00",
@@ -2748,6 +2976,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 846,
     "activeOrcidUsers": 846,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-17T00:00:00",
@@ -2760,6 +2989,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 867,
     "activeOrcidUsers": 867,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-18T00:00:00",
@@ -2772,6 +3002,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 58,
     "activeUsers": 984,
     "activeOrcidUsers": 984,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-19T00:00:00",
@@ -2784,6 +3015,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 59,
     "activeUsers": 1006,
     "activeOrcidUsers": 1006,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-20T00:00:00",
@@ -2796,6 +3028,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 975,
     "activeOrcidUsers": 975,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-21T00:00:00",
@@ -2808,6 +3041,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 976,
     "activeOrcidUsers": 976,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-22T00:00:00",
@@ -2820,6 +3054,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1084,
     "activeOrcidUsers": 1084,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-23T00:00:00",
@@ -2832,6 +3067,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1130,
     "activeOrcidUsers": 1130,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-24T00:00:00",
@@ -2844,6 +3080,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 944,
     "activeOrcidUsers": 944,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-25T00:00:00",
@@ -2856,6 +3093,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 872,
     "activeOrcidUsers": 872,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-26T00:00:00",
@@ -2868,6 +3106,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 858,
     "activeOrcidUsers": 858,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-27T00:00:00",
@@ -2880,6 +3119,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 861,
     "activeOrcidUsers": 861,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-28T00:00:00",
@@ -2892,6 +3132,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 922,
     "activeOrcidUsers": 922,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-29T00:00:00",
@@ -2904,6 +3145,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 935,
     "activeOrcidUsers": 935,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-30T00:00:00",
@@ -2916,6 +3158,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-08-31T00:00:00",
@@ -2928,6 +3171,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 932,
     "activeOrcidUsers": 932,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-01T00:00:00",
@@ -2940,6 +3184,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 958,
     "activeOrcidUsers": 958,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-02T00:00:00",
@@ -2952,6 +3197,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 49,
     "activeUsers": 943,
     "activeOrcidUsers": 943,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-03T00:00:00",
@@ -2964,6 +3210,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 863,
     "activeOrcidUsers": 863,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-04T00:00:00",
@@ -2976,6 +3223,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 846,
     "activeOrcidUsers": 846,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-05T00:00:00",
@@ -2988,6 +3236,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 880,
     "activeOrcidUsers": 880,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-06T00:00:00",
@@ -3000,6 +3249,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-07T00:00:00",
@@ -3012,6 +3262,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 856,
     "activeOrcidUsers": 856,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-08T00:00:00",
@@ -3024,6 +3275,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 50,
     "activeUsers": 931,
     "activeOrcidUsers": 931,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-09T00:00:00",
@@ -3036,6 +3288,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 989,
     "activeOrcidUsers": 989,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-10T00:00:00",
@@ -3048,6 +3301,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1148,
     "activeOrcidUsers": 1148,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-11T00:00:00",
@@ -3060,6 +3314,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1198,
     "activeOrcidUsers": 1198,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-12T00:00:00",
@@ -3072,6 +3327,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1104,
     "activeOrcidUsers": 1104,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-13T00:00:00",
@@ -3084,6 +3340,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 1082,
     "activeOrcidUsers": 1082,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-14T00:00:00",
@@ -3096,6 +3353,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1119,
     "activeOrcidUsers": 1119,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-15T00:00:00",
@@ -3108,6 +3366,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 1074,
     "activeOrcidUsers": 1074,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-16T00:00:00",
@@ -3120,6 +3379,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 56,
     "activeUsers": 1132,
     "activeOrcidUsers": 1132,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-17T00:00:00",
@@ -3132,6 +3392,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1260,
     "activeOrcidUsers": 1260,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-18T00:00:00",
@@ -3144,6 +3405,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1292,
     "activeOrcidUsers": 1292,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-19T00:00:00",
@@ -3156,6 +3418,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1128,
     "activeOrcidUsers": 1128,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-20T00:00:00",
@@ -3168,6 +3431,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1196,
     "activeOrcidUsers": 1196,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-21T00:00:00",
@@ -3180,6 +3444,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1268,
     "activeOrcidUsers": 1268,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-22T00:00:00",
@@ -3192,6 +3457,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 1184,
     "activeOrcidUsers": 1184,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-23T00:00:00",
@@ -3204,6 +3470,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 931,
     "activeOrcidUsers": 931,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-24T00:00:00",
@@ -3216,6 +3483,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 950,
     "activeOrcidUsers": 950,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-25T00:00:00",
@@ -3228,6 +3496,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 1131,
     "activeOrcidUsers": 1131,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-26T00:00:00",
@@ -3240,6 +3509,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1013,
     "activeOrcidUsers": 1013,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-27T00:00:00",
@@ -3252,6 +3522,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1053,
     "activeOrcidUsers": 1053,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-28T00:00:00",
@@ -3264,6 +3535,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1065,
     "activeOrcidUsers": 1065,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-29T00:00:00",
@@ -3276,6 +3548,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 916,
     "activeOrcidUsers": 916,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-09-30T00:00:00",
@@ -3288,6 +3561,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-01T00:00:00",
@@ -3300,6 +3574,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 891,
     "activeOrcidUsers": 891,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-02T00:00:00",
@@ -3312,6 +3587,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 889,
     "activeOrcidUsers": 889,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-03T00:00:00",
@@ -3324,6 +3600,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1002,
     "activeOrcidUsers": 1002,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-04T00:00:00",
@@ -3336,6 +3613,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 887,
     "activeOrcidUsers": 887,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-05T00:00:00",
@@ -3348,6 +3626,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 863,
     "activeOrcidUsers": 863,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-06T00:00:00",
@@ -3360,6 +3639,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 49,
     "activeUsers": 849,
     "activeOrcidUsers": 849,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-07T00:00:00",
@@ -3372,6 +3652,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 924,
     "activeOrcidUsers": 924,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-08T00:00:00",
@@ -3384,6 +3665,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1026,
     "activeOrcidUsers": 1026,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-09T00:00:00",
@@ -3396,6 +3678,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1006,
     "activeOrcidUsers": 1006,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-10T00:00:00",
@@ -3408,6 +3691,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1027,
     "activeOrcidUsers": 1027,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-11T00:00:00",
@@ -3420,6 +3704,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 983,
     "activeOrcidUsers": 983,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-12T00:00:00",
@@ -3432,6 +3717,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 848,
     "activeOrcidUsers": 848,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-13T00:00:00",
@@ -3444,6 +3730,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 59,
     "activeUsers": 857,
     "activeOrcidUsers": 857,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-14T00:00:00",
@@ -3456,6 +3743,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 57,
     "activeUsers": 928,
     "activeOrcidUsers": 928,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-15T00:00:00",
@@ -3468,6 +3756,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-16T00:00:00",
@@ -3480,6 +3769,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 879,
     "activeOrcidUsers": 879,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-17T00:00:00",
@@ -3492,6 +3782,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 862,
     "activeOrcidUsers": 862,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-18T00:00:00",
@@ -3504,6 +3795,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 895,
     "activeOrcidUsers": 895,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-19T00:00:00",
@@ -3516,6 +3808,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 998,
     "activeOrcidUsers": 998,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-20T00:00:00",
@@ -3528,6 +3821,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 940,
     "activeOrcidUsers": 940,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-21T00:00:00",
@@ -3540,6 +3834,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 971,
     "activeOrcidUsers": 971,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-22T00:00:00",
@@ -3552,6 +3847,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 924,
     "activeOrcidUsers": 924,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-23T00:00:00",
@@ -3564,6 +3860,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 844,
     "activeOrcidUsers": 844,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-24T00:00:00",
@@ -3576,6 +3873,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 879,
     "activeOrcidUsers": 879,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-25T00:00:00",
@@ -3588,6 +3886,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 871,
     "activeOrcidUsers": 871,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-26T00:00:00",
@@ -3600,6 +3899,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 961,
     "activeOrcidUsers": 961,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-27T00:00:00",
@@ -3612,6 +3912,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 848,
     "activeOrcidUsers": 848,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-28T00:00:00",
@@ -3624,6 +3925,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 857,
     "activeOrcidUsers": 857,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-30T00:00:00",
@@ -3636,6 +3938,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 874,
     "activeOrcidUsers": 874,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-10-31T00:00:00",
@@ -3648,6 +3951,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 933,
     "activeOrcidUsers": 933,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-01T00:00:00",
@@ -3660,6 +3964,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-02T00:00:00",
@@ -3672,6 +3977,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 861,
     "activeOrcidUsers": 861,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-03T00:00:00",
@@ -3684,6 +3990,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 984,
     "activeOrcidUsers": 984,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-04T00:00:00",
@@ -3696,6 +4003,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 955,
     "activeOrcidUsers": 955,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-05T00:00:00",
@@ -3708,6 +4016,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 58,
     "activeUsers": 920,
     "activeOrcidUsers": 920,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-06T00:00:00",
@@ -3720,6 +4029,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 855,
     "activeOrcidUsers": 855,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-07T00:00:00",
@@ -3732,6 +4042,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 861,
     "activeOrcidUsers": 861,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-08T00:00:00",
@@ -3744,6 +4055,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 953,
     "activeOrcidUsers": 953,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-09T00:00:00",
@@ -3756,6 +4068,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 861,
     "activeOrcidUsers": 861,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-10T00:00:00",
@@ -3768,6 +4081,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 872,
     "activeOrcidUsers": 872,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-11T00:00:00",
@@ -3780,6 +4094,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 59,
     "activeUsers": 936,
     "activeOrcidUsers": 936,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-12T00:00:00",
@@ -3792,6 +4107,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 987,
     "activeOrcidUsers": 987,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-13T00:00:00",
@@ -3804,6 +4120,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 959,
     "activeOrcidUsers": 959,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-14T00:00:00",
@@ -3816,6 +4133,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 998,
     "activeOrcidUsers": 998,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-15T00:00:00",
@@ -3828,6 +4146,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 871,
     "activeOrcidUsers": 871,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-16T00:00:00",
@@ -3840,6 +4159,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 854,
     "activeOrcidUsers": 854,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-17T00:00:00",
@@ -3852,6 +4172,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 883,
     "activeOrcidUsers": 883,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-18T00:00:00",
@@ -3864,6 +4185,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 844,
     "activeOrcidUsers": 844,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-19T00:00:00",
@@ -3876,6 +4198,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 51,
     "activeUsers": 881,
     "activeOrcidUsers": 881,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-20T00:00:00",
@@ -3888,6 +4211,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 891,
     "activeOrcidUsers": 891,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-21T00:00:00",
@@ -3900,6 +4224,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 865,
     "activeOrcidUsers": 865,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-22T00:00:00",
@@ -3912,6 +4237,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 859,
     "activeOrcidUsers": 859,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-23T00:00:00",
@@ -3924,6 +4250,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 863,
     "activeOrcidUsers": 863,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-24T00:00:00",
@@ -3936,6 +4263,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 869,
     "activeOrcidUsers": 869,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-25T00:00:00",
@@ -3948,6 +4276,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 50,
     "activeUsers": 870,
     "activeOrcidUsers": 870,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-26T00:00:00",
@@ -3960,6 +4289,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 866,
     "activeOrcidUsers": 866,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-27T00:00:00",
@@ -3972,6 +4302,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 876,
     "activeOrcidUsers": 876,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-28T00:00:00",
@@ -3984,6 +4315,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1032,
     "activeOrcidUsers": 1032,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-29T00:00:00",
@@ -3996,6 +4328,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1285,
     "activeOrcidUsers": 1285,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-11-30T00:00:00",
@@ -4008,6 +4341,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1697,
     "activeOrcidUsers": 1697,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-01T00:00:00",
@@ -4020,6 +4354,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 2012,
     "activeOrcidUsers": 2012,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-02T00:00:00",
@@ -4032,6 +4367,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 49,
     "activeUsers": 2006,
     "activeOrcidUsers": 2006,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-03T00:00:00",
@@ -4044,6 +4380,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 45,
     "activeUsers": 1794,
     "activeOrcidUsers": 1794,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-04T00:00:00",
@@ -4056,6 +4393,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1765,
     "activeOrcidUsers": 1765,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-05T00:00:00",
@@ -4068,6 +4406,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1841,
     "activeOrcidUsers": 1841,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-06T00:00:00",
@@ -4080,6 +4419,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 2022,
     "activeOrcidUsers": 2022,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-07T00:00:00",
@@ -4092,6 +4432,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1973,
     "activeOrcidUsers": 1973,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-08T00:00:00",
@@ -4104,6 +4445,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 1786,
     "activeOrcidUsers": 1786,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-09T00:00:00",
@@ -4116,6 +4458,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 1533,
     "activeOrcidUsers": 1533,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-10T00:00:00",
@@ -4128,6 +4471,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 1279,
     "activeOrcidUsers": 1279,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-11T00:00:00",
@@ -4140,6 +4484,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1018,
     "activeOrcidUsers": 1018,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-12T00:00:00",
@@ -4152,6 +4497,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 973,
     "activeOrcidUsers": 973,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-13T00:00:00",
@@ -4164,6 +4510,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 857,
     "activeOrcidUsers": 857,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-14T00:00:00",
@@ -4176,6 +4523,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 868,
     "activeOrcidUsers": 868,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-15T00:00:00",
@@ -4188,6 +4536,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 952,
     "activeOrcidUsers": 952,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-16T00:00:00",
@@ -4200,6 +4549,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1118,
     "activeOrcidUsers": 1118,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-17T00:00:00",
@@ -4212,6 +4562,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 1415,
     "activeOrcidUsers": 1415,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-18T00:00:00",
@@ -4224,6 +4575,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1881,
     "activeOrcidUsers": 1881,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-19T00:00:00",
@@ -4236,6 +4588,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1911,
     "activeOrcidUsers": 1911,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-20T00:00:00",
@@ -4248,6 +4601,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1637,
     "activeOrcidUsers": 1637,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-21T00:00:00",
@@ -4260,6 +4614,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1519,
     "activeOrcidUsers": 1519,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-22T00:00:00",
@@ -4272,6 +4627,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1315,
     "activeOrcidUsers": 1315,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-23T00:00:00",
@@ -4284,6 +4640,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1275,
     "activeOrcidUsers": 1275,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-24T00:00:00",
@@ -4296,6 +4653,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 57,
     "activeUsers": 1138,
     "activeOrcidUsers": 1138,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-25T00:00:00",
@@ -4308,6 +4666,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1213,
     "activeOrcidUsers": 1213,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-26T00:00:00",
@@ -4320,6 +4679,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1306,
     "activeOrcidUsers": 1306,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-27T00:00:00",
@@ -4332,6 +4692,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1536,
     "activeOrcidUsers": 1536,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-28T00:00:00",
@@ -4344,6 +4705,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1879,
     "activeOrcidUsers": 1879,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-29T00:00:00",
@@ -4356,6 +4718,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 2034,
     "activeOrcidUsers": 2034,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-30T00:00:00",
@@ -4368,6 +4731,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 53,
     "activeUsers": 2009,
     "activeOrcidUsers": 2009,
+    "downloadedBytes": 234532
   },
   {
     date: "2024-12-31T00:00:00",
@@ -4380,6 +4744,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 49,
     "activeUsers": 2002,
     "activeOrcidUsers": 2002,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-01T00:00:00",
@@ -4392,6 +4757,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 2038,
     "activeOrcidUsers": 2038,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-02T00:00:00",
@@ -4404,6 +4770,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1994,
     "activeOrcidUsers": 1994,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-03T00:00:00",
@@ -4416,6 +4783,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1975,
     "activeOrcidUsers": 1975,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-04T00:00:00",
@@ -4428,6 +4796,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 2012,
     "activeOrcidUsers": 2012,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-05T00:00:00",
@@ -4440,6 +4809,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1944,
     "activeOrcidUsers": 1944,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-06T00:00:00",
@@ -4452,6 +4822,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 55,
     "activeUsers": 1741,
     "activeOrcidUsers": 1741,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-07T00:00:00",
@@ -4464,6 +4835,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1862,
     "activeOrcidUsers": 1862,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-08T00:00:00",
@@ -4476,6 +4848,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 2003,
     "activeOrcidUsers": 2003,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-09T00:00:00",
@@ -4488,6 +4861,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1975,
     "activeOrcidUsers": 1975,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-10T00:00:00",
@@ -4500,6 +4874,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 2021,
     "activeOrcidUsers": 2021,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-11T00:00:00",
@@ -4512,6 +4887,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 2020,
     "activeOrcidUsers": 2020,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-12T00:00:00",
@@ -4524,6 +4900,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1934,
     "activeOrcidUsers": 1934,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-13T00:00:00",
@@ -4536,6 +4913,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 52,
     "activeUsers": 1908,
     "activeOrcidUsers": 1908,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-14T00:00:00",
@@ -4548,6 +4926,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 50,
     "activeUsers": 1572,
     "activeOrcidUsers": 1572,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-15T00:00:00",
@@ -4560,6 +4939,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1311,
     "activeOrcidUsers": 1311,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-16T00:00:00",
@@ -4572,6 +4952,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 946,
     "activeOrcidUsers": 946,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-17T00:00:00",
@@ -4584,6 +4965,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 878,
     "activeOrcidUsers": 878,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-18T00:00:00",
@@ -4596,6 +4978,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 895,
     "activeOrcidUsers": 895,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-19T00:00:00",
@@ -4608,6 +4991,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 882,
     "activeOrcidUsers": 882,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-20T00:00:00",
@@ -4620,6 +5004,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 54,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-21T00:00:00",
@@ -4632,6 +5017,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 47,
     "activeUsers": 854,
     "activeOrcidUsers": 854,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-22T00:00:00",
@@ -4644,6 +5030,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 848,
     "activeOrcidUsers": 848,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-23T00:00:00",
@@ -4656,6 +5043,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 872,
     "activeOrcidUsers": 872,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-24T00:00:00",
@@ -4668,6 +5056,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 875,
     "activeOrcidUsers": 875,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-25T00:00:00",
@@ -4680,6 +5069,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 914,
     "activeOrcidUsers": 914,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-26T00:00:00",
@@ -4692,6 +5082,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 959,
     "activeOrcidUsers": 959,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-27T00:00:00",
@@ -4704,6 +5095,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 53,
     "activeUsers": 1059,
     "activeOrcidUsers": 1059,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-28T00:00:00",
@@ -4716,6 +5108,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 49,
     "activeUsers": 997,
     "activeOrcidUsers": 997,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-29T00:00:00",
@@ -4728,6 +5121,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 950,
     "activeOrcidUsers": 950,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-30T00:00:00",
@@ -4740,6 +5134,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 1028,
     "activeOrcidUsers": 1028,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-01-31T00:00:00",
@@ -4752,6 +5147,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1198,
     "activeOrcidUsers": 1198,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-01T00:00:00",
@@ -4764,6 +5160,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1458,
     "activeOrcidUsers": 1458,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-02T00:00:00",
@@ -4776,6 +5173,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 1712,
     "activeOrcidUsers": 1712,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-03T00:00:00",
@@ -4788,6 +5186,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 1704,
     "activeOrcidUsers": 1704,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-04T00:00:00",
@@ -4800,6 +5199,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1393,
     "activeOrcidUsers": 1393,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-05T00:00:00",
@@ -4812,6 +5212,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1235,
     "activeOrcidUsers": 1235,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-06T00:00:00",
@@ -4824,6 +5225,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1100,
     "activeOrcidUsers": 1100,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-07T00:00:00",
@@ -4836,6 +5238,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 932,
     "activeOrcidUsers": 932,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-08T00:00:00",
@@ -4848,6 +5251,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 868,
     "activeOrcidUsers": 868,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-09T00:00:00",
@@ -4860,6 +5264,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 878,
     "activeOrcidUsers": 878,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-10T00:00:00",
@@ -4872,6 +5277,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 58,
     "activeUsers": 1033,
     "activeOrcidUsers": 1033,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-11T00:00:00",
@@ -4884,6 +5290,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 53,
     "activeUsers": 1008,
     "activeOrcidUsers": 1008,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-12T00:00:00",
@@ -4896,6 +5303,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 960,
     "activeOrcidUsers": 960,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-13T00:00:00",
@@ -4908,6 +5316,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 858,
     "activeOrcidUsers": 858,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-14T00:00:00",
@@ -4920,6 +5329,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 942,
     "activeOrcidUsers": 942,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-15T00:00:00",
@@ -4932,6 +5342,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1015,
     "activeOrcidUsers": 1015,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-16T00:00:00",
@@ -4944,6 +5355,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1067,
     "activeOrcidUsers": 1067,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-17T00:00:00",
@@ -4956,6 +5368,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 53,
     "activeUsers": 1175,
     "activeOrcidUsers": 1175,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-18T00:00:00",
@@ -4968,6 +5381,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 56,
     "activeUsers": 1411,
     "activeOrcidUsers": 1411,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-19T00:00:00",
@@ -4980,6 +5394,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1586,
     "activeOrcidUsers": 1586,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-20T00:00:00",
@@ -4992,6 +5407,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1792,
     "activeOrcidUsers": 1792,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-21T00:00:00",
@@ -5004,6 +5420,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1837,
     "activeOrcidUsers": 1837,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-22T00:00:00",
@@ -5016,6 +5433,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 1818,
     "activeOrcidUsers": 1818,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-23T00:00:00",
@@ -5028,6 +5446,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1460,
     "activeOrcidUsers": 1460,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-24T00:00:00",
@@ -5040,6 +5459,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 1232,
     "activeOrcidUsers": 1232,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-25T00:00:00",
@@ -5052,6 +5472,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 49,
     "activeUsers": 1122,
     "activeOrcidUsers": 1122,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-26T00:00:00",
@@ -5064,6 +5485,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 1118,
     "activeOrcidUsers": 1118,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-27T00:00:00",
@@ -5076,6 +5498,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1247,
     "activeOrcidUsers": 1247,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-28T00:00:00",
@@ -5088,6 +5511,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1231,
     "activeOrcidUsers": 1231,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-02-29T00:00:00",
@@ -5100,6 +5524,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 991,
     "activeOrcidUsers": 991,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-01T00:00:00",
@@ -5112,6 +5537,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 865,
     "activeOrcidUsers": 865,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-02T00:00:00",
@@ -5124,6 +5550,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 855,
     "activeOrcidUsers": 855,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-03T00:00:00",
@@ -5136,6 +5563,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 859,
     "activeOrcidUsers": 859,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-04T00:00:00",
@@ -5148,6 +5576,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 867,
     "activeOrcidUsers": 867,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-05T00:00:00",
@@ -5160,6 +5589,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 879,
     "activeOrcidUsers": 879,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-06T00:00:00",
@@ -5172,6 +5602,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 869,
     "activeOrcidUsers": 869,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-07T00:00:00",
@@ -5184,6 +5615,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 877,
     "activeOrcidUsers": 877,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-08T00:00:00",
@@ -5196,6 +5628,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-09T00:00:00",
@@ -5208,6 +5641,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 49,
     "activeUsers": 979,
     "activeOrcidUsers": 979,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-10T00:00:00",
@@ -5220,6 +5654,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 50,
     "activeUsers": 1138,
     "activeOrcidUsers": 1138,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-11T00:00:00",
@@ -5232,6 +5667,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 1026,
     "activeOrcidUsers": 1026,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-12T00:00:00",
@@ -5244,6 +5680,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 858,
     "activeOrcidUsers": 858,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-13T00:00:00",
@@ -5256,6 +5693,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 879,
     "activeOrcidUsers": 879,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-14T00:00:00",
@@ -5268,6 +5706,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 844,
     "activeOrcidUsers": 844,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-15T00:00:00",
@@ -5280,6 +5719,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-16T00:00:00",
@@ -5292,6 +5732,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 860,
     "activeOrcidUsers": 860,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-17T00:00:00",
@@ -5304,6 +5745,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 920,
     "activeOrcidUsers": 920,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-18T00:00:00",
@@ -5316,6 +5758,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 856,
     "activeOrcidUsers": 856,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-19T00:00:00",
@@ -5328,6 +5771,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 845,
     "activeOrcidUsers": 845,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-20T00:00:00",
@@ -5340,6 +5784,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 848,
     "activeOrcidUsers": 848,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-21T00:00:00",
@@ -5352,6 +5797,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 847,
     "activeOrcidUsers": 847,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-22T00:00:00",
@@ -5364,6 +5810,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 847,
     "activeOrcidUsers": 847,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-23T00:00:00",
@@ -5376,6 +5823,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-24T00:00:00",
@@ -5388,6 +5836,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 51,
     "activeUsers": 952,
     "activeOrcidUsers": 952,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-25T00:00:00",
@@ -5400,6 +5849,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1030,
     "activeOrcidUsers": 1030,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-26T00:00:00",
@@ -5412,6 +5862,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1009,
     "activeOrcidUsers": 1009,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-27T00:00:00",
@@ -5424,6 +5875,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 868,
     "activeOrcidUsers": 868,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-28T00:00:00",
@@ -5436,6 +5888,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 852,
     "activeOrcidUsers": 852,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-29T00:00:00",
@@ -5448,6 +5901,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 906,
     "activeOrcidUsers": 906,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-30T00:00:00",
@@ -5460,6 +5914,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 66,
     "activeUsers": 866,
     "activeOrcidUsers": 866,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-31T00:00:00",
@@ -5472,6 +5927,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1000,
     "activeOrcidUsers": 1000,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-03-31T00:00:00",
@@ -5484,6 +5940,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1204,
     "activeOrcidUsers": 1204,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-01T00:00:00",
@@ -5496,6 +5953,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 1374,
     "activeOrcidUsers": 1374,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-02T00:00:00",
@@ -5508,6 +5966,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 1649,
     "activeOrcidUsers": 1649,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-03T00:00:00",
@@ -5520,6 +5979,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1686,
     "activeOrcidUsers": 1686,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-04T00:00:00",
@@ -5532,6 +5992,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 1373,
     "activeOrcidUsers": 1373,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-05T00:00:00",
@@ -5544,6 +6005,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 53,
     "activeUsers": 1512,
     "activeOrcidUsers": 1512,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-06T00:00:00",
@@ -5556,6 +6018,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1593,
     "activeOrcidUsers": 1593,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-07T00:00:00",
@@ -5568,6 +6031,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 1926,
     "activeOrcidUsers": 1926,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-08T00:00:00",
@@ -5580,6 +6044,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 67,
     "activeUsers": 2001,
     "activeOrcidUsers": 2001,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-09T00:00:00",
@@ -5592,6 +6057,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1983,
     "activeOrcidUsers": 1983,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-10T00:00:00",
@@ -5604,6 +6070,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1946,
     "activeOrcidUsers": 1946,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-11T00:00:00",
@@ -5616,6 +6083,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 1956,
     "activeOrcidUsers": 1956,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-12T00:00:00",
@@ -5628,6 +6096,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 69,
     "activeUsers": 1991,
     "activeOrcidUsers": 1991,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-13T00:00:00",
@@ -5640,6 +6109,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1795,
     "activeOrcidUsers": 1795,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-14T00:00:00",
@@ -5652,6 +6122,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 77,
     "activeUsers": 1687,
     "activeOrcidUsers": 1687,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-15T00:00:00",
@@ -5664,6 +6135,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1440,
     "activeOrcidUsers": 1440,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-16T00:00:00",
@@ -5676,6 +6148,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 1589,
     "activeOrcidUsers": 1589,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-17T00:00:00",
@@ -5688,6 +6161,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 75,
     "activeUsers": 1949,
     "activeOrcidUsers": 1949,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-18T00:00:00",
@@ -5700,6 +6174,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 2028,
     "activeOrcidUsers": 2028,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-19T00:00:00",
@@ -5712,6 +6187,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 2036,
     "activeOrcidUsers": 2036,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-20T00:00:00",
@@ -5724,6 +6200,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 68,
     "activeUsers": 1991,
     "activeOrcidUsers": 1991,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-21T00:00:00",
@@ -5736,6 +6213,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 60,
     "activeUsers": 2006,
     "activeOrcidUsers": 2006,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-22T00:00:00",
@@ -5748,6 +6226,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 61,
     "activeUsers": 2006,
     "activeOrcidUsers": 2006,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-23T00:00:00",
@@ -5760,6 +6239,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 80,
     "activeUsers": 1882,
     "activeOrcidUsers": 1882,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-24T00:00:00",
@@ -5772,6 +6252,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1801,
     "activeOrcidUsers": 1801,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-25T00:00:00",
@@ -5784,6 +6265,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 1453,
     "activeOrcidUsers": 1453,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-26T00:00:00",
@@ -5796,6 +6278,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 56,
     "activeUsers": 1264,
     "activeOrcidUsers": 1264,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-27T00:00:00",
@@ -5808,6 +6291,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 938,
     "activeOrcidUsers": 938,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-28T00:00:00",
@@ -5820,6 +6304,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 62,
     "activeUsers": 942,
     "activeOrcidUsers": 942,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-29T00:00:00",
@@ -5832,6 +6317,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1061,
     "activeOrcidUsers": 1061,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-04-30T00:00:00",
@@ -5844,6 +6330,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 71,
     "activeUsers": 1289,
     "activeOrcidUsers": 1289,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-01T00:00:00",
@@ -5856,6 +6343,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1339,
     "activeOrcidUsers": 1339,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-02T00:00:00",
@@ -5868,6 +6356,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 1142,
     "activeOrcidUsers": 1142,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-03T00:00:00",
@@ -5880,6 +6369,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 51,
     "activeUsers": 948,
     "activeOrcidUsers": 948,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-04T00:00:00",
@@ -5892,6 +6382,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 51,
     "activeUsers": 1018,
     "activeOrcidUsers": 1018,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-05T00:00:00",
@@ -5904,6 +6395,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1137,
     "activeOrcidUsers": 1137,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-06T00:00:00",
@@ -5916,6 +6408,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 78,
     "activeUsers": 1047,
     "activeOrcidUsers": 1047,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-07T00:00:00",
@@ -5928,6 +6421,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 72,
     "activeUsers": 848,
     "activeOrcidUsers": 848,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-08T00:00:00",
@@ -5940,6 +6434,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 70,
     "activeUsers": 861,
     "activeOrcidUsers": 861,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-09T00:00:00",
@@ -5952,6 +6447,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 76,
     "activeUsers": 979,
     "activeOrcidUsers": 979,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-10T00:00:00",
@@ -5964,6 +6460,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 65,
     "activeUsers": 928,
     "activeOrcidUsers": 928,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-11T00:00:00",
@@ -5976,6 +6473,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 48,
     "activeUsers": 990,
     "activeOrcidUsers": 990,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-12T00:00:00",
@@ -5988,6 +6486,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 63,
     "activeUsers": 1122,
     "activeOrcidUsers": 1122,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-13T00:00:00",
@@ -6000,6 +6499,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 64,
     "activeUsers": 1285,
     "activeOrcidUsers": 1285,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-14T00:00:00",
@@ -6012,6 +6512,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 79,
     "activeUsers": 1516,
     "activeOrcidUsers": 1516,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-15T00:00:00",
@@ -6024,6 +6525,7 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 74,
     "activeUsers": 1803,
     "activeOrcidUsers": 1803,
+    "downloadedBytes": 234532
   },
   {
     date: "2025-05-16T00:00:00",
@@ -6036,5 +6538,6 @@ export const overviews: AnalyticsData[] = [
     "newOrcidUsers": 73,
     "activeUsers": 2045,
     "activeOrcidUsers": 2045,
+    "downloadedBytes": 234532
   },
 ];
