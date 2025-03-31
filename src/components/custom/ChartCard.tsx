@@ -56,7 +56,10 @@ export function ChartCard({
     selectedDates?.from && selectedDates?.to
       ? interval(selectedDates.from, selectedDates.to)
       : null;
-
+  console.log("[selectedDatesInterval]", {
+    selectedDatesInterval,
+    selectedDates,
+  });
   const allDatesInInterval = useMemo(() => {
     switch (dataInterval) {
       case "hourly":
@@ -116,7 +119,7 @@ export function ChartCard({
       const prevOverview = prevData[index];
       const value = (overview?.[categoryId] as number) || 0;
       const previousValue = (prevOverview?.[categoryId] as number) || 0;
-      
+
       return {
         title,
         date: date,
@@ -135,6 +138,11 @@ export function ChartCard({
       };
     })
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  console.log("[chartData]", {
+    chartData,
+    data,
+  });
 
   const categories =
     selectedPeriod === "no-comparison" ? ["value"] : ["value", "previousValue"];
