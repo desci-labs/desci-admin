@@ -56,10 +56,7 @@ export function ChartCard({
     selectedDates?.from && selectedDates?.to
       ? interval(selectedDates.from, selectedDates.to)
       : null;
-  console.log("[selectedDatesInterval]", {
-    selectedDatesInterval,
-    selectedDates,
-  });
+
   const allDatesInInterval = useMemo(() => {
     switch (dataInterval) {
       case "hourly":

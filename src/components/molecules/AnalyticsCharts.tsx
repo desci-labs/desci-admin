@@ -159,7 +159,7 @@ export default function AnalyticsCharts(props: {
 
   const prevDates = getPeriod(selectedDates);
 
-
+  console.log("[selectedDates]: ", selectedDates);
   return (
     <section aria-labelledby="analytics-charts">
       <div className="sticky top-16 z-20 flex items-center justify-between border-b border-gray-200 pb-4 pt-4 sm:pt-6 lg:top-0 lg:mx-0 lg:px-0 lg:pt-8 dark:border-gray-800 ">
@@ -175,7 +175,13 @@ export default function AnalyticsCharts(props: {
               maxDate={maxDate}
               minDate={new Date(2022, 0, 1)}
               selectedDates={selectedDates}
-              onDatesChange={(dates) => setSelectedDates(dates)}
+              onDatesChange={(dates) =>
+                setSelectedDates({
+                  from: dates?.from,
+                  // to: dates?.to,
+                  to: endOfDay(dates?.to ?? Date.now()),
+                })
+              }
             />
             <p className="text-muted-foreground text-sm">Compared to</p>
             <Select
