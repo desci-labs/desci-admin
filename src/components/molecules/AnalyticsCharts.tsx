@@ -1,4 +1,3 @@
-import { overviews } from "@/data/analysis-data";
 import { AnalyticsData } from "@/data/schema";
 import { endOfDay, formatDate, subDays, toDate } from "date-fns";
 import { Filterbar } from "./DateFilterbar";
@@ -103,7 +102,7 @@ export type KpiEntry = {
 
 type Interval = "daily" | "weekly" | "monthly" | "yearly";
 
-const overviewsDates = overviews.map((item) => toDate(item.date).getTime());
+// const overviewsDates = overviews.map((item) => toDate(item.date).getTime());
 const maxDate = new Date(); // toDate(Math.max(...overviewsDates));
 
 export default function AnalyticsCharts(props: {

@@ -20,6 +20,6 @@ export type AnalyticsData = {
   activeOrcidUsers: number;
   downloadedBytes: number;
   nodeLikes: number;
-  // badgeVerifications: number;
+  badgeVerifications: number;
   communitySubmissions: number;
 };

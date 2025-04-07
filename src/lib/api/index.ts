@@ -3,7 +3,6 @@ import { tags } from "../tags";
 import { NODES_API_URL } from "../config";
 import { AUTH_COOKIE_FIELDNAME } from "../constants";
 import { getHeaders } from "../utils";
-import { overviews } from "@/data/analysis-data";
 import { DateRange } from "react-day-picker";
 import { AnalyticsData } from "@/data/schema";
 
