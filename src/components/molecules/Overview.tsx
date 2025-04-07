@@ -3,7 +3,7 @@
 
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { getAnalytics } from "@/lib/api";
-import { Activity, Box, HardDrive, LoaderIcon, UsersRound } from "lucide-react";
+import { Activity, Box, HardDrive, LoaderIcon, ThumbsUp, UsersRound } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getHeaders } from "@/lib/utils";
 import { ReactElement, useState } from "react";
@@ -27,6 +27,7 @@ const metricIcons = {
   users: UsersRound,
   nodes: Box,
   data: HardDrive,
+  thumbsUp: ThumbsUp
 } as const;
 
 const MetricCard = ({
@@ -256,6 +257,66 @@ export default function Overview() {
         value={numberValue(analytics.publishedNodesInLast30Days)}
         description="Last 30 days"
         icon="nodes"
+      />
+
+      {/* Node appreciation */}
+      <MetricCard
+        header="Node Appreciation"
+        value={numberValue(analytics.nodeLikesToday)}
+        description="Today"
+        icon="thumbsUp"
+      />
+      <MetricCard
+        header="Node Appreciation"
+        value={numberValue(analytics.nodeLikesInLast7Days)}
+        description="Last 7 days"
+        icon="thumbsUp"
+      />
+      <MetricCard
+        header="Node Appreciation"
+        value={numberValue(analytics.nodeLikesInLast30Days)}
+        description="Last 30 days"
+        icon="thumbsUp"
+      />
+
+      {/* Community submissions */}
+      <MetricCard
+        header="Community submissions"
+        value={numberValue(analytics.communitySubmissionsToday)}
+        description="Today"
+        icon="thumbsUp"
+      />
+      <MetricCard
+        header="Community submissions"
+        value={numberValue(analytics.communitySubmissionsInLast7Days)}
+        description="Last 7 days"
+        icon="thumbsUp"
+      />
+      <MetricCard
+        header="Community submissions"
+        value={numberValue(analytics.communitySubmissionsInLast30Days)}
+        description="Last 30 days"
+        icon="thumbsUp"
+      />
+      
+      {/* Verifed badges stats */}
+      <MetricCard
+        header="Verified Attestations (badges)"
+        value={numberValue(analytics.badgeVerificationsToday)}
+        description="Today"
+        icon="thumbsUp"
+      />
+      <MetricCard
+        header="Verified Attestations (badges)"
+        value={numberValue(analytics.badgeVerificationsInLast7Days)}
+        description="Last 7 days"
+        icon="thumbsUp"
+      />
+      <MetricCard
+        header="Verified Attestations (badges)"
+        value={numberValue(analytics.badgeVerificationsInLast30Days)}
+        description="Last 30 days"
+        icon="thumbsUp"
       />
 
       {/* Data views */}

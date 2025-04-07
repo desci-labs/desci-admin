@@ -252,11 +252,11 @@ export interface Analytics {
   nodeViewsToday: number;
   nodeViewsInLast7Days: number;
   nodeViewsInLast30Days: number;
- 
+
   bytesToday: number;
   bytesInLast7Days: number;
   bytesInLast30Days: number;
-  
+
   downloadedBytesToday: number;
   downloadedBytesInLast7Days: number;
   downloadedBytesInLast30Days: number;
@@ -276,6 +276,18 @@ export interface Analytics {
   publishedNodesToday: number;
   publishedNodesInLast7Days: number;
   publishedNodesInLast30Days: number;
+
+  nodeLikesToday: number;
+  nodeLikesInLast7Days: number;
+  nodeLikesInLast30Days: number;
+
+  communitySubmissionsInLast7Days: number;
+  communitySubmissionsInLast30Days: number;
+  communitySubmissionsToday: number;
+
+  badgeVerificationsToday: number;
+  badgeVerificationsInLast7Days: number;
+  badgeVerificationsInLast30Days: number;
 }
 
 export interface AnalyticsUser {
@@ -386,21 +398,21 @@ export const toggleUserRole = async ({ userId }: { userId: number }) => {
 };
 
 interface SearchResponse {
-    data: {
-      count: number;
-      cursor: number;
-      page: number;
-      data: [
-        {
-          name: string;
-          id: number;
-          email: string;
-          isAdmin: boolean;
-          orcid: string; //"0009-0000-3482-812X"
-          organisations?: string[];
-        }
-      ];
-    };
+  data: {
+    count: number;
+    cursor: number;
+    page: number;
+    data: [
+      {
+        name: string;
+        id: number;
+        email: string;
+        isAdmin: boolean;
+        orcid: string; //"0009-0000-3482-812X"
+        organisations?: string[];
+      }
+    ];
+  };
 }
 
 export async function searchUsersProfiles({ name }: { name?: string }) {
