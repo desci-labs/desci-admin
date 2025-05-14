@@ -1,5 +1,5 @@
 import { AnalyticsData } from "@/data/schema";
-import { endOfDay, formatDate, subDays, toDate } from "date-fns";
+import { endOfDay, formatDate, startOfDay, subDays, toDate } from "date-fns";
 import { Filterbar } from "./DateFilterbar";
 import {
   Select,
@@ -113,7 +113,7 @@ export default function AnalyticsCharts(props: {
   }) => void;
 }) {
   const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
-    from: subDays(maxDate, 30),
+    from: startOfDay(subDays(maxDate, 30)),
     to: endOfDay(maxDate),
   });
   const [interval, setInterval] = useState<Interval>("weekly");
@@ -146,7 +146,6 @@ export default function AnalyticsCharts(props: {
 
   useEffect(() => {
     if (selectedDates?.from && selectedDates?.to) {
-      console.log("[analyticsCharts]", selectedDates);
       props.onQueryChange({
         from: selectedDates.from.toISOString(),
         to: endOfDay(selectedDates.to).toISOString(),
@@ -158,7 +157,6 @@ export default function AnalyticsCharts(props: {
 
   const prevDates = getPeriod(selectedDates);
 
-  console.log("[selectedDates]: ", selectedDates);
   return (
     <section aria-labelledby="analytics-charts">
       <div className="sticky top-16 z-20 flex items-center justify-between border-b border-gray-200 pb-4 pt-4 sm:pt-6 lg:top-0 lg:mx-0 lg:px-0 lg:pt-8 dark:border-gray-800 ">

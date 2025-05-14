@@ -13,7 +13,7 @@ export type AnalyticsData = {
   publishedNodes: number;
   nodeViews: number;
   bytes: number;
-  "Downloaded data": number;
+  // "Downloaded data": number;
   newUsers: number;
   newOrcidUsers: number;
   activeUsers: number;

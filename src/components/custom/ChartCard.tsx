@@ -117,9 +117,17 @@ export function ChartCard({
       const value = (overview?.[categoryId] as number) || 0;
       const previousValue = (prevOverview?.[categoryId] as number) || 0;
 
+      const peggedPeriod = isWithinInterval(
+        date,
+        interval(selectedDates?.from!, selectedDates?.to!)
+      )
+        ? date
+        : new Date(selectedDates?.from!);
+
+      console.log("[overview.date]", index, overview, date, peggedPeriod);
       return {
         title,
-        date: date,
+        date: overview?.date ?? peggedPeriod,
         formattedDate: formatDate(date, "dd MMM"),
         value,
         previousDate: prevOverview?.date,
@@ -136,10 +144,11 @@ export function ChartCard({
     })
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  console.log("[chartData]", {
-    chartData,
-    data,
-  });
+  // console.log("[chartData]", {
+  //   overviews,
+  //   chartData,
+  //   data,
+  // });
 
   const categories =
     selectedPeriod === "no-comparison" ? ["value"] : ["value", "previousValue"];
