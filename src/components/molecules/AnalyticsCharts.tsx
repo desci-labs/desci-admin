@@ -1,5 +1,14 @@
 import { AnalyticsData } from "@/data/schema";
-import { endOfDay, formatDate, startOfDay, subDays, toDate } from "date-fns";
+import {
+  endOfDay,
+  endOfMonth,
+  formatDate,
+  startOfDay,
+  startOfYear,
+  subDays,
+  subMonths,
+  toDate,
+} from "date-fns";
 import { Filterbar } from "./DateFilterbar";
 import {
   Select,
@@ -113,12 +122,11 @@ export default function AnalyticsCharts(props: {
   }) => void;
 }) {
   const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
-    from: startOfDay(subDays(maxDate, 30)),
-    to: endOfDay(maxDate),
+    from: startOfDay(startOfYear(maxDate)),
+    to: endOfDay(endOfMonth(subMonths(maxDate, 1))),
   });
-  const [interval, setInterval] = useState<Interval>("weekly");
-  const [periodValue, setPeriodValue] =
-    useState<PeriodValue>("previous-period");
+  const [interval, setInterval] = useState<Interval>("monthly");
+  const [periodValue, setPeriodValue] = useState<PeriodValue>("no-comparison");
 
   const {
     data = [],
