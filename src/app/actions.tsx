@@ -231,3 +231,79 @@ export async function updateAttestation(_prevState: any, formData: FormData) {
     return { ok: false, message: "Unknown error occurred", error: [] };
   }
 }
+
+export async function createJournal(_prevState: any, formData: FormData) {
+  const res = await fetch(`${API_URL}/v1/journals`, {
+    method: "POST",
+    body: JSON.stringify({
+      name: formData.get("name"),
+      description: formData.get("description"),
+      iconCid: formData.get("iconCid"),
+    }),
+    headers: {
+      cookie: cookies().toString(),
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+  let response = (await res.json()) as
+    | { data: { journal: any } }
+    | { message: string; error?: string[] };
+
+  if (res.ok && "data" in response) {
+    console.log("response", response.data);
+    // Set cookie
+    return {
+      ok: true,
+    };
+  } else if (!("data" in response)) {
+    console.log("response", response);
+    return {
+      ok: false,
+      message: response.message,
+      error: response.error,
+    };
+  } else {
+    return { ok: false, message: "Unknown error occurred", error: [] };
+  }
+}
+
+export async function updateJournal(_prevState: any, formData: FormData) {
+  const id = formData.get("journalId");
+  formData.delete("journalId");
+
+  if (!id) {
+    return { ok: false, message: "No journal ID", error: [] };
+  }
+  const res = await fetch(`${API_URL}/v1/journals/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      name: formData.get("name"),
+      description: formData.get("description"),
+      iconCid: formData.get("iconCid"),
+    }),
+    headers: {
+      cookie: cookies().toString(),
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+  let response = (await res.json()) as
+    | { data: { journal: any } }
+    | { message: string; error?: string[] };
+
+  if (res.ok && "data" in response) {
+    // Set cookie
+    return {
+      ok: true,
+    };
+  } else if (!("data" in response)) {
+    return {
+      ok: false,
+      message: response.message,
+      error: response.error,
+    };
+  } else {
+    return { ok: false, message: "Unknown error occurred", error: [] };
+  }
+}

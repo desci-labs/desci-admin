@@ -74,6 +74,30 @@ export type PaginatedApiResponse<T> = {
 
 type ApiError = { message: string };
 
+export interface Journal {
+  id: number;
+  name: string;
+  description: string;
+  iconCid: string;
+  createdAt: string;
+}
+
+export const listJournalsQuery = queryOptions({
+  queryKey: [tags.journals],
+  retry: 1,
+  queryFn: async (context) => {
+    const response = await fetch(`${NODES_API_URL}/v1/journals`, {
+      credentials: "include",
+      // headers: getHeaders(),
+    });
+    const json = (await response.json()) as ApiResponse<{
+      journals: Journal[];
+    }>;
+    console.log("fetch list", response.ok, response.status, json);
+    return json.data?.journals ?? [];
+  },
+});
+
 export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
   retry: 1,
