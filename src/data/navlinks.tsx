@@ -12,6 +12,11 @@ import {
   ListCheckIcon,
   SettingsIcon,
   UsersIcon,
+  BarChart3Icon,
+  LineChartIcon,
+  TrendingUpIcon,
+  UsersRoundIcon,
+  DatabaseIcon,
 } from "lucide-react";
 
 export interface NavLink {
@@ -104,12 +109,44 @@ export const sidelinks: SideLink[] = [
       },
     ],
   },
-  // {
-  //   title: 'Analysis',
-  //   label: '',
-  //   href: '/analysis',
-  //   icon: <ChartNoAxesColumnIncreasing size={18} />,
-  // },
+  {
+    title: "User Engagement",
+    label: "",
+    href: "/metrics",
+    icon: <BarChart3Icon size={18} />,
+    sub: [
+      {
+        title: "User Engagement",
+        label: "",
+        href: "/metrics",
+        icon: <UsersRoundIcon size={18} />,
+      },
+      {
+        title: "Publishing funnel",
+        label: "",
+        href: "/metrics/publishing-funnel",
+        icon: <LineChartIcon size={18} />,
+      },
+      {
+        title: "Retention",
+        label: "",
+        href: "/metrics/retention",
+        icon: <TrendingUpIcon size={18} />,
+      },
+      {
+        title: "Feature adoption",
+        label: "",
+        href: "/metrics/feature-adoption",
+        icon: <CircleDotDashedIcon size={18} />,
+      },
+      {
+        title: "Research object Statistics",
+        label: "",
+        href: "/metrics/ro-stats",
+        icon: <DatabaseIcon size={18} />,
+      },
+    ],
+  },
   // {
   //   title: 'Settings',
   //   label: '',

@@ -40,11 +40,11 @@ export default function JournalDetails({ journal }: JournalProps) {
               <img
                 src={
                   journal.iconCid
-                    ? `https://ipfs.io/ipfs/${journal.iconCid}`
+                    ? `https://pub.desci.com/ipfs/${journal.iconCid}`
                     : "/placeholder.svg?height=300&width=400"
                 }
                 alt={journal.name}
-                className="w-full h-auto rounded-lg object-cover"
+                className="w-full h-auto rounded-lg object-center"
               />
             </div>
             <div className="md:w-2/3">
