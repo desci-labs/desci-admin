@@ -5,6 +5,7 @@ import { AUTH_COOKIE_FIELDNAME } from "../constants";
 import { getHeaders } from "../utils";
 import { DateRange } from "react-day-picker";
 import { AnalyticsData } from "@/data/schema";
+import { UserEngagementMetricsData } from "@/types/metrics";
 
 // import { cookies } from "next/headers";
 
@@ -472,4 +473,46 @@ export async function getAnalyticsData(range: DateRange, interval: string) {
 
   console.log("[data]", data?.data.analytics);
   return data?.data.analytics;
+}
+
+export async function getUserEngagementMetrics(): Promise<UserEngagementMetricsData> {
+  const response = await fetch(
+    `${NODES_API_URL}/v1/admin/metrics/user-engagements`,
+    {
+      credentials: "include",
+      mode: "cors",
+    }
+  );
+
+  if (!response.ok) {
+    console.log(
+      "getUserEngagementMetrics",
+      response.status,
+      response.statusText
+    );
+    return {
+      activeUsers: {
+        daily: 0,
+        weekly: 0,
+        monthly: 0,
+      },
+      publishingUsers: {
+        researchObjectsCreated: 0,
+        researchObjectsUpdated: 0,
+        researchObjectsShared: 0,
+        researchObjectsPublished: 0,
+        communityPublications: 0,
+      },
+      exploringUsers: {
+        daily: 0,
+        weekly: 0,
+        monthly: 0,
+      },
+    };
+  }
+
+  const data =
+    (await response.json()) as ApiResponse<UserEngagementMetricsData>;
+  console.log("getUserEngagementMetrics", data);
+  return data.data;
 }

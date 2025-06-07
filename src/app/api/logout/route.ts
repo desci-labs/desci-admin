@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(_request: Request) {
   try {
+    console.log("logout");
     const logoutRes = await fetch(`${NODES_API_URL}/v1/auth/logout`, {
       method: "delete",
       credentials: "include",
@@ -19,7 +20,7 @@ export async function DELETE(_request: Request) {
         cookies().delete(field.name);
       }
     }
-    console.log('[cookies]', cookies().toString())
+    console.log("[cookies]", cookies().toString());
     return NextResponse.json({ ok: logoutRes.ok });
   } catch (e) {
     return NextResponse.json({ error: e }, { status: 500 });

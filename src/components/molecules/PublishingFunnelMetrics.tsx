@@ -73,7 +73,7 @@ export default async function PublishingFunnelMetrics() {
   const metricsData = await getPublishingFunnelData();
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container py-6 space-y-6">
       <div className="flex items-center justify-between space-x-4">
         <p className="text-muted-foreground">
           Monitor user conversion from creation to publication and

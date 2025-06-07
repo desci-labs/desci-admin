@@ -17,13 +17,13 @@ export function FeatureAdoptionMetrics() {
       try {
         // Simulated API response
         const response = {
-          totalShares: 2500,
-          totalCoAuthorInvites: 1800,
-          totalAIAnalyticsClicks: 5000,
-          totalMatchedArticleClicks: 3200,
-          totalClaimedBadges: 450,
-          totalProfileViews: 8000,
-          totalGuestModeVisits: 12000,
+          totalShares: 500,
+          totalCoAuthorInvites: 100,
+          totalAIAnalyticsClicks: 300,
+          totalMatchedArticleClicks: 30,
+          totalClaimedBadges: -50,
+          totalProfileViews: 100,
+          totalGuestModeVisits: 120,
         };
         setMetrics(response);
       } catch (error) {

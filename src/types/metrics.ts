@@ -28,3 +28,23 @@ export interface MetricCardProps {
   trend?: number;
   isLoading?: boolean;
 }
+
+export interface UserEngagementMetricsData {
+  activeUsers: {
+    daily: number;
+    weekly: number;
+    monthly: number;
+  };
+  publishingUsers: {
+    researchObjectsCreated: number;
+    researchObjectsUpdated: number;
+    researchObjectsShared: number;
+    researchObjectsPublished: number;
+    communityPublications: number;
+  };
+  exploringUsers: {
+    daily: number;
+    weekly: number;
+    monthly: number;
+  };
+}
