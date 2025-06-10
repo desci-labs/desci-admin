@@ -159,11 +159,9 @@ export default function PublishingFunnelMetrics() {
       }),
     retry: 2,
     retryDelay: (failureCount, error) => {
-      console.log("retryDelay", { failureCount, error });
       return failureCount * 1000;
     },
   });
-  console.log("response", { metrics, isFetching, isError, error });
   if (isError) {
     return (
       <ErrorMessage

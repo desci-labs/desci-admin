@@ -30,8 +30,6 @@ export function MetricCard({
     );
   }
 
-  const badgeType = value >= 0 ? "success" : "destructive";
-
   return (
     <Card className="transition-all duration-200 hover:border-blue-500/50 hover:shadow-sm">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

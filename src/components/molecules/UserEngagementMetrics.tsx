@@ -14,6 +14,7 @@ import { tags } from "@/lib/tags";
 import { UserEngagementMetricsData } from "@/types/metrics";
 import { useQuery } from "@tanstack/react-query";
 import { Users, FileText, Search } from "lucide-react";
+import { ErrorMessage } from "../ui/error-message";
 
 const KpiCard = ({
   title,
@@ -128,7 +129,14 @@ export default function UserEngagementMetrics() {
   });
 
   if (isError) {
-    return <div>Error: {error?.message}</div>;
+    return (
+      <ErrorMessage
+        message={
+          error?.message ??
+          "An error occurred while fetching user engagement metrics. Please try again."
+        }
+      />
+    );
   }
 
   if (isLoading || isFetching) {

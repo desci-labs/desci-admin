@@ -101,7 +101,7 @@ export function DateFilterWithPresets({
         onDatesChange={(dates) => {
           setSelectedDates({
             from: dates?.from,
-            to: endOfDay(dates?.to ?? Date.now()),
+            to: endOfDay(dates?.to ?? new Date()),
           });
           onChange?.(dates);
         }}

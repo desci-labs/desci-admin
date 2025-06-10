@@ -551,6 +551,5 @@ export async function getPublishingFunnelMetrics(query: {
 
   const data =
     (await response.json()) as ApiResponse<PublishingFunnelMetricsData>;
-  console.log("getPublishingFunnelMetrics", data);
   return data.data;
 }

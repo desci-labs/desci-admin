@@ -69,7 +69,7 @@ export function DatePickerWithRange({
             onValueChange={(value) =>
               onChange({
                 to: new Date(),
-                from: subDays(new Date(), parseInt(value)),
+                from: subDays(new Date(), parseInt(value, 10)),
               })
             }
           >

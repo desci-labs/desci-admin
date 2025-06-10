@@ -21,7 +21,7 @@ export function FeatureAdoptionMetrics() {
           totalCoAuthorInvites: 100,
           totalAIAnalyticsClicks: 300,
           totalMatchedArticleClicks: 30,
-          totalClaimedBadges: -50,
+          totalClaimedBadges: 50,
           totalProfileViews: 100,
           totalGuestModeVisits: 120,
         };
