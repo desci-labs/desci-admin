@@ -4,6 +4,7 @@ import ThemeContext from "@/app/ThemeProvider";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/get-query-client";
 import ModalProvider from "./ModalProvider";
+import FilterProvider from "./FilterProvider";
 
 export default function Providers(props: PropsWithChildren<unknown>) {
   const queryClient = getQueryClient();
@@ -12,7 +13,9 @@ export default function Providers(props: PropsWithChildren<unknown>) {
     // <ThemeContext>
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ModalProvider>
-        <PanelProvider>{props.children}</PanelProvider>
+        <PanelProvider>
+          <FilterProvider>{props.children}</FilterProvider>
+        </PanelProvider>
       </ModalProvider>
     </HydrationBoundary>
     // </ThemeContext>

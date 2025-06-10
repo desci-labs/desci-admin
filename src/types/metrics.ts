@@ -48,3 +48,16 @@ export interface UserEngagementMetricsData {
     monthly: number;
   };
 }
+
+export interface PublishingFunnelMetricsData {
+  totalUsers: number;
+  publishers: number;
+  publishersInCommunity: number;
+  guestSignUpSuccessRate: number;
+  previousPeriod?: {
+    totalUsers: number;
+    publishers: number;
+    publishersInCommunity: number;
+    guestSignUpSuccessRate: number;
+  };
+}

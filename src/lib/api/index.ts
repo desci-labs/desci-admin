@@ -5,7 +5,10 @@ import { AUTH_COOKIE_FIELDNAME } from "../constants";
 import { getHeaders } from "../utils";
 import { DateRange } from "react-day-picker";
 import { AnalyticsData } from "@/data/schema";
-import { UserEngagementMetricsData } from "@/types/metrics";
+import {
+  PublishingFunnelMetricsData,
+  UserEngagementMetricsData,
+} from "@/types/metrics";
 
 // import { cookies } from "next/headers";
 
@@ -514,5 +517,40 @@ export async function getUserEngagementMetrics(): Promise<UserEngagementMetricsD
   const data =
     (await response.json()) as ApiResponse<UserEngagementMetricsData>;
   console.log("getUserEngagementMetrics", data);
+  return data.data;
+}
+
+export async function getPublishingFunnelMetrics(query: {
+  from: string;
+  to: string;
+  compareToPreviousPeriod: boolean;
+}): Promise<PublishingFunnelMetricsData> {
+  const response = await fetch(
+    `${NODES_API_URL}/v1/admin/metrics/publish-metrics?from=${query.from}&to=${
+      query.to
+    }${query.compareToPreviousPeriod ? "&compareToPreviousPeriod=true" : ""}`,
+    {
+      credentials: "include",
+      mode: "cors",
+    }
+  );
+
+  if (!response.ok) {
+    console.log(
+      "getPublishingFunnelMetrics Error",
+      response.status,
+      response.statusText
+    );
+    return {
+      totalUsers: 0,
+      publishers: 0,
+      publishersInCommunity: 0,
+      guestSignUpSuccessRate: 0,
+    };
+  }
+
+  const data =
+    (await response.json()) as ApiResponse<PublishingFunnelMetricsData>;
+  console.log("getPublishingFunnelMetrics", data);
   return data.data;
 }

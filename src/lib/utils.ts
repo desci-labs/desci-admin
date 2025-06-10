@@ -102,7 +102,7 @@ export const formatters: { [key: string]: any } = {
 export const getPeriod = (
   dateRange: DateRange | undefined
 ): DateRange | undefined => {
-  if (!dateRange) return undefined;
+  if (!dateRange || !dateRange.from || !dateRange.to) return undefined;
   const from = dateRange.from;
   const to = dateRange.to;
   let lastPeriodFrom;

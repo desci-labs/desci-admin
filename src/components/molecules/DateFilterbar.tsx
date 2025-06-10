@@ -2,7 +2,7 @@
 
 import { DateRangePicker } from "@/components/ui/date-picker";
 import { DateRange } from "react-day-picker";
-import { formatDate, startOfDay } from "date-fns";
+import { formatDate, startOfDay, subDays } from "date-fns";
 import { PeriodValue } from "@/lib/chartUtils";
 import { endOfDay } from "date-fns";
 import { useState } from "react";
@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getPeriod } from "@/lib/utils";
+import { useGetFilter, useSetFilter } from "@/contexts/FilterContext";
 
 type FilterbarProps = {
   maxDate?: Date;
@@ -38,6 +39,29 @@ export function Filterbar({
         toDate={maxDate}
         fromDate={minDate}
         align="start"
+        presets={[
+          {
+            label: "In past day",
+            dateRange: {
+              from: subDays(new Date(), 1),
+              to: new Date(),
+            },
+          },
+          {
+            label: "Last 7 days",
+            dateRange: {
+              from: subDays(new Date(), 7),
+              to: new Date(),
+            },
+          },
+          {
+            label: "Last 30 days",
+            dateRange: {
+              from: subDays(new Date(), 30),
+              to: new Date(),
+            },
+          },
+        ]}
       />
     </div>
   );
@@ -48,27 +72,51 @@ export function DateFilterWithPresets({
 }: {
   onChange?: (dates: DateRange | undefined) => void;
 }) {
-  const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
-    from: startOfDay(new Date()),
-    to: endOfDay(new Date()),
-  });
-  const [periodValue, setPeriodValue] = useState<PeriodValue>("no-comparison");
+  // const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
+  //   from: startOfDay(new Date()),
+  //   to: endOfDay(new Date()),
+  // });
+  const { range: selectedDates, compareToPreviousPeriod } = useGetFilter();
+  const { setRange: setSelectedDates, setCompareToPreviousPeriod } =
+    useSetFilter();
+  const [periodValue, setPeriodValue] = useState<PeriodValue>(() =>
+    compareToPreviousPeriod ? "previous-period" : "no-comparison"
+  );
 
   const prevDates = getPeriod(selectedDates);
 
   return (
     <>
-      <DatePickerWithRange
+      {/* <DatePickerWithRange
         selectedDates={selectedDates}
         onChange={(dates) => {
-          setSelectedDates(dates);
+          dates && setSelectedDates(dates);
+          onChange?.(dates);
+        }}
+      /> */}
+      <Filterbar
+        maxDate={new Date()}
+        minDate={new Date(2022, 0, 1)}
+        selectedDates={selectedDates}
+        onDatesChange={(dates) => {
+          setSelectedDates({
+            from: dates?.from,
+            to: endOfDay(dates?.to ?? Date.now()),
+          });
           onChange?.(dates);
         }}
       />
       <p className="text-muted-foreground text-sm">Compared to</p>
       <Select
         defaultValue={periodValue}
-        onValueChange={(period) => setPeriodValue(period as PeriodValue)}
+        onValueChange={(period) => {
+          setPeriodValue(period as PeriodValue);
+          if (period === "previous-period") {
+            setCompareToPreviousPeriod(true);
+          } else {
+            setCompareToPreviousPeriod(false);
+          }
+        }}
       >
         <SelectTrigger className="w-fit">
           <SelectValue placeholder="Select Period" />
@@ -77,10 +125,11 @@ export function DateFilterWithPresets({
           <SelectItem
             className="px-2"
             value="previous-period"
-            title={`${formatDate(
-              prevDates?.from ?? "",
-              "MMM dd, yyyy"
-            )} - ${formatDate(prevDates?.to ?? "", "MMM dd, yyyy")}`}
+            title={`${
+              prevDates?.from ? formatDate(prevDates?.from, "MMM dd, yyyy") : ""
+            } - ${
+              prevDates?.to ? formatDate(prevDates?.to, "MMM dd, yyyy") : ""
+            }`}
           >
             Previous period
           </SelectItem>
