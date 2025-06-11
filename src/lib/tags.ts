@@ -9,4 +9,5 @@ export enum tags {
   journals = "journals",
   userEngagement = "user-engagement",
   publishingFunnel = "publishing-funnel",
+  roStats = "ro-stats",
 }

@@ -4,31 +4,46 @@ import { useEffect, useState } from "react";
 import { MetricCard } from "./MetricCard";
 import { ResearchObjectStats as ResearchObjectStatsType } from "@/types/metrics";
 import { DateFilterWithPresets } from "./DateFilterbar";
+import { useQuery } from "@tanstack/react-query";
+import { tags } from "@/lib/tags";
+import { getResearchObjectMetrics } from "@/lib/api";
+import { useGetFilter } from "@/contexts/FilterContext";
+import { ErrorMessage } from "../ui/error-message";
 
 export function ResearchObjectStats() {
-  const [stats, setStats] = useState<ResearchObjectStatsType | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { range, compareToPreviousPeriod } = useGetFilter();
+  const {
+    data: stats,
+    isFetching,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: [tags.roStats, range.from, range.to, compareToPreviousPeriod],
+    queryFn: () =>
+      getResearchObjectMetrics(
+        range.from && {
+          from: range.from.toISOString() ?? "",
+          to: range.to?.toISOString() ?? "",
+          compareToPreviousPeriod,
+        }
+      ),
+    retry: 2,
+    retryDelay: (failureCount, error) => {
+      return failureCount * 1000;
+    },
+  });
+  if (isError) {
+    return (
+      <ErrorMessage
+        message={
+          error?.message ??
+          "An error occurred while fetching metrics. Please try again."
+        }
+      />
+    );
+  }
 
-  useEffect(() => {
-    // TODO: Replace with actual API call
-    const fetchStats = async () => {
-      try {
-        // Simulated API response
-        const response = {
-          averageROsPerResearcher: 5.2,
-          medianROsPerResearcher: 3,
-          totalROsCreated: 1250,
-        };
-        setStats(response);
-      } catch (error) {
-        console.error("Error fetching research object stats:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchStats();
-  }, []);
+  console.log("stats", stats);
 
   return (
     <div className="space-y-6">
@@ -45,21 +60,42 @@ export function ResearchObjectStats() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <MetricCard
           title="Average ROs per Researcher"
-          value={stats?.averageROsPerResearcher ?? 0}
+          value={stats?.averageRoCreatedPerUser ?? 0}
+          valueFormat="number"
           description="Average number of research objects created per researcher"
-          isLoading={isLoading}
+          isLoading={isFetching}
+          trend={
+            compareToPreviousPeriod
+              ? (stats?.averageRoCreatedPerUser ?? 0) -
+                (stats?.previousPeriod?.averageRoCreatedPerUser ?? 0)
+              : undefined
+          }
         />
         <MetricCard
           title="Median ROs per Researcher"
-          value={stats?.medianROsPerResearcher ?? 0}
+          value={stats?.medianRoCreatedPerUser ?? 0}
+          valueFormat="number"
           description="Median number of research objects created per researcher"
-          isLoading={isLoading}
+          isLoading={isFetching}
+          trend={
+            compareToPreviousPeriod
+              ? (stats?.medianRoCreatedPerUser ?? 0) -
+                (stats?.previousPeriod?.medianRoCreatedPerUser ?? 0)
+              : undefined
+          }
         />
         <MetricCard
           title="Total ROs Created"
-          value={stats?.totalROsCreated ?? 0}
+          value={stats?.totalRoCreated ?? 0}
+          valueFormat="number"
           description="Total number of research objects created"
-          isLoading={isLoading}
+          isLoading={isFetching}
+          trend={
+            compareToPreviousPeriod
+              ? (stats?.totalRoCreated ?? 0) -
+                (stats?.previousPeriod?.totalRoCreated ?? 0)
+              : undefined
+          }
         />
       </div>
     </div>

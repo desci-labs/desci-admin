@@ -6,9 +6,14 @@ export interface RetentionMetrics {
 }
 
 export interface ResearchObjectStats {
-  averageROsPerResearcher: number;
-  medianROsPerResearcher: number;
-  totalROsCreated: number;
+  totalRoCreated: number;
+  averageRoCreatedPerUser: number;
+  medianRoCreatedPerUser: number;
+  previousPeriod?: {
+    totalRoCreated: number;
+    averageRoCreatedPerUser: number;
+    medianRoCreatedPerUser: number;
+  };
 }
 
 export interface FeatureAdoptionMetrics {
@@ -24,6 +29,7 @@ export interface FeatureAdoptionMetrics {
 export interface MetricCardProps {
   title: string;
   value: number;
+  valueFormat?: "percent" | "number";
   description?: string;
   trend?: number;
   isLoading?: boolean;

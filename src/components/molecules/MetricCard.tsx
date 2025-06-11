@@ -13,6 +13,7 @@ export function MetricCard({
   description,
   trend,
   isLoading,
+  valueFormat = "percent",
 }: MetricCardProps) {
   if (isLoading) {
     return (
@@ -45,15 +46,17 @@ export function MetricCard({
             ) : (
               <ArrowDownIcon className="h-4 w-4" />
             )}
-            {/* <span className="ml-1 text-xs">{Math.abs(trend)}%</span> */}
-            <Badge variant={getBadgeType(value)}>
-              {percentageFormatter(Number.isNaN(value) ? 0 : value)}
+            <Badge variant={getBadgeType(trend)} className="ml-1">
+              {Number.isNaN(trend) ? 0 : percentageFormatter(trend)}%
             </Badge>
           </div>
         )}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value.toLocaleString()}%</div>
+        <div className="text-2xl font-bold">
+          {value.toLocaleString()}
+          {valueFormat === "percent" ? "%" : ""}
+        </div>
         {description && (
           <p className="text-xs text-muted-foreground mt-1">{description}</p>
         )}

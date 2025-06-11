@@ -7,6 +7,7 @@ import { DateRange } from "react-day-picker";
 import { AnalyticsData } from "@/data/schema";
 import {
   PublishingFunnelMetricsData,
+  ResearchObjectStats,
   UserEngagementMetricsData,
 } from "@/types/metrics";
 
@@ -525,15 +526,16 @@ export async function getPublishingFunnelMetrics(query: {
   to: string;
   compareToPreviousPeriod: boolean;
 }): Promise<PublishingFunnelMetricsData> {
-  const response = await fetch(
-    `${NODES_API_URL}/v1/admin/metrics/publish-metrics?from=${query.from}&to=${
-      query.to
-    }${query.compareToPreviousPeriod ? "&compareToPreviousPeriod=true" : ""}`,
-    {
-      credentials: "include",
-      mode: "cors",
-    }
-  );
+  const url = new URL(`${NODES_API_URL}/v1/admin/metrics/publish-metrics`);
+  if (query?.from) url.searchParams.set("from", query.from);
+  if (query?.to) url.searchParams.set("to", query.to);
+  if (query?.compareToPreviousPeriod)
+    url.searchParams.set("compareToPreviousPeriod", "true");
+
+  const response = await fetch(url.toString(), {
+    credentials: "include",
+    mode: "cors",
+  });
 
   if (!response.ok) {
     console.log(
@@ -551,5 +553,40 @@ export async function getPublishingFunnelMetrics(query: {
 
   const data =
     (await response.json()) as ApiResponse<PublishingFunnelMetricsData>;
+  return data.data;
+}
+
+export async function getResearchObjectMetrics(query?: {
+  from: string;
+  to: string;
+  compareToPreviousPeriod: boolean;
+}): Promise<ResearchObjectStats> {
+  const url = new URL(
+    `${NODES_API_URL}/v1/admin/metrics/research-object-metrics`
+  );
+  if (query?.from) url.searchParams.set("from", query.from);
+  if (query?.to) url.searchParams.set("to", query.to);
+  if (query?.compareToPreviousPeriod)
+    url.searchParams.set("compareToPreviousPeriod", "true");
+
+  const response = await fetch(url.toString(), {
+    credentials: "include",
+    mode: "cors",
+  });
+
+  if (!response.ok) {
+    console.log(
+      "getResearchObjectMetrics Error",
+      response.status,
+      response.statusText
+    );
+    return {
+      totalRoCreated: 0,
+      averageRoCreatedPerUser: 0,
+      medianRoCreatedPerUser: 0,
+    };
+  }
+
+  const data = (await response.json()) as ApiResponse<ResearchObjectStats>;
   return data.data;
 }
