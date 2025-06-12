@@ -47,7 +47,7 @@ export function MetricCard({
               <ArrowDownIcon className="h-4 w-4" />
             )}
             <Badge variant={getBadgeType(trend)} className="ml-1">
-              {Number.isNaN(trend) ? 0 : percentageFormatter(trend)}%
+              {Number.isNaN(trend) ? `0%` : percentageFormatter(trend, 0)}
             </Badge>
           </div>
         )}

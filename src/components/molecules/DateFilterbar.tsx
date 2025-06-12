@@ -2,11 +2,9 @@
 
 import { DateRangePicker } from "@/components/ui/date-picker";
 import { DateRange } from "react-day-picker";
-import { formatDate, startOfDay, subDays } from "date-fns";
+import { formatDate, subDays } from "date-fns";
 import { PeriodValue } from "@/lib/chartUtils";
-import { endOfDay } from "date-fns";
 import { useState } from "react";
-import { DatePickerWithRange } from "../ui/DatePickerWithRange";
 import {
   Select,
   SelectContent,
@@ -72,10 +70,6 @@ export function DateFilterWithPresets({
 }: {
   onChange?: (dates: DateRange | undefined) => void;
 }) {
-  // const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
-  //   from: startOfDay(new Date()),
-  //   to: endOfDay(new Date()),
-  // });
   const { range: selectedDates, compareToPreviousPeriod } = useGetFilter();
   const { setRange: setSelectedDates, setCompareToPreviousPeriod } =
     useSetFilter();
@@ -87,13 +81,6 @@ export function DateFilterWithPresets({
 
   return (
     <>
-      {/* <DatePickerWithRange
-        selectedDates={selectedDates}
-        onChange={(dates) => {
-          dates && setSelectedDates(dates);
-          onChange?.(dates);
-        }}
-      /> */}
       <Filterbar
         maxDate={new Date()}
         minDate={new Date(2022, 0, 1)}
@@ -101,7 +88,7 @@ export function DateFilterWithPresets({
         onDatesChange={(dates) => {
           setSelectedDates({
             from: dates?.from,
-            to: endOfDay(dates?.to ?? new Date()),
+            to: dates?.to,
           });
           onChange?.(dates);
         }}

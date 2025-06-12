@@ -1,17 +1,17 @@
 import { queryOptions } from "@tanstack/react-query";
 import { tags } from "../tags";
 import { NODES_API_URL } from "../config";
-import { AUTH_COOKIE_FIELDNAME } from "../constants";
 import { getHeaders } from "../utils";
 import { DateRange } from "react-day-picker";
 import { AnalyticsData } from "@/data/schema";
 import {
+  FeatureAdoptionMetrics,
   PublishingFunnelMetricsData,
   ResearchObjectStats,
+  RetentionMetrics,
   UserEngagementMetricsData,
 } from "@/types/metrics";
-
-// import { cookies } from "next/headers";
+import { endOfDay } from "date-fns";
 
 export interface Community {
   id: number;
@@ -527,8 +527,9 @@ export async function getPublishingFunnelMetrics(query: {
   compareToPreviousPeriod: boolean;
 }): Promise<PublishingFunnelMetricsData> {
   const url = new URL(`${NODES_API_URL}/v1/admin/metrics/publish-metrics`);
-  if (query?.from) url.searchParams.set("from", query.from);
-  if (query?.to) url.searchParams.set("to", query.to);
+  if (query?.from)
+    url.searchParams.set("from", endOfDay(query.from).toISOString());
+  if (query?.to) url.searchParams.set("to", endOfDay(query.to).toISOString());
   if (query?.compareToPreviousPeriod)
     url.searchParams.set("compareToPreviousPeriod", "true");
 
@@ -564,8 +565,9 @@ export async function getResearchObjectMetrics(query?: {
   const url = new URL(
     `${NODES_API_URL}/v1/admin/metrics/research-object-metrics`
   );
-  if (query?.from) url.searchParams.set("from", query.from);
-  if (query?.to) url.searchParams.set("to", query.to);
+  if (query?.from)
+    url.searchParams.set("from", endOfDay(query.from).toISOString());
+  if (query?.to) url.searchParams.set("to", endOfDay(query.to).toISOString());
   if (query?.compareToPreviousPeriod)
     url.searchParams.set("compareToPreviousPeriod", "true");
 
@@ -588,5 +590,72 @@ export async function getResearchObjectMetrics(query?: {
   }
 
   const data = (await response.json()) as ApiResponse<ResearchObjectStats>;
+  return data.data;
+}
+
+export async function getRetentionMetrics(): Promise<RetentionMetrics> {
+  const url = new URL(`${NODES_API_URL}/v1/admin/metrics/retention-metrics`);
+
+  const response = await fetch(url.toString(), {
+    credentials: "include",
+    mode: "cors",
+  });
+
+  if (!response.ok) {
+    console.log(
+      "getRetentionMetrics Error",
+      response.status,
+      response.statusText
+    );
+    return {
+      day1Retention: 0,
+      day7Retention: 0,
+      day30Retention: 0,
+      day365Retention: 0,
+    };
+  }
+
+  const data = (await response.json()) as ApiResponse<RetentionMetrics>;
+  return data.data;
+}
+
+export async function getFeatureAdoptionMetrics(query?: {
+  from?: Date;
+  to?: Date;
+  compareToPreviousPeriod: boolean;
+}): Promise<FeatureAdoptionMetrics> {
+  const url = new URL(
+    `${NODES_API_URL}/v1/admin/metrics/feature-adoption-metrics`
+  );
+
+  if (query?.from)
+    url.searchParams.set("from", endOfDay(query.from).toISOString());
+  if (query?.to) url.searchParams.set("to", endOfDay(query.to).toISOString());
+  if (query?.compareToPreviousPeriod)
+    url.searchParams.set("compareToPreviousPeriod", "true");
+
+  const response = await fetch(url.toString(), {
+    credentials: "include",
+    mode: "cors",
+  });
+
+  if (!response.ok) {
+    console.log(
+      "getFeatureAdoptionMetrics Error",
+      response.status,
+      response.statusText
+    );
+    return {
+      totalShares: 0,
+      totalCoAuthorInvites: 0,
+      totalAIAnalyticsClicks: 0,
+      totalMatchedArticleClicks: 0,
+      totalClaimedBadges: 0,
+      totalProfileViews: 0,
+      totalGuestModeVisits: 0,
+    };
+  }
+
+  const data = (await response.json()) as ApiResponse<FeatureAdoptionMetrics>;
   return data.data;
 }

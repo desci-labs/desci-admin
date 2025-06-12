@@ -1,34 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { MetricCard } from "./MetricCard";
-import { RetentionMetrics as RetentionMetricsType } from "@/types/metrics";
+import { tags } from "@/lib/tags";
+import { getRetentionMetrics } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+import { ErrorMessage } from "../ui/error-message";
 
 export function RetentionMetrics() {
-  const [metrics, setMetrics] = useState<RetentionMetricsType | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    data: metrics,
+    isFetching,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: [tags.retentionMetrics],
+    queryFn: () => getRetentionMetrics(),
+    retry: 2,
+    retryDelay: (failureCount, error) => {
+      return failureCount * 1000;
+    },
+  });
+  if (isError) {
+    return (
+      <ErrorMessage
+        message={
+          error?.message ??
+          "An error occurred while fetching metrics. Please try again."
+        }
+      />
+    );
+  }
 
-  useEffect(() => {
-    // TODO: Replace with actual API call
-    const fetchMetrics = async () => {
-      try {
-        // Simulated API response
-        const response = {
-          day1Retention: 45,
-          day7Retention: 30,
-          day30Retention: 20,
-          day365Retention: 10,
-        };
-        setMetrics(response);
-      } catch (error) {
-        console.error("Error fetching retention metrics:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchMetrics();
-  }, []);
+  console.log("metrics", metrics);
 
   return (
     <div className="space-y-6">
@@ -45,25 +48,25 @@ export function RetentionMetrics() {
           title="Day 1 Retention"
           value={metrics?.day1Retention ?? 0}
           description="Users who returned the day after signup"
-          isLoading={isLoading}
+          isLoading={isFetching}
         />
         <MetricCard
           title="Day 7 Retention"
           value={metrics?.day7Retention ?? 0}
           description="Users who returned after 7 days"
-          isLoading={isLoading}
+          isLoading={isFetching}
         />
         <MetricCard
           title="Day 30 Retention"
           value={metrics?.day30Retention ?? 0}
           description="Users who returned after 30 days"
-          isLoading={isLoading}
+          isLoading={isFetching}
         />
         <MetricCard
           title="Day 365 Retention"
           value={metrics?.day365Retention ?? 0}
           description="Users who returned after 365 days"
-          isLoading={isLoading}
+          isLoading={isFetching}
         />
       </div>
     </div>

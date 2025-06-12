@@ -24,6 +24,15 @@ export interface FeatureAdoptionMetrics {
   totalClaimedBadges: number;
   totalProfileViews: number;
   totalGuestModeVisits: number;
+  previousPeriod?: {
+    totalShares: number;
+    totalCoAuthorInvites: number;
+    totalAIAnalyticsClicks: number;
+    totalMatchedArticleClicks: number;
+    totalClaimedBadges: number;
+    totalProfileViews: number;
+    totalGuestModeVisits: number;
+  };
 }
 
 export interface MetricCardProps {

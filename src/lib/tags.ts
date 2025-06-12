@@ -10,4 +10,5 @@ export enum tags {
   userEngagement = "user-engagement",
   publishingFunnel = "publishing-funnel",
   roStats = "ro-stats",
+  retentionMetrics = "retention-metrics",
 }
