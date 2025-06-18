@@ -9,6 +9,7 @@ import { tags } from "@/lib/tags";
 import { getResearchObjectMetrics } from "@/lib/api";
 import { useGetFilter } from "@/contexts/FilterContext";
 import { ErrorMessage } from "../ui/error-message";
+import { formatters, getTrend } from "@/lib/utils";
 
 export function ResearchObjectStats() {
   const { range, compareToPreviousPeriod } = useGetFilter();
@@ -32,6 +33,7 @@ export function ResearchObjectStats() {
       return failureCount * 1000;
     },
   });
+  const formatter = formatters.unit;
   if (isError) {
     return (
       <ErrorMessage
@@ -60,40 +62,43 @@ export function ResearchObjectStats() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <MetricCard
           title="Average ROs per Researcher"
-          value={stats?.averageRoCreatedPerUser ?? 0}
-          valueFormat="number"
+          value={formatter(stats?.averageRoCreatedPerUser ?? 0)}
           description="Average number of research objects created per researcher"
           isLoading={isFetching}
           trend={
             compareToPreviousPeriod
-              ? (stats?.averageRoCreatedPerUser ?? 0) -
-                (stats?.previousPeriod?.averageRoCreatedPerUser ?? 0)
+              ? getTrend(
+                  stats?.averageRoCreatedPerUser ?? 0,
+                  stats?.previousPeriod?.averageRoCreatedPerUser ?? 0
+                )
               : undefined
           }
         />
         <MetricCard
           title="Median ROs per Researcher"
-          value={stats?.medianRoCreatedPerUser ?? 0}
-          valueFormat="number"
+          value={formatter(stats?.medianRoCreatedPerUser ?? 0)}
           description="Median number of research objects created per researcher"
           isLoading={isFetching}
           trend={
             compareToPreviousPeriod
-              ? (stats?.medianRoCreatedPerUser ?? 0) -
-                (stats?.previousPeriod?.medianRoCreatedPerUser ?? 0)
+              ? getTrend(
+                  stats?.medianRoCreatedPerUser ?? 0,
+                  stats?.previousPeriod?.medianRoCreatedPerUser ?? 0
+                )
               : undefined
           }
         />
         <MetricCard
           title="Total ROs Created"
-          value={stats?.totalRoCreated ?? 0}
-          valueFormat="number"
+          value={formatter(stats?.totalRoCreated ?? 0)}
           description="Total number of research objects created"
           isLoading={isFetching}
           trend={
             compareToPreviousPeriod
-              ? (stats?.totalRoCreated ?? 0) -
-                (stats?.previousPeriod?.totalRoCreated ?? 0)
+              ? getTrend(
+                  stats?.totalRoCreated ?? 0,
+                  stats?.previousPeriod?.totalRoCreated ?? 0
+                )
               : undefined
           }
         />

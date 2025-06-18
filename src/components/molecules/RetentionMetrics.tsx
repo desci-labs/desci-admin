@@ -46,25 +46,25 @@ export function RetentionMetrics() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           title="Day 1 Retention"
-          value={metrics?.day1Retention ?? 0}
+          value={`${metrics?.day1Retention ?? 0}%`}
           description="Users who returned the day after signup"
           isLoading={isFetching}
         />
         <MetricCard
           title="Day 7 Retention"
-          value={metrics?.day7Retention ?? 0}
+          value={`${metrics?.day7Retention ?? 0}%`}
           description="Users who returned after 7 days"
           isLoading={isFetching}
         />
         <MetricCard
           title="Day 30 Retention"
-          value={metrics?.day30Retention ?? 0}
+          value={`${metrics?.day30Retention ?? 0}%`}
           description="Users who returned after 30 days"
           isLoading={isFetching}
         />
         <MetricCard
           title="Day 365 Retention"
-          value={metrics?.day365Retention ?? 0}
+          value={`${metrics?.day365Retention ?? 0}%`}
           description="Users who returned after 365 days"
           isLoading={isFetching}
         />

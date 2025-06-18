@@ -9,6 +9,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getFeatureAdoptionMetrics } from "@/lib/api";
 import { tags } from "@/lib/tags";
 import { ErrorMessage } from "../ui/error-message";
+import {
+  formatters,
+  getTrend,
+  millionFormatter,
+  numberFormatter,
+} from "@/lib/utils";
 
 export function FeatureAdoptionMetrics() {
   const { range, compareToPreviousPeriod } = useGetFilter();
@@ -30,6 +36,9 @@ export function FeatureAdoptionMetrics() {
       return failureCount * 1000;
     },
   });
+
+  const formatter = formatters.unit;
+
   if (isError) {
     return (
       <ErrorMessage
@@ -41,7 +50,7 @@ export function FeatureAdoptionMetrics() {
     );
   }
 
-  // console.log("metrics", metrics);
+  console.log("coAuthor", Math.round((52 - 0) / 1));
 
   return (
     <div className="space-y-2">
@@ -58,14 +67,12 @@ export function FeatureAdoptionMetrics() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <MetricCard
           title="Total Shares"
-          value={metrics?.totalShares ?? 0}
-          valueFormat="number"
+          value={formatter(metrics?.totalShares ?? 0)}
           trend={
             compareToPreviousPeriod
-              ? Math.round(
-                  ((metrics?.totalShares ?? 0) -
-                    (metrics?.previousPeriod?.totalShares ?? 0)) /
-                    (metrics?.previousPeriod?.totalShares || 1)
+              ? getTrend(
+                  metrics?.totalShares ?? 0,
+                  metrics?.previousPeriod?.totalShares ?? 0
                 )
               : undefined
           }
@@ -74,14 +81,12 @@ export function FeatureAdoptionMetrics() {
         />
         <MetricCard
           title="Co-author Invites"
-          value={metrics?.totalCoAuthorInvites ?? 0}
-          valueFormat="number"
+          value={formatter(metrics?.totalCoAuthorInvites ?? 0)}
           trend={
             compareToPreviousPeriod
-              ? Math.round(
-                  ((metrics?.totalCoAuthorInvites ?? 0) -
-                    (metrics?.previousPeriod?.totalCoAuthorInvites ?? 0)) /
-                    (metrics?.previousPeriod?.totalCoAuthorInvites ?? 1)
+              ? getTrend(
+                  metrics?.totalCoAuthorInvites ?? 0,
+                  metrics?.previousPeriod?.totalCoAuthorInvites ?? 0
                 )
               : undefined
           }
@@ -90,14 +95,12 @@ export function FeatureAdoptionMetrics() {
         />
         <MetricCard
           title="AI Analytics Clicks"
-          value={metrics?.totalAIAnalyticsClicks ?? 0}
-          valueFormat="number"
+          value={formatter(metrics?.totalAIAnalyticsClicks ?? 0)}
           trend={
             compareToPreviousPeriod
-              ? Math.round(
-                  ((metrics?.totalAIAnalyticsClicks ?? 0) -
-                    (metrics?.previousPeriod?.totalAIAnalyticsClicks ?? 0)) /
-                    (metrics?.previousPeriod?.totalAIAnalyticsClicks || 1)
+              ? getTrend(
+                  metrics?.totalAIAnalyticsClicks ?? 0,
+                  metrics?.previousPeriod?.totalAIAnalyticsClicks ?? 0
                 )
               : undefined
           }
@@ -106,14 +109,12 @@ export function FeatureAdoptionMetrics() {
         />
         <MetricCard
           title="Matched Article Clicks"
-          value={metrics?.totalMatchedArticleClicks ?? 0}
-          valueFormat="number"
+          value={formatter(metrics?.totalMatchedArticleClicks ?? 0)}
           trend={
             compareToPreviousPeriod
-              ? Math.round(
-                  ((metrics?.totalMatchedArticleClicks ?? 0) -
-                    (metrics?.previousPeriod?.totalMatchedArticleClicks ?? 0)) /
-                    (metrics?.previousPeriod?.totalMatchedArticleClicks || 1)
+              ? getTrend(
+                  metrics?.totalMatchedArticleClicks ?? 0,
+                  metrics?.previousPeriod?.totalMatchedArticleClicks ?? 0
                 )
               : undefined
           }
@@ -122,14 +123,12 @@ export function FeatureAdoptionMetrics() {
         />
         <MetricCard
           title="Claimed Badges"
-          value={metrics?.totalClaimedBadges ?? 0}
-          valueFormat="number"
+          value={formatter(metrics?.totalClaimedBadges ?? 0)}
           trend={
             compareToPreviousPeriod
-              ? Math.round(
-                  ((metrics?.totalClaimedBadges ?? 0) -
-                    (metrics?.previousPeriod?.totalClaimedBadges ?? 0)) /
-                    (metrics?.previousPeriod?.totalClaimedBadges || 1)
+              ? getTrend(
+                  metrics?.totalClaimedBadges ?? 0,
+                  metrics?.previousPeriod?.totalClaimedBadges ?? 0
                 )
               : undefined
           }
@@ -138,14 +137,12 @@ export function FeatureAdoptionMetrics() {
         />
         <MetricCard
           title="Profile Views"
-          value={metrics?.totalProfileViews ?? 0}
-          valueFormat="number"
+          value={formatter(metrics?.totalProfileViews ?? 0)}
           trend={
             compareToPreviousPeriod
-              ? Math.round(
-                  ((metrics?.totalProfileViews ?? 0) -
-                    (metrics?.previousPeriod?.totalProfileViews ?? 0)) /
-                    (metrics?.previousPeriod?.totalProfileViews || 1)
+              ? getTrend(
+                  metrics?.totalProfileViews ?? 0,
+                  metrics?.previousPeriod?.totalProfileViews ?? 0
                 )
               : undefined
           }
@@ -154,14 +151,12 @@ export function FeatureAdoptionMetrics() {
         />
         <MetricCard
           title="Guest Mode Visits"
-          value={metrics?.totalGuestModeVisits ?? 0}
-          valueFormat="number"
+          value={formatter(metrics?.totalGuestModeVisits ?? 0)}
           trend={
             compareToPreviousPeriod
-              ? Math.round(
-                  ((metrics?.totalGuestModeVisits ?? 0) -
-                    (metrics?.previousPeriod?.totalGuestModeVisits ?? 0)) /
-                    (metrics?.previousPeriod?.totalGuestModeVisits || 1)
+              ? getTrend(
+                  metrics?.totalGuestModeVisits ?? 0,
+                  metrics?.previousPeriod?.totalGuestModeVisits ?? 0
                 )
               : undefined
           }

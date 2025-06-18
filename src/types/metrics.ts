@@ -37,7 +37,7 @@ export interface FeatureAdoptionMetrics {
 
 export interface MetricCardProps {
   title: string;
-  value: number;
+  value: number | string;
   valueFormat?: "percent" | "number";
   description?: string;
   trend?: number;

@@ -19,6 +19,7 @@ import { useGetFilter } from "@/contexts/FilterContext";
 import { useMemo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorMessage } from "@/components/ui/error-message";
+import { getTrend, percentageFormatter } from "@/lib/utils";
 
 interface MetricsData {
   publishers: number;
@@ -102,7 +103,7 @@ const KpiTrend = ({ growth }: { growth: number }) => {
               />
             </svg>
           )}
-          <span className="ml-1">{Math.abs(growth)}%</span>
+          <span className="ml-1">{growth}%</span>
         </div>
       )}
     </>
@@ -185,6 +186,7 @@ export default function PublishingFunnelMetrics() {
       return failureCount * 1000;
     },
   });
+
   if (isError) {
     return (
       <ErrorMessage

@@ -13,7 +13,6 @@ export function MetricCard({
   description,
   trend,
   isLoading,
-  valueFormat = "percent",
 }: MetricCardProps) {
   if (isLoading) {
     return (
@@ -53,10 +52,7 @@ export function MetricCard({
         )}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
-          {value.toLocaleString()}
-          {valueFormat === "percent" ? "%" : ""}
-        </div>
+        <div className="text-2xl font-bold">{value}</div>
         {description && (
           <p className="text-xs text-muted-foreground mt-1">{description}</p>
         )}

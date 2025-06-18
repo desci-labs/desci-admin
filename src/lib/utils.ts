@@ -55,9 +55,10 @@ export const hasErrorInput = [
 // Number formatter function
 
 export const usNumberformatter = (number: number, decimals = 0) =>
-  Intl.NumberFormat("us", {
+  Intl.NumberFormat("en-Us", {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
+    notation: "compact",
   })
     .format(Number(number))
     .toString();
@@ -72,6 +73,10 @@ export const percentageFormatter = (number: number, decimals = 1) => {
 
   return `${symbol}${formattedNumber}`;
 };
+
+export const numberFormatter = new Intl.NumberFormat("en-US", {
+  notation: "compact",
+});
 
 export const millionFormatter = (number: number, decimals = 1) => {
   const formattedNumber = new Intl.NumberFormat("en-US", {
@@ -97,6 +102,8 @@ export const formatters: { [key: string]: any } = {
     }).format(number),
   byte: (number: number) => byteValueNumberFormatter.format(number),
   unit: (number: number) => `${usNumberformatter(number)}`,
+  percent: (number: number, decimals = 1) =>
+    percentageFormatter(number, decimals),
 };
 
 export const getPeriod = (
@@ -129,3 +136,6 @@ export const getBadgeType = (value: number) => {
     return "neutral";
   }
 };
+
+export const getTrend = (current: number, previous: number) =>
+  Math.round((current - previous) / (previous || 1));

@@ -15,6 +15,7 @@ import { UserEngagementMetricsData } from "@/types/metrics";
 import { useQuery } from "@tanstack/react-query";
 import { Users, FileText, Search } from "lucide-react";
 import { ErrorMessage } from "../ui/error-message";
+import { formatters } from "@/lib/utils";
 
 const KpiCard = ({
   title,
@@ -128,6 +129,7 @@ export default function UserEngagementMetrics() {
     queryFn: () => getUserEngagementMetrics(),
   });
 
+  const formatter = formatters.unit;
   if (isError) {
     return (
       <ErrorMessage
@@ -178,17 +180,17 @@ export default function UserEngagementMetrics() {
                 <KpiCard
                   title="Daily Active Users (DAU)"
                   description="Users active in the past 24 hours"
-                  value={metricsData.activeUsers.daily}
+                  value={formatter(metricsData.activeUsers.daily)}
                 />
                 <KpiCard
                   title="Weekly Active Users (WAU)"
                   description="Users active in the past 7 days"
-                  value={metricsData.activeUsers.weekly}
+                  value={formatter(metricsData.activeUsers.weekly)}
                 />
                 <KpiCard
                   title="Monthly Active Users (MAU)"
                   description="Users active in the past 30 days"
-                  value={metricsData.activeUsers.monthly}
+                  value={formatter(metricsData.activeUsers.monthly)}
                 />
               </div>
             </TabsContent>
@@ -198,27 +200,37 @@ export default function UserEngagementMetrics() {
                 <KpiCard
                   title="Research Objects Created"
                   description="New research objects created"
-                  value={metricsData.publishingUsers.researchObjectsCreated}
+                  value={formatter(
+                    metricsData.publishingUsers.researchObjectsCreated
+                  )}
                 />
                 <KpiCard
                   title="Research Objects Updated"
                   description="Research objects with recent updates"
-                  value={metricsData.publishingUsers.researchObjectsUpdated}
+                  value={formatter(
+                    metricsData.publishingUsers.researchObjectsUpdated
+                  )}
                 />
                 <KpiCard
                   title="Research Objects Shared"
                   description="Research objects shared with others"
-                  value={metricsData.publishingUsers.researchObjectsShared}
+                  value={formatter(
+                    metricsData.publishingUsers.researchObjectsShared
+                  )}
                 />
                 <KpiCard
                   title="Research Objects Published"
                   description="Research objects made public"
-                  value={metricsData.publishingUsers.researchObjectsPublished}
+                  value={formatter(
+                    metricsData.publishingUsers.researchObjectsPublished
+                  )}
                 />
                 <KpiCard
                   title="Community Publications"
                   description="New community publications created"
-                  value={metricsData.publishingUsers.communityPublications}
+                  value={formatter(
+                    metricsData.publishingUsers.communityPublications
+                  )}
                 />
               </div>
             </TabsContent>
@@ -228,17 +240,17 @@ export default function UserEngagementMetrics() {
                 <KpiCard
                   title="Daily Exploring Users"
                   description="Users exploring content in the past 24 hours"
-                  value={metricsData.exploringUsers.daily}
+                  value={formatter(metricsData.exploringUsers.daily)}
                 />
                 <KpiCard
                   title="Weekly Exploring Users"
                   description="Users exploring content in the past 7 days"
-                  value={metricsData.exploringUsers.weekly}
+                  value={formatter(metricsData.exploringUsers.weekly)}
                 />
                 <KpiCard
                   title="Monthly Exploring Users"
                   description="Users exploring content in the past 30 days"
-                  value={metricsData.exploringUsers.monthly}
+                  value={formatter(metricsData.exploringUsers.monthly)}
                 />
               </div>
             </TabsContent>
