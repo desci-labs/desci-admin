@@ -58,7 +58,6 @@ export const usNumberformatter = (number: number, decimals = 0) =>
   Intl.NumberFormat("en-Us", {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
-    notation: "compact",
   })
     .format(Number(number))
     .toString();
