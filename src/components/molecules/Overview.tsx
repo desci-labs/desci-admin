@@ -3,7 +3,14 @@
 
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { getAnalytics } from "@/lib/api";
-import { Activity, Box, HardDrive, LoaderIcon, ThumbsUp, UsersRound } from "lucide-react";
+import {
+  Activity,
+  Box,
+  HardDrive,
+  LoaderIcon,
+  ThumbsUp,
+  UsersRound,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getHeaders } from "@/lib/utils";
 import { ReactElement, useState } from "react";
@@ -17,6 +24,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import UserStatsModal from "./UserStatsModal";
+import { formatters } from "@/lib/utils";
 
 const orcidIcon = (
   <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
@@ -27,7 +35,7 @@ const metricIcons = {
   users: UsersRound,
   nodes: Box,
   data: HardDrive,
-  thumbsUp: ThumbsUp
+  thumbsUp: ThumbsUp,
 } as const;
 
 const MetricCard = ({
@@ -91,12 +99,13 @@ export default function Overview() {
   const router = useRouter();
   const { showModal, closeModal } = useSetModal();
 
-  const byteValueNumberFormatter = Intl.NumberFormat("en", {
-    notation: "compact",
-    style: "unit",
-    unit: "byte",
-    unitDisplay: "narrow",
-  });
+  // const byteValueNumberFormatter = Intl.NumberFormat("en-US", {
+  //   notation: "compact",
+  //   style: "unit",
+  //   unit: "byte",
+  //   unitDisplay: "narrow",
+  //   maximumFractionDigits: 2,
+  // });
 
   if (isLoading)
     return (
@@ -298,7 +307,7 @@ export default function Overview() {
         description="Last 30 days"
         icon="thumbsUp"
       />
-      
+
       {/* Verifed badges stats */}
       <MetricCard
         header="Verified Attestations (badges)"
@@ -322,23 +331,19 @@ export default function Overview() {
       {/* Data views */}
       <MetricCard
         header="Uploaded Data"
-        value={`${byteValueNumberFormatter.format(analytics.bytesToday ?? 0)}`}
+        value={`${formatters.byte(analytics.bytesToday ?? 0)}`}
         description="Today"
         icon="data"
       />
       <MetricCard
         header="Uploaded Data"
-        value={`${byteValueNumberFormatter.format(
-          analytics.bytesInLast7Days ?? 0
-        )}`}
+        value={`${formatters.byte(analytics.bytesInLast7Days ?? 0)}`}
         description="Last 7 days"
         icon="data"
       />
       <MetricCard
         header="Uploaded Data"
-        value={`${byteValueNumberFormatter.format(
-          analytics.bytesInLast30Days ?? 0
-        )}`}
+        value={`${formatters.byte(analytics.bytesInLast30Days ?? 0)}`}
         description="Last 30 days"
         icon="data"
       />
@@ -346,25 +351,19 @@ export default function Overview() {
       {/* Downloaded Data analytics Overview */}
       <MetricCard
         header="Downloaded Data"
-        value={`${byteValueNumberFormatter.format(
-          analytics.downloadedBytesToday ?? 0
-        )}`}
+        value={`${formatters.byte(analytics.downloadedBytesToday ?? 0)}`}
         description="Today"
         icon="data"
       />
       <MetricCard
         header="Downloaded Data"
-        value={`${byteValueNumberFormatter.format(
-          analytics.downloadedBytesInLast7Days ?? 0
-        )}`}
+        value={`${formatters.byte(analytics.downloadedBytesInLast7Days ?? 0)}`}
         description="Last 7 days"
         icon="data"
       />
       <MetricCard
         header="Downloaded Data"
-        value={`${byteValueNumberFormatter.format(
-          analytics.downloadedBytesInLast30Days ?? 0
-        )}`}
+        value={`${formatters.byte(22637779695)}`}
         description="Last 30 days"
         icon="data"
       />

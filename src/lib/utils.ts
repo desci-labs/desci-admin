@@ -3,6 +3,7 @@ import { differenceInDays, subDays, subYears } from "date-fns";
 import { twMerge } from "tailwind-merge";
 import { DateRange } from "react-day-picker";
 import { AUTH_COOKIE_FIELDNAME } from "./constants";
+import prettyBytes from "pretty-bytes";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -99,7 +100,8 @@ export const formatters: { [key: string]: any } = {
       style: "currency",
       currency: currency,
     }).format(number),
-  byte: (number: number) => byteValueNumberFormatter.format(number),
+  byte: (number: number) =>
+    prettyBytes(number, { signed: true, maximumFractionDigits: 2 }),
   unit: (number: number) => `${usNumberformatter(number)}`,
   percent: (number: number, decimals = 1) =>
     percentageFormatter(number, decimals),
