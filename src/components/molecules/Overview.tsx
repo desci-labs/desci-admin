@@ -363,7 +363,7 @@ export default function Overview() {
       />
       <MetricCard
         header="Downloaded Data"
-        value={`${formatters.byte(22637779695)}`}
+        value={`${formatters.byte(analytics.downloadedBytesInLast30Days ?? 0)}`}
         description="Last 30 days"
         icon="data"
       />
