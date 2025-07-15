@@ -125,7 +125,7 @@ export default function AnalyticsCharts(props: {
     from: startOfDay(subDays(maxDate, 7)),
     to: endOfDay(maxDate),
   });
-  const [interval, setInterval] = useState<Interval>("monthly");
+  const [interval, setInterval] = useState<Interval>("weekly");
   const [periodValue, setPeriodValue] = useState<PeriodValue>("no-comparison");
 
   const {
