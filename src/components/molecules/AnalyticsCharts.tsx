@@ -122,8 +122,8 @@ export default function AnalyticsCharts(props: {
   }) => void;
 }) {
   const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
-    from: startOfDay(startOfYear(maxDate)),
-    to: endOfDay(endOfMonth(subMonths(maxDate, 1))),
+    from: startOfDay(subDays(maxDate, 7)),
+    to: endOfDay(maxDate),
   });
   const [interval, setInterval] = useState<Interval>("monthly");
   const [periodValue, setPeriodValue] = useState<PeriodValue>("no-comparison");
