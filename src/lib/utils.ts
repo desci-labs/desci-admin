@@ -117,7 +117,7 @@ export const getPeriod = (
   let lastPeriodTo;
   let diffInDays = differenceInDays(to!, from!);
   if (from) {
-    lastPeriodFrom = subDays(from, diffInDays);
+    lastPeriodFrom = subDays(from, diffInDays + 1);
   }
   if (to) {
     lastPeriodTo = subDays(to, diffInDays + 1);

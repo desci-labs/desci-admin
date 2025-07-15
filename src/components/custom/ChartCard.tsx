@@ -11,6 +11,8 @@ import {
   interval,
   isWithinInterval,
   eachHourOfInterval,
+  startOfDay,
+  endOfDay,
 } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { getPeriod } from "@/lib/utils";
@@ -38,6 +40,23 @@ const formattingMap = {
   data: formatters.byte,
 };
 
+const zeropad = (value: number) => value.toString().padStart(2, "0");
+
+const transformDatesToUtc = (dates: DateRange | undefined) => {
+  if (!dates || !dates.from || !dates.to) return undefined;
+
+  const selectedRange = {
+    from: `${dates?.from?.getFullYear()}-${zeropad(
+      dates?.from?.getMonth()! + 1
+    )}-${zeropad(dates?.from?.getDate()!)}T00:00:00.000Z`,
+    to: `${dates?.to?.getFullYear()}-${zeropad(
+      dates?.to?.getMonth()! + 1
+    )}-${zeropad(dates?.to?.getDate()!)}T23:59:59.000Z`,
+  };
+
+  return selectedRange;
+};
+
 export function ChartCard({
   categoryId,
   title,
@@ -52,41 +71,45 @@ export function ChartCard({
   loading,
 }: CardProps) {
   const formatter = formattingMap[type];
+
+  const selectedRange = transformDatesToUtc(selectedDates);
+
   const selectedDatesInterval =
-    selectedDates?.from && selectedDates?.to
-      ? interval(selectedDates.from, selectedDates.to)
+    selectedRange?.from && selectedRange?.to
+      ? interval(selectedRange.from, selectedRange.to)
       : null;
 
   const allDatesInInterval = useMemo(() => {
     switch (dataInterval) {
       case "hourly":
-        return selectedDates?.from && selectedDates?.to
-          ? eachHourOfInterval(interval(selectedDates.from, selectedDates.to))
+        return selectedRange?.from && selectedRange?.to
+          ? eachHourOfInterval(interval(selectedRange.from, selectedRange.to))
           : null;
       case "daily":
-        return selectedDates?.from && selectedDates?.to
-          ? eachDayOfInterval(interval(selectedDates.from, selectedDates.to))
+        return selectedRange?.from && selectedRange?.to
+          ? eachDayOfInterval(interval(selectedRange.from, selectedRange.to))
           : null;
       case "weekly":
-        return selectedDates?.from && selectedDates?.to
-          ? eachWeekOfInterval(interval(selectedDates.from, selectedDates.to))
+        return selectedRange?.from && selectedRange?.to
+          ? eachWeekOfInterval(interval(selectedRange.from, selectedRange.to))
           : null;
       case "monthly":
-        return selectedDates?.from && selectedDates?.to
-          ? eachMonthOfInterval(interval(selectedDates.from, selectedDates.to))
+        return selectedRange?.from && selectedRange?.to
+          ? eachMonthOfInterval(interval(selectedRange.from, selectedRange.to))
           : null;
       case "yearly":
-        return selectedDates?.from && selectedDates?.to
-          ? eachYearOfInterval(interval(selectedDates.from, selectedDates.to))
+        return selectedRange?.from && selectedRange?.to
+          ? eachYearOfInterval(interval(selectedRange.from, selectedRange.to))
           : null;
       default:
-        return selectedDates?.from && selectedDates?.to
-          ? eachDayOfInterval(interval(selectedDates.from, selectedDates.to))
+        return selectedRange?.from && selectedRange?.to
+          ? eachDayOfInterval(interval(selectedRange.from, selectedRange.to))
           : null;
     }
-  }, [dataInterval, selectedDates?.from, selectedDates?.to]);
+  }, [dataInterval, selectedRange?.from, selectedRange?.to]);
 
-  const prevDates = getPeriod(selectedDates);
+  const prevPeriod = getPeriod(selectedDates);
+  const prevDates = transformDatesToUtc(prevPeriod);
   const prevDatesInterval =
     prevDates?.from && prevDates?.to
       ? interval(prevDates.from, prevDates.to)
@@ -95,7 +118,10 @@ export function ChartCard({
   const data = overviews
     .filter((overview) => {
       if (selectedDatesInterval) {
-        return isWithinInterval(overview.date, selectedDatesInterval);
+        return isWithinInterval(overview.date, {
+          start: selectedDatesInterval.start.toISOString().split("GMT")[0],
+          end: selectedDatesInterval.end.toISOString().split("GMT")[0],
+        });
       }
       return true;
     })
@@ -119,10 +145,10 @@ export function ChartCard({
 
       const peggedPeriod = isWithinInterval(
         date,
-        interval(selectedDates?.from!, selectedDates?.to!)
+        interval(selectedRange?.from!, selectedRange?.to!)
       )
         ? date
-        : new Date(selectedDates?.from!);
+        : new Date(selectedRange?.from!);
 
       console.log("[overview.date]", index, overview, date, peggedPeriod);
       return {
@@ -143,12 +169,6 @@ export function ChartCard({
       };
     })
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-  // console.log("[chartData]", {
-  //   overviews,
-  //   chartData,
-  //   data,
-  // });
 
   const categories =
     selectedPeriod === "no-comparison" ? ["value"] : ["value", "previousValue"];
