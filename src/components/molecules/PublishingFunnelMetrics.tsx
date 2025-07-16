@@ -10,46 +10,12 @@ import {
 import { FileText, Users, UserPlus } from "lucide-react";
 import { DateFilterWithPresets } from "./DateFilterbar";
 import { tags } from "@/lib/tags";
-import {
-  getPublishingFunnelMetrics,
-  getUserEngagementMetrics,
-} from "@/lib/api";
+import { getPublishingFunnelMetrics } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import { useGetFilter } from "@/contexts/FilterContext";
-import { useMemo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorMessage } from "@/components/ui/error-message";
-import { getTrend, percentageFormatter } from "@/lib/utils";
 
-interface MetricsData {
-  publishers: number;
-  publishersInCommunity: number;
-  guestSignUpSuccessRate: number;
-  growth?: {
-    publishers: number;
-    publishersInCommunity: number;
-    guestSignUpSuccessRate: number;
-  };
-}
-
-// async function getPublishingFunnelData(): Promise<PublishingFunnelData> {
-//   // TODO: Implement actual data fetching
-//   // This is a placeholder that returns mock data
-//   return {
-//     publishedResearchObjects: {
-//       percentage: 65,
-//       total: 130,
-//     },
-//     communityPublications: {
-//       percentage: 45,
-//       total: 90,
-//     },
-//     guestSignups: {
-//       percentage: 30,
-//       total: 60,
-//     },
-//   };
-// }
 const KpiTrend = ({ growth }: { growth: number }) => {
   return (
     <>

@@ -51,11 +51,9 @@ export interface UserEngagementMetricsData {
     monthly: number;
   };
   publishingUsers: {
-    researchObjectsCreated: number;
-    researchObjectsUpdated: number;
-    researchObjectsShared: number;
-    researchObjectsPublished: number;
-    communityPublications: number;
+    daily: number;
+    weekly: number;
+    monthly: number;
   };
   exploringUsers: {
     daily: number;

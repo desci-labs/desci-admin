@@ -111,8 +111,7 @@ export type KpiEntry = {
 
 type Interval = "daily" | "weekly" | "monthly" | "yearly";
 
-// const overviewsDates = overviews.map((item) => toDate(item.date).getTime());
-const maxDate = new Date(); // toDate(Math.max(...overviewsDates));
+const maxDate = new Date();
 
 export default function AnalyticsCharts(props: {
   onQueryChange: (props: {
@@ -122,7 +121,7 @@ export default function AnalyticsCharts(props: {
   }) => void;
 }) {
   const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
-    from: startOfDay(subDays(maxDate, 7)),
+    from: startOfDay(subDays(maxDate, 6)),
     to: endOfDay(maxDate),
   });
   const [interval, setInterval] = useState<Interval>("weekly");

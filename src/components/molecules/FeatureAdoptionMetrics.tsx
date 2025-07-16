@@ -1,23 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { MetricCard } from "./MetricCard";
-import { FeatureAdoptionMetrics as FeatureAdoptionMetricsType } from "@/types/metrics";
 import { DateFilterWithPresets } from "./DateFilterbar";
 import { useGetFilter } from "@/contexts/FilterContext";
 import { useQuery } from "@tanstack/react-query";
 import { getFeatureAdoptionMetrics } from "@/lib/api";
 import { tags } from "@/lib/tags";
 import { ErrorMessage } from "../ui/error-message";
-import {
-  formatters,
-  getTrend,
-  millionFormatter,
-  numberFormatter,
-} from "@/lib/utils";
+import { formatters, getTrend } from "@/lib/utils";
 
 export function FeatureAdoptionMetrics() {
   const { range, compareToPreviousPeriod } = useGetFilter();
+
   const {
     data: metrics,
     isFetching,
@@ -49,8 +43,6 @@ export function FeatureAdoptionMetrics() {
       />
     );
   }
-
-  console.log("coAuthor", Math.round((52 - 0) / 1));
 
   return (
     <div className="space-y-2">

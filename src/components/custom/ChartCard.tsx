@@ -11,14 +11,12 @@ import {
   interval,
   isWithinInterval,
   eachHourOfInterval,
-  startOfDay,
-  endOfDay,
 } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { getPeriod } from "@/lib/utils";
 import { PeriodValue } from "@/lib/chartUtils";
 import { useMemo } from "react";
-import { SparkAreaChart } from "./SparkAreaChart";
+// import { SparkAreaChart } from "./SparkAreaChart";
 
 export type CardProps = {
   categoryId: keyof AnalyticsData;
@@ -150,7 +148,6 @@ export function ChartCard({
         ? date
         : new Date(selectedRange?.from!);
 
-      console.log("[overview.date]", index, overview, date, peggedPeriod);
       return {
         title,
         date: overview?.date ?? peggedPeriod,

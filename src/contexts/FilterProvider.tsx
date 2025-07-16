@@ -10,7 +10,7 @@ import { DateRange } from "react-day-picker";
 export default function FilterProvider(props: PropsWithChildren<unknown>) {
   const [state, setState] = useState<FilterState>({
     range: {
-      from: startOfDay(subDays(new Date(), 30)),
+      from: startOfDay(subDays(new Date(), 29)),
       to: endOfDay(new Date()),
     },
     compareToPreviousPeriod: false,
