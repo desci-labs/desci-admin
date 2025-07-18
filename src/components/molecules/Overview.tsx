@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/card";
 import UserStatsModal from "./UserStatsModal";
 import { formatters } from "@/lib/utils";
+import { subDays } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const orcidIcon = (
   <img src="/a-icon-orcid.svg" className="w-5 h-5" alt="orcid icon" />
@@ -87,32 +89,52 @@ const MetricCard = ({
 };
 const numberValue = (num: number) => (num > 0 ? `+${num}` : "0");
 
+const getUtcDateXDaysAgo = (daysAgo: number): Date => {
+  // Use subDays to properly handle month boundaries
+  const targetDate = subDays(new Date(), daysAgo - 1);
+
+  // Create a new date at UTC midnight
+  return new Date(
+    Date.UTC(
+      targetDate.getUTCFullYear(),
+      targetDate.getUTCMonth(),
+      targetDate.getUTCDate()
+    )
+  );
+};
+
+function OverviewSkeleton() {
+  // 27 cards to match the number of MetricCards in Overview
+  const skeletonCards = Array.from({ length: 27 });
+  return (
+    <div className="w-full grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {skeletonCards.map((_, i) => (
+        <Card key={i}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Skeleton className="h-4 w-20 rounded" />
+            <Skeleton className="h-4 w-4 rounded-full" />
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-8 w-16 rounded" />
+              <Skeleton className="h-4 w-10 rounded" />
+            </div>
+            <Skeleton className="h-3 w-24 mt-2 rounded" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
 export default function Overview() {
-  const {
-    data: analytics,
-    isLoading,
-    error,
-    isError,
-  } = useSuspenseQuery(getAnalytics);
+  const { data: analytics, isLoading, error, isError } = useQuery(getAnalytics);
 
   const { active } = useGetModal();
   const router = useRouter();
   const { showModal, closeModal } = useSetModal();
 
-  // const byteValueNumberFormatter = Intl.NumberFormat("en-US", {
-  //   notation: "compact",
-  //   style: "unit",
-  //   unit: "byte",
-  //   unitDisplay: "narrow",
-  //   maximumFractionDigits: 2,
-  // });
-
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center h-full w-full">
-        <LoaderIcon className="w-8 h-8" />
-      </div>
-    );
+  if (isLoading) return <OverviewSkeleton />;
 
   if (!analytics) return <IncomingFeature />;
 
