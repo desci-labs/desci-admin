@@ -501,11 +501,9 @@ export async function getUserEngagementMetrics(): Promise<UserEngagementMetricsD
         monthly: 0,
       },
       publishingUsers: {
-        researchObjectsCreated: 0,
-        researchObjectsUpdated: 0,
-        researchObjectsShared: 0,
-        researchObjectsPublished: 0,
-        communityPublications: 0,
+        daily: 0,
+        weekly: 0,
+        monthly: 0,
       },
       exploringUsers: {
         daily: 0,

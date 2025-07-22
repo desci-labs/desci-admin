@@ -111,8 +111,7 @@ export type KpiEntry = {
 
 type Interval = "daily" | "weekly" | "monthly" | "yearly";
 
-// const overviewsDates = overviews.map((item) => toDate(item.date).getTime());
-const maxDate = new Date(); // toDate(Math.max(...overviewsDates));
+const maxDate = new Date();
 
 export default function AnalyticsCharts(props: {
   onQueryChange: (props: {
@@ -122,10 +121,10 @@ export default function AnalyticsCharts(props: {
   }) => void;
 }) {
   const [selectedDates, setSelectedDates] = useState<DateRange | undefined>({
-    from: startOfDay(startOfYear(maxDate)),
-    to: endOfDay(endOfMonth(subMonths(maxDate, 1))),
+    from: startOfDay(subDays(maxDate, 6)),
+    to: endOfDay(maxDate),
   });
-  const [interval, setInterval] = useState<Interval>("monthly");
+  const [interval, setInterval] = useState<Interval>("weekly");
   const [periodValue, setPeriodValue] = useState<PeriodValue>("no-comparison");
 
   const {

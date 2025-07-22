@@ -198,39 +198,19 @@ export default function UserEngagementMetrics() {
             <TabsContent value="publishing-users" className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <KpiCard
-                  title="Research Objects Created"
-                  description="New research objects created"
-                  value={formatter(
-                    metricsData.publishingUsers.researchObjectsCreated
-                  )}
+                  title="Daily Publishing Users (DPU)"
+                  description="Users publishing in the past 24 hours"
+                  value={formatter(metricsData.publishingUsers.daily)}
                 />
                 <KpiCard
-                  title="Research Objects Updated"
-                  description="Research objects with recent updates"
-                  value={formatter(
-                    metricsData.publishingUsers.researchObjectsUpdated
-                  )}
+                  title="Weekly Publishing Users (WPU)"
+                  description="Users publishing in the past 7 days"
+                  value={formatter(metricsData.publishingUsers.weekly)}
                 />
                 <KpiCard
-                  title="Research Objects Shared"
-                  description="Research objects shared with others"
-                  value={formatter(
-                    metricsData.publishingUsers.researchObjectsShared
-                  )}
-                />
-                <KpiCard
-                  title="Research Objects Published"
-                  description="Research objects made public"
-                  value={formatter(
-                    metricsData.publishingUsers.researchObjectsPublished
-                  )}
-                />
-                <KpiCard
-                  title="Community Publications"
-                  description="New community publications created"
-                  value={formatter(
-                    metricsData.publishingUsers.communityPublications
-                  )}
+                  title="Monthly Publishing Users (MPU)"
+                  description="Users publishing in the past 30 days"
+                  value={formatter(metricsData.publishingUsers.monthly)}
                 />
               </div>
             </TabsContent>

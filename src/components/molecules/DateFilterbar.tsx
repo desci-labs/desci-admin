@@ -41,21 +41,21 @@ export function Filterbar({
           {
             label: "In past day",
             dateRange: {
-              from: subDays(new Date(), 1),
+              from: new Date(),
               to: new Date(),
             },
           },
           {
             label: "Last 7 days",
             dateRange: {
-              from: subDays(new Date(), 7),
+              from: subDays(new Date(), 6),
               to: new Date(),
             },
           },
           {
             label: "Last 30 days",
             dateRange: {
-              from: subDays(new Date(), 30),
+              from: subDays(new Date(), 29),
               to: new Date(),
             },
           },

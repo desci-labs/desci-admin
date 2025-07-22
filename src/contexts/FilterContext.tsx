@@ -14,7 +14,7 @@ type Setters = {
 
 export const getFilterContext = createContext<FilterState>({
   range: {
-    from: startOfDay(subDays(new Date(), 30)),
+    from: startOfDay(subDays(new Date(), 29)),
     to: endOfDay(new Date()),
   },
   compareToPreviousPeriod: false,

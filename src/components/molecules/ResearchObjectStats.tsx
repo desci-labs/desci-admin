@@ -1,8 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
 import { MetricCard } from "./MetricCard";
-import { ResearchObjectStats as ResearchObjectStatsType } from "@/types/metrics";
 import { DateFilterWithPresets } from "./DateFilterbar";
 import { useQuery } from "@tanstack/react-query";
 import { tags } from "@/lib/tags";
@@ -19,21 +16,30 @@ export function ResearchObjectStats() {
     error,
     isError,
   } = useQuery({
-    queryKey: [tags.roStats, range.from, range.to, compareToPreviousPeriod],
+    queryKey: [
+      tags.researchObjectMetrics,
+      range.from,
+      range.to,
+      compareToPreviousPeriod,
+    ],
     queryFn: () =>
       getResearchObjectMetrics(
-        range.from && {
-          from: range.from.toISOString() ?? "",
-          to: range.to?.toISOString() ?? "",
-          compareToPreviousPeriod,
-        }
+        range.from
+          ? {
+              from: range.from.toISOString() ?? "",
+              to: range.to?.toISOString() ?? "",
+              compareToPreviousPeriod,
+            }
+          : undefined
       ),
     retry: 2,
     retryDelay: (failureCount, error) => {
       return failureCount * 1000;
     },
   });
+
   const formatter = formatters.unit;
+
   if (isError) {
     return (
       <ErrorMessage
@@ -44,8 +50,6 @@ export function ResearchObjectStats() {
       />
     );
   }
-
-  console.log("stats", stats);
 
   return (
     <div className="space-y-6">
