@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { authUser } from "@/lib/api";
+import { removeDevCookies } from "@/lib/api/cookies";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -18,7 +19,7 @@ import { toast } from "sonner";
 export function UserNav() {
   const { data: user } = useSuspenseQuery(authUser);
   const router = useRouter();
-
+  console.log("[UserNav]:: ", user);
   const name = user && user.profile?.name;
   return (
     <DropdownMenu>
@@ -29,7 +30,13 @@ export function UserNav() {
               src="/avatars/01.png"
               alt={user?.profile?.name ?? "user logo"}
             />
-            <AvatarFallback>{name ? (`${name.split(' ')[0]?.[0] ?? 'AN'}${name.split(' ')?.[1]?.[0] ?? ''}`) : 'AN'}</AvatarFallback>
+            <AvatarFallback>
+              {name
+                ? `${name.split(" ")[0]?.[0] ?? "AN"}${
+                    name.split(" ")?.[1]?.[0] ?? ""
+                  }`
+                : "AN"}
+            </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -40,15 +47,16 @@ export function UserNav() {
               {user?.profile?.name ?? "Anon"}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {user.email}
+              {user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            toast.info('Signing out...')
+            toast.info("Signing out...");
             fetch("/api/logout", { method: "DELETE" }).then(() => {
+              removeDevCookies();
               router.refresh();
             });
           }}

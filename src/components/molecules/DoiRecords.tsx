@@ -14,7 +14,7 @@ import { getDois } from "@/apis/queries";
 import Link from "next/link";
 import { ExternalLinkIcon } from "@radix-ui/react-icons";
 import { Loader2Icon } from "lucide-react";
-import { DPID_BASE_URL } from "@/lib/config";
+import { DPID_RESOLVER_URL } from "@/lib/config";
 
 export default function DoiRecords() {
   const { data, isLoading, isError } = useQuery({
@@ -74,7 +74,7 @@ export default function DoiRecords() {
                   className="flex items-center gap-1"
                   onClick={() => {
                     window.open(
-                      `${DPID_BASE_URL}/${record.dpid}`,
+                      `${DPID_RESOLVER_URL}/${record.dpid}`,
                       "_blank",
                       "noopener"
                     );

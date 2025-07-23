@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getHeaders } from "@/lib/utils";
@@ -15,6 +16,7 @@ export default function Dashboard() {
     to: string;
     interval?: string;
   }>({ from: "", to: "", interval: "" });
+
   const downloadReport = async () => {
     try {
       setIsDownloading(true);

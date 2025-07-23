@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./styles/theme-variables/light-variables.scss";
-@import "./styles/theme-variables/dark-variables.scss";
-@import "./styles/theme-variables/solarized-variables.scss";
+@import "./styles/theme-variables/light-variables.css";
+@import "./styles/theme-variables/dark-variables.css";
+@import "./styles/theme-variables/solarized-variables.css";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -59,7 +59,6 @@
     --danger-foreground: 4, 100%, 51%;
     --success: 123, 100%, 83%;
     --success-foreground: 152, 100%, 50%;
-  
   }
 
   .dark {
@@ -104,8 +103,6 @@
     @apply bg-background text-foreground;
   }
 }
-
-
 
 @layer base {
   * {

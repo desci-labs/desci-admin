@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import "./globals.scss";
+import "./globals.css";
 
 import ThemeContext from "./ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";

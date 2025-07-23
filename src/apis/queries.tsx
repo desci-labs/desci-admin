@@ -1,22 +1,17 @@
 import { NODES_API_URL } from "@/lib/config";
 import { DoiRecord } from "./types";
+import { apiRequest, ApiResponse } from "@/lib/api";
 
 export async function getDois() {
-  const response = await fetch(`${NODES_API_URL}/v1/admin/doi/list`, {
-    credentials: "include",
-    mode: "cors",
-  });
-
-  const data = (await response.json()) as
+  const response = await apiRequest<
     | {
         data: DoiRecord[];
         message: string;
       }
-    | { message: string };
+    | { message: string; data: never }
+  >(`${NODES_API_URL}/v1/admin/doi/list`);
 
-  if (response.status === 200 && "data" in data) {
-    return data.data;
-  }
-
-  throw new Error(data?.message);
+  console.log("[getDois]::", response);
+  if (response?.["data"]) return response?.["data"];
+  throw new Error(response.message);
 }

@@ -3,7 +3,6 @@ import { AUTH_COOKIE_FIELDNAME } from "./lib/constants";
 
 export function middleware(request: NextRequest) {
   const currentUser = request.cookies.get(AUTH_COOKIE_FIELDNAME)?.value;
-  console.log("[middleware]", currentUser, request.nextUrl.pathname);
 
   if (currentUser && ["/login"].includes(request.nextUrl.pathname)) {
     return Response.redirect(new URL("/", request.url));
