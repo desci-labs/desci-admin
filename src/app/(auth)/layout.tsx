@@ -2,7 +2,7 @@
 
 import type { Metadata } from "next";
 
-import "../globals.scss";
+import "../globals.css";
 import Providers from "@/contexts/Providers";
 import LayoutPanel from "@/components/custom/LayoutPanel";
 

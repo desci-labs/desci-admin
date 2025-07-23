@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AUTH_COOKIE_FIELDNAME } from "@/lib/constants";
 import { toast } from "sonner";
+import { applyDevCookies } from "@/lib/api/cookies";
+import { RETURN_DEV_TOKEN } from "@/lib/config";
 
 const initialState: {
   email?: string;
@@ -20,14 +22,21 @@ export default function Login() {
   const [state, formAction] = useFormState(login, initialState);
   const router = useRouter();
 
-  console.log('[login]', { state })
-
   useEffect(() => {
     if (state?.user) {
-      toast.success('Login in successful 🎉')
+      console.log(
+        "[login]:: ",
+        RETURN_DEV_TOKEN,
+        process.env.NEXT_ENV,
+        state.user
+      );
+      if (RETURN_DEV_TOKEN || process.env.NEXT_ENV === "development") {
+        applyDevCookies(state.user.token);
+      }
+      toast.success("Login in successful 🎉");
       router.refresh();
     }
-  }, [router, state?.user])
+  }, [router, state?.user]);
 
   return (
     <div className="container mx-auto max-w-md">

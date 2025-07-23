@@ -11,7 +11,6 @@ const queryClient = getQueryClient();
 
 export default function UsersTable() {
   const { data, isLoading, error } = useQuery(searchUsers, queryClient);
-
   return (
     <>
       <div className="mb-2 flex items-center justify-between space-y-2">
@@ -28,7 +27,7 @@ export default function UsersTable() {
             <LoaderCircleIcon className="w-18 h-18" />
           </div>
         ) : (
-          <DataTable data={data?.data?.data ?? []} columns={columns} />
+          <DataTable data={data?.data ?? []} columns={columns} />
         )}
       </div>
     </>

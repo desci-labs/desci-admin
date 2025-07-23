@@ -1,0 +1,57 @@
+@import "../solarized-colors/slate-solarized.css";
+@import "../solarized-colors/slate-solarized-alpha.css";
+@import "@radix-ui/colors/cyan.css";
+@import "@radix-ui/colors/cyan-alpha.css";
+
+.solarized,
+.solarized-theme {
+  --warning-primary: rgba(253, 228, 0, 1);
+  --warning-secondary: rgba(253, 228, 0, 0.3668);
+  --warning-subtle: rgba(253, 228, 0, 0.06);
+
+  --inverse-1: rgba(17, 17, 19, 0.24);
+  --inverse-3: rgba(17, 17, 19, 0.55);
+
+  --shadow-viewer: rgba(0, 0, 0, 0.35);
+  --shadow-floating-element: rgba(0, 0, 0, 0.48);
+
+  --background-app: var(--slate-1);
+  --shadow-subdued: var(rgba(0, 0, 0, 0.12));
+
+  --icon-subdued: var(--slate-8);
+  --icon-neutral: var(--slate-10);
+  --icon-focus: var(--slate-12);
+
+  --surface-subdued: var(--slate-a2);
+  --surface-neutral: var(--slate-a3);
+  --surface-focus: var(--slate-a4);
+  --home: var(--inverse-3);
+  --contrast: var(--inverse-1);
+
+  --txt-subdued: var(--slate-10);
+  --txt-neutral: var(--slate-11);
+  --txt-focus: var(--slate-12);
+  --title: var(--slate-12);
+
+  --border-neutral: var(--slate-a3);
+  --border-focus: var(--slate-a4);
+
+  --btn-txt-subdued: var(--slate-10);
+  --btn-txt-primary-neutral: var(--cyan-a12);
+  --btn-txt-primary-focus: var(--cyan-a12);
+  --btn-txt-secondary-neutral: var(--cyan-4);
+  --btn-txt-secondary-focus: var(--cyan-4);
+  --btn-txt-tertiary-neutral: var(--cyan-12);
+  --btn-txt-tertiary-focus: var(--cyan-10);
+
+  --btn-border-primary-subdued: var(--slate-a5);
+  --btn-border-primary-neutral: var(--cyan-a5);
+  --btn-border-primary-focus: var(--cyan-a5);
+
+  --btn-surface-primary-subdued: var(--slate-a1);
+  --btn-surface-primary-neutral: var(--cyan-a3);
+  --btn-surface-primary-focus: var(--cyan-a6);
+  --btn-surface-secondary-subdued: var(--inverse-1);
+  --btn-surface-secondary-neutral: rgba(201, 235, 241, 0.97);
+  --btn-surface-secondary-focus: var(--cyan-a8);
+}

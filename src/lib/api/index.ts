@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { tags } from "../tags";
-import { NODES_API_URL } from "../config";
+import { getNodesConfig, NODES_API_URL, RETURN_DEV_TOKEN } from "../config";
 import { getHeaders } from "../utils";
 import { DateRange } from "react-day-picker";
 import { AnalyticsData } from "@/data/schema";
@@ -12,6 +12,61 @@ import {
   UserEngagementMetricsData,
 } from "@/types/metrics";
 import { endOfDay } from "date-fns";
+import { forwardCrossDomainCookie } from "./cookies";
+
+console.log("[NODES_API_URL]:", NODES_API_URL);
+export const IPFS_GATEWAY_URL =
+  process.env.NEXT_PUBLIC_IPFS_RESOLVER_OVERRIDE ||
+  "https://ipfs.desci.com/ipfs";
+
+export class ApiError extends Error {
+  status: number;
+  errors?: { field: string; message: string }[];
+
+  constructor(
+    status: number,
+    message: string,
+    errors?: { field: string; message: string }[]
+  ) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.errors = errors;
+  }
+}
+
+export async function apiRequest<T>(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<T> {
+  const config: RequestInit = {
+    headers: {
+      "Content-Type": "application/json",
+      ...options.headers,
+      ...forwardCrossDomainCookie(),
+    },
+    credentials: "include",
+    ...options,
+  };
+
+  const response = await fetch(endpoint, config);
+
+  if (!response.ok) {
+    let body: any = null;
+    try {
+      body = await response.json();
+    } catch {
+      console.error("Error parsing response body", response);
+    }
+    throw new ApiError(
+      response.status,
+      body?.message || response.statusText || "Unknown error",
+      body?.errors
+    );
+  }
+
+  return await response.json();
+}
 
 export interface Community {
   id: number;
@@ -77,7 +132,7 @@ export type PaginatedApiResponse<T> = {
   cursor: number;
 };
 
-type ApiError = { message: string };
+// type ApiError = { message: string };
 
 export interface Journal {
   id: number;
@@ -91,15 +146,14 @@ export const listJournalsQuery = queryOptions({
   queryKey: [tags.journals],
   retry: 1,
   queryFn: async (context) => {
-    const response = await fetch(`${NODES_API_URL}/v1/journals`, {
-      credentials: "include",
-      // headers: getHeaders(),
-    });
-    const json = (await response.json()) as ApiResponse<{
-      journals: Journal[];
-    }>;
-    console.log("fetch list", response.ok, response.status, json);
-    return json.data?.journals ?? [];
+    const response = await apiRequest<ApiResponse<{ journals: Journal[] }>>(
+      `${NODES_API_URL}/v1/journals`
+    );
+    // const json = (await response.json()) as ApiResponse<{
+    //   journals: Journal[];
+    // }>;
+    console.log("[listJournalsQuery]:: ", response);
+    return response.data?.journals ?? [];
   },
 });
 
@@ -107,12 +161,11 @@ export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
   retry: 1,
   queryFn: async (context) => {
-    const response = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
-      credentials: "include",
-      // headers: getHeaders(),
-    });
-    console.log("fetch list", response.ok, response.status);
-    const json = (await response.json()) as ApiResponse<Community[]>;
+    console.log("[listCommunitiesQuery]:: ", context);
+    const json = await apiRequest<ApiResponse<Community[]>>(
+      `${NODES_API_URL}/v1/admin/communities`
+    );
+    console.log("[listCommunitiesQuery]:: ", json);
     return json.data ?? [];
   },
 });
@@ -122,17 +175,10 @@ export const attestationQueryOptions = (id: number) => {
     queryKey: [{ type: tags.attestations, id }],
     queryFn: async () => {
       try {
-        const response = await fetch(
-          `${NODES_API_URL}/v1/admin/communities/${id}/attestations`,
-          {
-            credentials: "include",
-            // headers: getHeaders(),
-          }
+        const response = await apiRequest<ApiResponse<CommunityAttestation[]>>(
+          `${NODES_API_URL}/v1/admin/communities/${id}/attestations`
         );
-        const json = (await response.json()) as ApiResponse<
-          CommunityAttestation[]
-        >;
-        return json.data ?? [];
+        return response.data ?? [];
       } catch (err) {
         console.error({ err });
         return [];
@@ -165,12 +211,10 @@ export const listAttestationsQuery = queryOptions({
   queryFn: async () => {
     try {
       console.log("[listAttestationsQuery]", tags.attestations);
-      const response = await fetch(`${NODES_API_URL}/v1/admin/attestations`, {
-        credentials: "include",
-        // headers: getHeaders(),
-      });
-      const json = (await response.json()) as ApiResponse<Attestation[]>;
-      return json.data ?? [];
+      const response = await apiRequest<ApiResponse<Attestation[]>>(
+        `${NODES_API_URL}/v1/admin/attestations`
+      );
+      return response.data ?? [];
     } catch (err) {
       console.log("[listAttestationsQuery]", err);
       return [];
@@ -185,7 +229,7 @@ export const addEntryAttestation = ({
   communityId: number;
   attestationId: number;
 }) => {
-  return fetch(
+  return apiRequest(
     `${NODES_API_URL}/v1/admin/communities/${communityId}/addEntryAttestation/${attestationId}`,
     {
       method: "POST",
@@ -202,7 +246,7 @@ export const removeEntryAttestation = async ({
   communityId: number;
   attestationId: number;
 }) => {
-  return fetch(
+  return apiRequest(
     `${NODES_API_URL}/v1/admin/communities/${communityId}/removeEntryAttestation/${attestationId}`,
     {
       method: "POST",
@@ -219,7 +263,7 @@ export const toggleEntryAttestationRequirement = async ({
   communityId: number;
   entryId: number;
 }) => {
-  return fetch(
+  return apiRequest(
     `${NODES_API_URL}/v1/admin/communities/${communityId}/toggleEntryAttestation/${entryId}`,
     {
       method: "POST",
@@ -238,7 +282,7 @@ export const addMember = async ({
   userId: number;
   role: string;
 }) => {
-  const response = await fetch(`/api/member`, {
+  const response = await apiRequest(`/api/member`, {
     body: JSON.stringify({ userId, role, communityId }),
     method: "POST",
     headers: {
@@ -247,7 +291,7 @@ export const addMember = async ({
     },
   });
 
-  return await response.json();
+  return response;
 };
 
 export const removeMember = async ({
@@ -257,7 +301,7 @@ export const removeMember = async ({
   communityId: number;
   memberId: number;
 }) => {
-  return fetch(`/api/member`, {
+  return apiRequest(`/api/member`, {
     method: "DELETE",
     body: JSON.stringify({ communityId, memberId }),
     headers: {
@@ -335,60 +379,78 @@ export const getAnalytics = queryOptions({
   queryKey: [tags.analytics],
   queryFn: async () => {
     // console.log('[cookies]', cookies().toString())
-    const response = await fetch(`${NODES_API_URL}/v1/admin/analytics`, {
-      credentials: "include",
-      // headers: getHeaders(),
-    });
-    const json = (await response.json()) as Analytics;
-    return json || null;
+    const response = await apiRequest<Analytics>(
+      `${NODES_API_URL}/v1/admin/analytics`
+    );
+    return response;
   },
   staleTime: 60 * 1000,
 });
 
-// export const getAnalyticsData = queryOptions({
-//   queryKey: [tags.analyticsChartData],
-//   queryFn: async (range: DateRange) => {
-//     // const response = await fetch(`${NODES_API_URL}/v1/admin/analyticsChartData`, {
-//     //   credentials: "include",
-//     // });
-//     // const json = (await response.json()) as Analytics;
-//     // return json || null;
-//     await new Promise((resolve) => setTimeout(resolve, 3000));
-//     return overviews;
-//   },
-// });
+export const sendMagicLink = ({ email }: { email: string }) => {
+  return apiRequest(`${NODES_API_URL}/v1/auth/magic`, {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({ email }),
+  }) as Promise<{ email: string }>;
+};
+
+export const verifyCode = ({
+  email,
+  code,
+}: {
+  email: string;
+  code: string;
+}) => {
+  return apiRequest(`${NODES_API_URL}/v1/auth/magic`, {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({
+      email,
+      code,
+      ...(RETURN_DEV_TOKEN && { dev: true }),
+    }),
+  }) as Promise<{
+    ok: boolean;
+    user: {
+      email: string;
+      isGuest: boolean;
+      termsAccepted: boolean;
+      token: string;
+    };
+  }>;
+};
 
 export const authUser = queryOptions({
   queryKey: [tags.profile],
   queryFn: async () => {
-    const response = await fetch(`${NODES_API_URL}/v1/auth/profile`, {
-      credentials: "include",
-    });
-    const json = (await response.json()) as {
-      userId: number;
-      email: string;
-      profile: {
-        name?: string;
-        googleScholarUrl: string;
-        orcid?: string;
-        // userOrganization: Organization[];
-        consent: boolean;
-        // notificationSettings: any;
-      };
-    };
-    return json || false;
+    try {
+      const response = await apiRequest<{
+        userId: number;
+        email: string;
+        profile: {
+          name?: string;
+          googleScholarUrl: string;
+          orcid?: string;
+          consent: boolean;
+        };
+      }>(`${NODES_API_URL}/v1/auth/profile`);
+      console.log("[authUser]:: ", response);
+      return response;
+    } catch (err) {
+      console.error("[authUser]:: ", err);
+      return null;
+    }
   },
 });
 
 export const validateAuth = queryOptions({
   queryKey: [],
   queryFn: async () => {
-    const response = await fetch(`${NODES_API_URL}/v1/auth/check`, {
-      credentials: "include",
-      // headers: getHeaders(),
-    });
-    const json = (await response.json()) as { ok: boolean };
-    return json.ok || false;
+    const response = await apiRequest<{ ok: boolean }>(
+      `${NODES_API_URL}/v1/auth/check`
+    );
+    return response.ok || false;
   },
 });
 
@@ -405,20 +467,16 @@ export const searchUsers = queryOptions({
   queryKey: [tags.users],
   queryFn: async (context) => {
     console.log("context", context);
-    const response = await fetch(`${NODES_API_URL}/v1/admin/users/search`, {
-      credentials: "include",
-      // headers: getHeaders(),
-    });
-    console.log("fetch users", response.ok, response.status);
-    const json = (await response.json()) as {
-      data: PaginatedApiResponse<UserProfile[]>;
-    };
-    return json;
+    const response = await apiRequest<
+      ApiResponse<PaginatedApiResponse<UserProfile[]>>
+    >(`${NODES_API_URL}/v1/admin/users/search`);
+    console.log("[searchUsers]::", response);
+    return response.data;
   },
 });
 
 export const toggleUserRole = async ({ userId }: { userId: number }) => {
-  return fetch(`${NODES_API_URL}/v1/admin/users/${userId}/toggleRole`, {
+  return apiRequest(`${NODES_API_URL}/v1/admin/users/${userId}/toggleRole`, {
     method: "PATCH",
     credentials: "include",
     // headers: getHeaders(),
@@ -461,39 +519,31 @@ export async function searchUsersProfiles({ name }: { name?: string }) {
 }
 
 export async function getAnalyticsData(range: DateRange, interval: string) {
-  const response = await fetch(
+  const response = await apiRequest<
+    ApiResponse<{ analytics: AnalyticsData[]; meta: any }>
+  >(
     `${NODES_API_URL}/v1/admin/analytics/query?from=${range.from}&to=${range.to}&interval=${interval}`,
     {
       credentials: "include",
       mode: "cors",
     }
   );
-
-  const data = response.ok
-    ? ((await response.json()) as {
-        data: { analytics: AnalyticsData[]; meta: any };
-      }) ?? []
-    : undefined;
-
-  console.log("[data]", data?.data.analytics);
-  return data?.data.analytics;
+  return response?.data?.analytics ?? [];
 }
 
 export async function getUserEngagementMetrics(): Promise<UserEngagementMetricsData> {
-  const response = await fetch(
-    `${NODES_API_URL}/v1/admin/metrics/user-engagements`,
-    {
-      credentials: "include",
-      mode: "cors",
-    }
-  );
-
-  if (!response.ok) {
-    console.log(
-      "getUserEngagementMetrics",
-      response.status,
-      response.statusText
+  try {
+    const response = await apiRequest<ApiResponse<UserEngagementMetricsData>>(
+      `${NODES_API_URL}/v1/admin/metrics/user-engagements`,
+      {
+        credentials: "include",
+        mode: "cors",
+      }
     );
+    return response.data;
+  } catch (err) {
+    console.log("[getUserEngagementMetrics]:: ", err);
+
     return {
       activeUsers: {
         daily: 0,
@@ -512,11 +562,6 @@ export async function getUserEngagementMetrics(): Promise<UserEngagementMetricsD
       },
     };
   }
-
-  const data =
-    (await response.json()) as ApiResponse<UserEngagementMetricsData>;
-  console.log("getUserEngagementMetrics", data);
-  return data.data;
 }
 
 export async function getPublishingFunnelMetrics(query: {
@@ -531,17 +576,17 @@ export async function getPublishingFunnelMetrics(query: {
   if (query?.compareToPreviousPeriod)
     url.searchParams.set("compareToPreviousPeriod", "true");
 
-  const response = await fetch(url.toString(), {
-    credentials: "include",
-    mode: "cors",
-  });
-
-  if (!response.ok) {
-    console.log(
-      "getPublishingFunnelMetrics Error",
-      response.status,
-      response.statusText
+  try {
+    const response = await apiRequest<ApiResponse<PublishingFunnelMetricsData>>(
+      url.toString(),
+      {
+        credentials: "include",
+        mode: "cors",
+      }
     );
+    return response.data;
+  } catch (err) {
+    console.log("[getPublishingFunnelMetrics]:: ", err);
     return {
       totalUsers: 0,
       publishers: 0,
@@ -549,10 +594,6 @@ export async function getPublishingFunnelMetrics(query: {
       guestSignUpSuccessRate: 0,
     };
   }
-
-  const data =
-    (await response.json()) as ApiResponse<PublishingFunnelMetricsData>;
-  return data.data;
 }
 
 export async function getResearchObjectMetrics(query?: {
@@ -569,42 +610,39 @@ export async function getResearchObjectMetrics(query?: {
   if (query?.compareToPreviousPeriod)
     url.searchParams.set("compareToPreviousPeriod", "true");
 
-  const response = await fetch(url.toString(), {
-    credentials: "include",
-    mode: "cors",
-  });
-
-  if (!response.ok) {
-    console.log(
-      "getResearchObjectMetrics Error",
-      response.status,
-      response.statusText
+  try {
+    const response = await apiRequest<ApiResponse<ResearchObjectStats>>(
+      url.toString(),
+      {
+        credentials: "include",
+        mode: "cors",
+      }
     );
+    return response.data;
+  } catch (err) {
+    console.log("[getResearchObjectMetrics]:: ", err);
     return {
       totalRoCreated: 0,
       averageRoCreatedPerUser: 0,
       medianRoCreatedPerUser: 0,
     };
   }
-
-  const data = (await response.json()) as ApiResponse<ResearchObjectStats>;
-  return data.data;
 }
 
 export async function getRetentionMetrics(): Promise<RetentionMetrics> {
   const url = new URL(`${NODES_API_URL}/v1/admin/metrics/retention-metrics`);
 
-  const response = await fetch(url.toString(), {
-    credentials: "include",
-    mode: "cors",
-  });
-
-  if (!response.ok) {
-    console.log(
-      "getRetentionMetrics Error",
-      response.status,
-      response.statusText
+  try {
+    const response = await apiRequest<ApiResponse<RetentionMetrics>>(
+      url.toString(),
+      {
+        credentials: "include",
+        mode: "cors",
+      }
     );
+    return response.data;
+  } catch (err) {
+    console.log("[getRetentionMetrics]:: ", err);
     return {
       day1Retention: 0,
       day7Retention: 0,
@@ -612,9 +650,6 @@ export async function getRetentionMetrics(): Promise<RetentionMetrics> {
       day365Retention: 0,
     };
   }
-
-  const data = (await response.json()) as ApiResponse<RetentionMetrics>;
-  return data.data;
 }
 
 export async function getFeatureAdoptionMetrics(query?: {
@@ -632,17 +667,17 @@ export async function getFeatureAdoptionMetrics(query?: {
   if (query?.compareToPreviousPeriod)
     url.searchParams.set("compareToPreviousPeriod", "true");
 
-  const response = await fetch(url.toString(), {
-    credentials: "include",
-    mode: "cors",
-  });
-
-  if (!response.ok) {
-    console.log(
-      "getFeatureAdoptionMetrics Error",
-      response.status,
-      response.statusText
+  try {
+    const response = await apiRequest<ApiResponse<FeatureAdoptionMetrics>>(
+      url.toString(),
+      {
+        credentials: "include",
+        mode: "cors",
+      }
     );
+    return response.data;
+  } catch (err) {
+    console.log("[getFeatureAdoptionMetrics]:: ", err);
     return {
       totalShares: 0,
       totalCoAuthorInvites: 0,
@@ -653,7 +688,4 @@ export async function getFeatureAdoptionMetrics(query?: {
       totalGuestModeVisits: 0,
     };
   }
-
-  const data = (await response.json()) as ApiResponse<FeatureAdoptionMetrics>;
-  return data.data;
 }
