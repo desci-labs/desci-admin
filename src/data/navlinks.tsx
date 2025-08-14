@@ -122,6 +122,12 @@ export const sidelinks: SideLink[] = [
         icon: <UsersRoundIcon size={18} />,
       },
       {
+        title: "Desci Research",
+        label: "",
+        href: "/metrics/desci-research",
+        icon: <ChartNoAxesColumnIncreasing size={18} />,
+      },
+      {
         title: "Publishing funnel",
         label: "",
         href: "/metrics/publishing-funnel",
