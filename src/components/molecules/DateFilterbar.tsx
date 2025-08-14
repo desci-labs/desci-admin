@@ -53,9 +53,30 @@ export function Filterbar({
             },
           },
           {
-            label: "Last 30 days",
+            label: "Past Month",
             dateRange: {
               from: subDays(new Date(), 29),
+              to: new Date(),
+            },
+          },
+          {
+            label: "Past 3 Months",
+            dateRange: {
+              from: subDays(new Date(), 90),
+              to: new Date(),
+            },
+          },
+          {
+            label: "Past 6 Months",
+            dateRange: {
+              from: subDays(new Date(), 180),
+              to: new Date(),
+            },
+          },
+          {
+            label: "1 Year",
+            dateRange: {
+              from: subDays(new Date(), 365),
               to: new Date(),
             },
           },

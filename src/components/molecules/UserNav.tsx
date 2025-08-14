@@ -19,7 +19,6 @@ import { toast } from "sonner";
 export function UserNav() {
   const { data: user } = useSuspenseQuery(authUser);
   const router = useRouter();
-  console.log("[UserNav]:: ", user);
   const name = user && user.profile?.name;
   return (
     <DropdownMenu>
