@@ -1,6 +1,6 @@
 import { DesciResearchAnalytics } from "@/components/molecules/DesciResearchAnalytics";
 import { startOfDay, subDays } from "date-fns";
-import { TZDate } from "@date-fns/tz";
+import { tz, TZDate } from "@date-fns/tz";
 import { endOfDay } from "date-fns";
 
 interface DataItem {
@@ -116,25 +116,28 @@ export default async function DesciResearch({
 }) {
   console.log({ baseurl: process.env.NEXT_PUBLIC_BASE_URL });
   const { from, to, interval } = await searchParams;
-  const fromDate = from ? new Date(from) : startOfDay(subDays(new Date(), 29));
-  const toDate = to ? new Date(to) : endOfDay(new Date());
+  const fromDate = from ? new Date(from) : subDays(new Date(), 29);
+  const toDate = to ? new Date(to) : new Date();
   const groupBy = interval ? (interval as "day" | "week" | "month") : "week";
 
-  const normalizedFrom = startOfDay(
-    new TZDate(
-      fromDate.getFullYear(),
-      fromDate.getMonth(),
-      fromDate.getDate(),
-      "UTC"
-    )
-  )
-    .withTimeZone("UTC")
-    .toISOString();
-  const normalizedTo = endOfDay(
-    new TZDate(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), "UTC")
-  )
-    .withTimeZone("UTC")
-    .toISOString();
+  // const normalizedFrom = startOfDay(
+  //   new TZDate(
+  //     fromDate.getFullYear(),
+  //     fromDate.getMonth(),
+  //     fromDate.getDate(),
+  //     "UTC"
+  //   )
+  // )
+  //   .withTimeZone("UTC")
+  //   .toISOString();
+  // const normalizedTo = endOfDay(
+  //   new TZDate(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), "UTC")
+  // )
+  //   .withTimeZone("UTC")
+  //   .toISOString();
+
+  const normalizedFrom = startOfDay(fromDate, { in: tz("UTC") }).toISOString();
+  const normalizedTo = endOfDay(toDate, { in: tz("UTC") }).toISOString();
 
   const [chats, uniqueUsers, userSessions, devices] = await Promise.all([
     getChatsAnalytics(normalizedFrom, normalizedTo, groupBy),
