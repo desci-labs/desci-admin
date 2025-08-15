@@ -32,7 +32,9 @@ async function getChatsAnalytics(from: string, to: string, interval: string) {
   params.set("interval", interval);
 
   const res = await fetch(
-    `http://localhost:3000/api/desci-research-analytics/chats?${params.toString()}`,
+    `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/desci-research-analytics/chats?${params.toString()}`,
     {
       next: {
         revalidate: 3600,
@@ -52,7 +54,9 @@ async function getUniqueUsersAnalytics(
   params.set("interval", interval);
 
   const res = await fetch(
-    `http://localhost:3000/api/desci-research-analytics/users?${params.toString()}`,
+    `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/desci-research-analytics/users?${params.toString()}`,
     {
       next: {
         revalidate: 3600,
@@ -73,7 +77,9 @@ async function getUserSessionsAnalytics(
   params.set("interval", interval);
 
   const res = await fetch(
-    `http://localhost:3000/api/desci-research-analytics/sessions?${params.toString()}`,
+    `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/desci-research-analytics/sessions?${params.toString()}`,
     {
       next: {
         revalidate: 3600,
@@ -91,7 +97,9 @@ async function getDevicesAnalytics(from: string, to: string, interval: string) {
 
   console.log({ from, to });
   const res = await fetch(
-    `http://localhost:3000/api/desci-research-analytics/devices?${params.toString()}`,
+    `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/desci-research-analytics/devices?${params.toString()}`,
     {
       next: {
         revalidate: 0,
@@ -106,6 +114,7 @@ export default async function DesciResearch({
 }: {
   searchParams: Promise<{ from: string; to: string; interval: string }>;
 }) {
+  console.log({ baseurl: process.env.NEXT_PUBLIC_BASE_URL });
   const { from, to, interval } = await searchParams;
   const fromDate = from ? new Date(from) : startOfDay(subDays(new Date(), 29));
   const toDate = to ? new Date(to) : endOfDay(new Date());
