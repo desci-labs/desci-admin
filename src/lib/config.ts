@@ -14,10 +14,6 @@ export const configureNodesLib = () => {
   if (!allowed) {
     throw new Error(`Invalid NODESLIB_ENV: ${env}`);
   }
-  // const withOverrides = maybeOverride(
-  //   NODESLIB_CONFIGS[env as NodesEnv],
-  //   nodeslibConfigOverride
-  // );
   setNodesLibConfig(NODESLIB_CONFIGS[env as NodesEnv]);
 };
 
