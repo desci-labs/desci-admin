@@ -1,10 +1,9 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
-import { createAttestation, createCommunity } from "@/app/actions";
-import CommunityForm from "@/components/organisms/forms/community-form";
+import { useFormState } from "react-dom";
+import { createAttestation } from "@/app/actions";
 import AttestationForm from "@/components/organisms/forms/attestation-form";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { listCommunitiesQuery } from "@/lib/api";
 import NotFoundError from "@/app/not-found";
 import { getQueryClient } from "@/lib/get-query-client";
@@ -13,11 +12,7 @@ const defaultState: ReturnType<typeof createAttestation> = Promise.resolve({
   ok: false,
 });
 
-export default function Page({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function Page({ params }: { params: { id: string } }) {
   const [state, formAction] = useFormState<
     ReturnType<typeof createAttestation>
   >(createAttestation, defaultState);
@@ -25,9 +20,8 @@ export default function Page({
   // todo: add skeleton loader
   const { data, isLoading } = useQuery(listCommunitiesQuery, getQueryClient());
   const community = data?.find((com) => com.id === parseInt(params.id));
-  console.log('communityId', params)
 
-  if (!community) return <NotFoundError />
+  if (!community) return <NotFoundError />;
   return (
     <AttestationForm
       formAction={formAction}
@@ -38,7 +32,7 @@ export default function Page({
         protected: false,
         canMintDoi: false,
         canUpdateOrcid: false,
-        communityId: params.id
+        communityId: params.id,
       }}
     />
   );
