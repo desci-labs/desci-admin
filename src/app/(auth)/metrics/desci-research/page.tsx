@@ -143,7 +143,6 @@ export default async function DesciResearch({
     getDevicesAnalytics(normalizedFrom, normalizedTo, groupBy),
   ]);
 
-  console.log({ devices });
   return (
     <DesciResearchAnalytics
       chats={chats}

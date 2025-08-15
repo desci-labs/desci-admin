@@ -73,7 +73,10 @@ function ChartAreaDefault(props: {
 }) {
   const chartData = useMemo(() => {
     return props.data.map((item) => ({
-      date: formatDate(item.date, "dd MMM"),
+      date: new Date(item.date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
       value: Number(item.value),
     }));
   }, [props.data]);
@@ -102,12 +105,12 @@ function ChartAreaDefault(props: {
               tickMargin={8}
               // tickFormatter={(value) => formatDate(value, "dd MMM")}
             />
-            <YAxis
+            {/* <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickCount={3}
-            />
+            /> */}
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
@@ -126,26 +129,19 @@ function ChartAreaDefault(props: {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none font-medium">
-              <span
-                className={cn(
-                  "flex items-center gap-1",
-                  props.trend
-                    ? props.trend > 0
-                      ? "text-green-500"
-                      : "text-red-500"
-                    : "text-muted-foreground"
-                )}
-              >
+              <span className="flex items-center gap-1 text-muted-foreground">
                 {props.trend ? (
                   <>
                     {props.trend > 0 ? (
                       <>
-                        Trending up by {props.trend}% this period{" "}
+                        Trending up by{" "}
+                        <span className="text-green-500">{props.trend}%</span>{" "}
                         <TrendingUp className="h-4 w-4" />
                       </>
                     ) : (
                       <>
-                        Trending down by {props.trend}% this period{" "}
+                        Trending down by{" "}
+                        <span className="text-red-500">{props.trend}%</span>{" "}
                         <TrendingDown className="h-4 w-4" />
                       </>
                     )}
@@ -326,12 +322,12 @@ function ChartAreaInteractive(props: {
                 });
               }}
             />
-            <YAxis
+            {/* <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickCount={3}
-            />
+            /> */}
             <ChartTooltip
               cursor={false}
               content={
@@ -426,6 +422,35 @@ export function DesciResearchAnalytics({
     }));
   }, [userSessions]);
 
+  const trends = useMemo(() => {
+    const chatsTrend =
+      (Number(chats[chats.length - 1].value) - Number(chats[0].value)) /
+      Number(chats[0].value);
+    const uniqueUsersTrend =
+      (Number(uniqueUsers[uniqueUsers.length - 1].value) -
+        Number(uniqueUsers[0].value)) /
+      Number(uniqueUsers[0].value);
+    const userSessionsTrend =
+      (Number(userSessions[userSessions.length - 1].sessionCount) -
+        Number(userSessions[0].sessionCount)) /
+      Number(userSessions[0].sessionCount);
+    const userSessionsDurationTrend =
+      (Number(
+        userSessionsDurationData[userSessionsDurationData.length - 1].value
+      ) -
+        Number(userSessionsDurationData[0].value)) /
+      Number(userSessionsDurationData[0].value);
+    console.log({
+      userSessionsDurationData,
+    });
+    return {
+      chats: Math.round(chatsTrend * 100),
+      uniqueUsers: Math.round(uniqueUsersTrend * 100),
+      userSessions: Math.round(userSessionsTrend * 100),
+      userSessionsDuration: Math.round(userSessionsDurationTrend * 100),
+    };
+  }, [chats, uniqueUsers, userSessions, userSessionsDurationData]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between space-x-4">
@@ -476,7 +501,7 @@ export function DesciResearchAnalytics({
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
         <ChartAreaDefault
           data={chats}
-          trend={10}
+          trend={trends.chats}
           interval={interval}
           selectedDates={selectedDates}
           config={{
@@ -490,7 +515,7 @@ export function DesciResearchAnalytics({
         />
         <ChartAreaDefault
           data={uniqueUsers}
-          trend={-5}
+          trend={trends.uniqueUsers}
           interval={interval}
           selectedDates={selectedDates}
           config={{
@@ -504,7 +529,7 @@ export function DesciResearchAnalytics({
         />
         <ChartAreaDefault
           data={userSessionsData}
-          trend={-5}
+          trend={trends.userSessions}
           interval={interval}
           selectedDates={selectedDates}
           config={{
@@ -518,7 +543,7 @@ export function DesciResearchAnalytics({
         />
         <ChartAreaDefault
           data={userSessionsDurationData}
-          trend={-5}
+          trend={trends.userSessionsDuration}
           interval={interval}
           selectedDates={selectedDates}
           config={{
