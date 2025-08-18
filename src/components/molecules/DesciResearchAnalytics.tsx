@@ -440,9 +440,7 @@ export function DesciResearchAnalytics({
       ) -
         Number(userSessionsDurationData[0].value)) /
       Number(userSessionsDurationData[0].value);
-    console.log({
-      userSessionsDurationData,
-    });
+
     return {
       chats: Math.round(chatsTrend * 100),
       uniqueUsers: Math.round(uniqueUsersTrend * 100),
@@ -511,7 +509,7 @@ export function DesciResearchAnalytics({
             },
           }}
           title="Chats"
-          description="Showing total chats for the selected date range"
+          description="Showing chats activity over the selected period"
         />
         <ChartAreaDefault
           data={uniqueUsers}
@@ -525,7 +523,7 @@ export function DesciResearchAnalytics({
             },
           }}
           title="Unique Users"
-          description="Showing total unique users for the selected date range"
+          description="Showing unique active users over the selected period"
         />
         <ChartAreaDefault
           data={userSessionsData}
@@ -539,7 +537,7 @@ export function DesciResearchAnalytics({
             },
           }}
           title="User Sessions"
-          description="Showing total user sessions for the selected date range"
+          description="User sessions for the selected period"
         />
         <ChartAreaDefault
           data={userSessionsDurationData}
@@ -553,7 +551,7 @@ export function DesciResearchAnalytics({
             },
           }}
           title="User Sessions Duration"
-          description="Showing average user sessions duration for the selected date range"
+          description="Average session duration for the selected period"
         />
       </div>
       <ChartAreaInteractive

@@ -95,7 +95,6 @@ async function getDevicesAnalytics(from: string, to: string, interval: string) {
   params.set("to", to);
   params.set("interval", interval);
 
-  console.log({ from, to });
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_BASE_URL
@@ -114,27 +113,10 @@ export default async function DesciResearch({
 }: {
   searchParams: Promise<{ from: string; to: string; interval: string }>;
 }) {
-  console.log({ baseurl: process.env.NEXT_PUBLIC_BASE_URL });
   const { from, to, interval } = await searchParams;
   const fromDate = from ? new Date(from) : subDays(new Date(), 29);
   const toDate = to ? new Date(to) : new Date();
   const groupBy = interval ? (interval as "day" | "week" | "month") : "week";
-
-  // const normalizedFrom = startOfDay(
-  //   new TZDate(
-  //     fromDate.getFullYear(),
-  //     fromDate.getMonth(),
-  //     fromDate.getDate(),
-  //     "UTC"
-  //   )
-  // )
-  //   .withTimeZone("UTC")
-  //   .toISOString();
-  // const normalizedTo = endOfDay(
-  //   new TZDate(toDate.getFullYear(), toDate.getMonth(), toDate.getDate(), "UTC")
-  // )
-  //   .withTimeZone("UTC")
-  //   .toISOString();
 
   const normalizedFrom = startOfDay(fromDate, { in: tz("UTC") }).toISOString();
   const normalizedTo = endOfDay(toDate, { in: tz("UTC") }).toISOString();
