@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import pool from "@/lib/postgresClient";
+import { IS_PROD } from "@/lib/config";
 
 const querySchema = z.object({
   from: z.coerce.date(),
@@ -18,15 +19,16 @@ export async function GET(request: NextRequest) {
     const client = await pool.connect();
     const result = await client.query(
       `
-      SELECT
+     SELECT
         DATE_TRUNC($3, created_at) AS DATE,
-        COUNT(*) AS value
+        COUNT(DISTINCT username) AS value
     FROM
         public.search_logs
     WHERE
         thread_id IS NULL
         AND created_at >= $1
         AND created_at <= $2
+        ${IS_PROD ? "AND username NOT LIKE '%@desci.com'" : ""}
     GROUP BY
         DATE
     ORDER BY

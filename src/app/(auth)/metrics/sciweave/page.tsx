@@ -34,7 +34,7 @@ async function getChatsAnalytics(from: string, to: string, interval: string) {
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_BASE_URL
-    }/api/desci-research-analytics/chats?${params.toString()}`,
+    }/api/sciweave-analytics/chats?${params.toString()}`,
     {
       next: {
         revalidate: 3600,
@@ -56,7 +56,7 @@ async function getUniqueUsersAnalytics(
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_BASE_URL
-    }/api/desci-research-analytics/users?${params.toString()}`,
+    }/api/sciweave-analytics/users?${params.toString()}`,
     {
       next: {
         revalidate: 3600,
@@ -79,7 +79,7 @@ async function getUserSessionsAnalytics(
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_BASE_URL
-    }/api/desci-research-analytics/sessions?${params.toString()}`,
+    }/api/sciweave-analytics/sessions?${params.toString()}`,
     {
       next: {
         revalidate: 3600,
@@ -98,7 +98,7 @@ async function getDevicesAnalytics(from: string, to: string, interval: string) {
   const res = await fetch(
     `${
       process.env.NEXT_PUBLIC_BASE_URL
-    }/api/desci-research-analytics/devices?${params.toString()}`,
+    }/api/sciweave-analytics/devices?${params.toString()}`,
     {
       next: {
         revalidate: 0,

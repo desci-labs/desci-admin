@@ -465,7 +465,7 @@ export function DesciResearchAnalytics({
               }
 
               router.push(
-                `/metrics/desci-research?from=${dates?.from?.toISOString()}&to=${dates?.to?.toISOString()}&interval=${interval}`
+                `/metrics/sciweave?from=${dates?.from?.toISOString()}&to=${dates?.to?.toISOString()}&interval=${interval}`
               );
             }}
           />
@@ -474,7 +474,7 @@ export function DesciResearchAnalytics({
             defaultValue={interval}
             onValueChange={(newInterval) => {
               router.push(
-                `/metrics/desci-research?from=${selectedDates.from?.toISOString()}&to=${selectedDates.to?.toISOString()}&interval=${newInterval}`
+                `/metrics/sciweave?from=${selectedDates.from?.toISOString()}&to=${selectedDates.to?.toISOString()}&interval=${newInterval}`
               );
             }}
           >
@@ -547,7 +547,7 @@ export function DesciResearchAnalytics({
           config={{
             value: {
               label: "Duration",
-              color: "var(--chart-2)",
+              color: "var(--chart-3)",
             },
           }}
           title="User Sessions Duration"

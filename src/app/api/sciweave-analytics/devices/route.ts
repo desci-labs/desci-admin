@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import pool from "@/lib/postgresClient";
+import { IS_PROD } from "@/lib/config";
 
 const querySchema = z.object({
   from: z.coerce.date(),
@@ -66,6 +67,7 @@ export async function GET(request: NextRequest) {
         FROM search_logs
         WHERE created_at >= $1
         AND created_at <= $2
+        ${IS_PROD ? "AND username NOT LIKE '%@desci.com'" : ""}
         GROUP BY DATE
         ORDER BY DATE;
       `,
