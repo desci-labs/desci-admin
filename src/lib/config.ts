@@ -32,3 +32,7 @@ export const getNodesConfig = () => {
 export const NODES_API_URL = getNodesConfig().apiUrl;
 export const RETURN_DEV_TOKEN =
   process.env.NEXT_PUBLIC_LOCAL_AUTH_COOKIE === "true" || false;
+
+export const IS_DEV = process.env.NEXT_ENV === "development";
+export const IS_PROD = process.env.NEXT_ENV === "production";
+console.log("NEXT_ENV", { IS_DEV, IS_PROD });

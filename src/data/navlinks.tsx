@@ -116,16 +116,16 @@ export const sidelinks: SideLink[] = [
     icon: <BarChart3Icon size={18} />,
     sub: [
       {
+        title: "Sciweave Analytics",
+        label: "",
+        href: "/metrics/sciweave",
+        icon: <ChartNoAxesColumnIncreasing size={18} />,
+      },
+      {
         title: "User Engagement",
         label: "",
         href: "/metrics",
         icon: <UsersRoundIcon size={18} />,
-      },
-      {
-        title: "Desci Research",
-        label: "",
-        href: "/metrics/desci-research",
-        icon: <ChartNoAxesColumnIncreasing size={18} />,
       },
       {
         title: "Publishing funnel",
