@@ -14,16 +14,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -416,27 +415,27 @@ export default function AttestationForm({
             )}
 
             {isEdit && (
-              <AlertDialog
+              <Dialog
                 open={showDialog}
                 onOpenChange={(open) => setShowDialog(open)}
               >
-                <AlertDialogTrigger asChild>
+                <DialogTrigger asChild>
                   <SubmitButton disabled={form.formState.isSubmitting}>
                     Submit Attestation
                   </SubmitButton>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Are you sure?</DialogTitle>
                     {isIntentChanged && (
-                      <AlertDialogDescription>
+                      <DialogDescription>
                         This action cannot be undone. This will publish a new
                         version of this attestation and require all submissions
                         to reclaim the updated attestation to rejoin the
                         community.
-                      </AlertDialogDescription>
+                      </DialogDescription>
                     )}
-                  </AlertDialogHeader>
+                  </DialogHeader>
                   {isIntentChanged && (
                     <div className="flex items-center space-x-2">
                       <Checkbox
@@ -454,8 +453,8 @@ export default function AttestationForm({
                       </label>
                     </div>
                   )}
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <DialogFooter className="gap-4">
+                    <DialogClose>Cancel</DialogClose>
                     <SubmitButton
                       type="submit"
                       disabled={form.formState.isSubmitting}
@@ -463,9 +462,9 @@ export default function AttestationForm({
                     >
                       Continue
                     </SubmitButton>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             )}
           </form>
         </Form>
