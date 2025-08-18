@@ -15,7 +15,10 @@ export async function GET(request: NextRequest) {
     const { from, to, interval } = querySchema.parse(
       Object.fromEntries(searchParams)
     );
-
+    console.log("get chats config env", {
+      IS_PROD,
+      NEXT_ENV: process.env.NEXT_ENV,
+    });
     const client = await pool.connect();
     const result = await client.query(
       `

@@ -129,7 +129,7 @@ export default async function DesciResearch({
     getDevicesAnalytics(normalizedFrom, normalizedTo, groupBy),
   ]);
 
-  console.log("ENV", {
+  console.log("PAGE ENV", {
     IS_PROD,
     NEXT_ENV: process.env.NEXT_ENV,
     chats,
