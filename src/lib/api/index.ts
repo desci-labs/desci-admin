@@ -149,10 +149,6 @@ export const listJournalsQuery = queryOptions({
     const response = await apiRequest<ApiResponse<{ journals: Journal[] }>>(
       `${NODES_API_URL}/v1/journals`
     );
-    // const json = (await response.json()) as ApiResponse<{
-    //   journals: Journal[];
-    // }>;
-    console.log("[listJournalsQuery]:: ", response);
     return response.data?.journals ?? [];
   },
 });
@@ -161,12 +157,10 @@ export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],
   retry: 1,
   queryFn: async (context) => {
-    console.log("[listCommunitiesQuery]:: ", context);
-    const json = await apiRequest<ApiResponse<Community[]>>(
+    const response = await apiRequest<ApiResponse<Community[]>>(
       `${NODES_API_URL}/v1/admin/communities`
     );
-    console.log("[listCommunitiesQuery]:: ", json);
-    return json.data ?? [];
+    return response.data ?? [];
   },
 });
 
@@ -210,7 +204,6 @@ export const listAttestationsQuery = queryOptions({
   queryKey: [tags.attestations],
   queryFn: async () => {
     try {
-      console.log("[listAttestationsQuery]", tags.attestations);
       const response = await apiRequest<ApiResponse<Attestation[]>>(
         `${NODES_API_URL}/v1/admin/attestations`
       );

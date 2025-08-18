@@ -15,14 +15,7 @@ import {
 import ExpandableMarkdown from "@/components/molecules/ExpandableMarkdown";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-
-interface Journal {
-  id: number;
-  name: string;
-  description: string;
-  iconCid?: string;
-  createdAt: string;
-}
+import { Journal } from "@/lib/api";
 
 interface JournalProps {
   journal: Journal;

@@ -12,14 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-
-export interface Journal {
-  id: number;
-  name: string;
-  description: string;
-  iconCid?: string;
-  createdAt: string;
-}
+import { Journal } from "@/lib/api";
 
 function ActionsCell({ journal }: { journal: Journal }) {
   const router = useRouter();
