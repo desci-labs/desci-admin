@@ -10,12 +10,11 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useRouter } from "next/navigation";
-import { formatDate, startOfDay } from "date-fns";
-import { endOfDay } from "date-fns";
+import { formatDate } from "date-fns";
 import { toast } from "sonner";
 
 import { TrendingDown, TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import {
   Card,
@@ -34,7 +33,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useMemo } from "react";
-import { cn } from "@/lib/utils";
 
 interface DataItem {
   date: string;
@@ -103,14 +101,7 @@ function ChartAreaDefault(props: {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              // tickFormatter={(value) => formatDate(value, "dd MMM")}
             />
-            {/* <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickCount={3}
-            /> */}
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
@@ -322,12 +313,6 @@ function ChartAreaInteractive(props: {
                 });
               }}
             />
-            {/* <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickCount={3}
-            /> */}
             <ChartTooltip
               cursor={false}
               content={
@@ -469,7 +454,6 @@ export function DesciResearchAnalytics({
               );
             }}
           />
-          {/* <p className="text-muted-foreground text-sm">Compared to</p> */}
           <Select
             defaultValue={interval}
             onValueChange={(newInterval) => {

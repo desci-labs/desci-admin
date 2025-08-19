@@ -27,15 +27,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Check, ChevronsUpDown, X, Settings } from "lucide-react";
+import { Check, X, Settings } from "lucide-react";
 import {
   addMember,
   Community,
   removeMember,
-  searchUsers,
   searchUsersProfiles,
 } from "@/lib/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { getQueryClient } from "@/lib/get-query-client";
 import { tags } from "@/lib/tags";
 
@@ -112,7 +111,6 @@ export default function CommunityMembers({
       { name: search.trim() },
       {
         onSuccess(data, variables, context) {
-          console.log("Results", data?.data);
           if (data?.data) {
             setUsers(data.data.data.filter((user) => user.name !== null) ?? []);
           }
@@ -121,10 +119,6 @@ export default function CommunityMembers({
     );
   }, [search, mutate]);
 
-  //   const isPending =
-  //     addMemberMutation.isPending || removeMemberMutation.isPending;
-
-  console.log("Users", users);
   return (
     <Card className="mb-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -213,7 +207,6 @@ export default function CommunityMembers({
                 onClick={() =>
                   toggleMember({
                     id: member.userId,
-                    // name: member.user.name,
                   })
                 }
               >

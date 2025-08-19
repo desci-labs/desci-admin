@@ -3,14 +3,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useFormStatus } from "react-dom";
-import { HTMLProps, useCallback, useMemo, useState } from "react";
-import { Loader, Loader2Icon, LoaderIcon } from "lucide-react";
-import { toast } from "sonner";
-import { sendMagicLink, verifyCode } from "@/lib/api";
-import { useMutation } from "@tanstack/react-query";
-import { getQueryClient } from "@/lib/get-query-client";
-import { useRouter } from "next/navigation";
-import { applyDevCookies } from "@/lib/api/cookies";
+import { HTMLProps, useMemo } from "react";
+import { Loader2Icon } from "lucide-react";
 
 export default function LoginForm({
   login,
@@ -23,72 +17,9 @@ export default function LoginForm({
   message?: string;
   disabled: boolean;
 }) {
-  const router = useRouter();
-  // const [email, setEmail] = useState<string>();
-  // const [pending, setPending] = useState(false);
-  // const pending = false;
-  const queryClient = getQueryClient();
-  const { mutate: sendMagicLinkMutation, isPending: sendMagicLinkPending } =
-    useMutation(
-      {
-        mutationFn: sendMagicLink,
-      },
-      queryClient
-    );
-  const { mutate: verifyCodeMutation, isPending: verifyCodePending } =
-    useMutation(
-      {
-        mutationFn: verifyCode,
-      },
-      queryClient
-    );
-  const pending = sendMagicLinkPending || verifyCodePending;
-  console.log("[LoginForm]:: ", { email });
-
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const formData = new FormData(e.target as HTMLFormElement);
-      const code = formData.get("code") as string;
-      console.log("[handleSubmit]:: ", email, code);
-      if (code) {
-        // setPending(true);
-        verifyCodeMutation(
-          { email: email!, code },
-          {
-            onSuccess: (data) => {
-              console.log("[token]", data.user.token);
-              applyDevCookies(data.user.token);
-              router.push("/", { scroll: false });
-            },
-            onSettled: () => {
-              // setPending(false);
-            },
-          }
-        );
-      } else {
-        // setPending(true);
-        const email = formData.get("email") as string;
-        sendMagicLinkMutation(
-          { email },
-          {
-            onSuccess: (data) => {
-              // setEmail(email);
-            },
-            onSettled: () => {
-              // setPending(false);
-            },
-          }
-        );
-      }
-    },
-    [email, router, sendMagicLinkMutation, verifyCodeMutation]
-  );
-
   return (
     <form
       action={login}
-      // onSubmit={handleSubmit}
       className="flex flex-col space-y-4 items-start justify-center w-full gap-3"
     >
       <p className="text-txt-neutral text-sm mb-2">
@@ -112,7 +43,7 @@ export default function LoginForm({
             placeholder="user@email.com"
             autoFocus
             required
-            disabled={!!email || pending}
+            disabled={!!email}
           />
         </div>
 
@@ -131,7 +62,6 @@ export default function LoginForm({
               defaultValue=""
               required
               placeholder="XXXXXX"
-              disabled={pending}
               className="text-txt-focus border-2 border-border-neutral focus:invalid:border-red-400 focus-visible:valid:border-btn-surface-primary-focus focus-visible:outline-none focus-visible:ring-0"
             />
           </div>

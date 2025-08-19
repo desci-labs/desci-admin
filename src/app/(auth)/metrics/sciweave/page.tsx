@@ -1,6 +1,6 @@
 import { DesciResearchAnalytics } from "@/components/molecules/DesciResearchAnalytics";
 import { startOfDay, subDays } from "date-fns";
-import { tz, TZDate } from "@date-fns/tz";
+import { tz } from "@date-fns/tz";
 import { endOfDay } from "date-fns";
 
 interface DataItem {
