@@ -35,4 +35,3 @@ export const RETURN_DEV_TOKEN =
 
 export const IS_DEV = process.env.NEXT_ENV === "development";
 export const IS_PROD = process.env.NEXT_ENV === "production";
-console.log("CONFIG NEXT_ENV", { IS_DEV, IS_PROD });

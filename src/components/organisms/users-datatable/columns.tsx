@@ -8,7 +8,6 @@ import { DataTableRowActions } from "./data-table-row-actions";
 
 import { roles } from "./data/data";
 import { User } from "./data/schema";
-import { CircleIcon, QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import { DicesIcon } from "lucide-react";
 
 export const columns: ColumnDef<User>[] = [
@@ -60,7 +59,6 @@ export const columns: ColumnDef<User>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      console.log("name filter", { id, value, row: row.getValue(id) });
       return (
         (row.getValue(id) as string)
           ?.toLowerCase()
@@ -77,15 +75,14 @@ export const columns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title="Email" />
     ),
     cell: ({ row }) => {
-      const isDesciEmail = (row.getValue("email") as string)?.endsWith("@desci.com");
-      console.log('IsDesci', { isDesciEmail, email: (row.getValue("email") as string)})
+      const isDesciEmail = (row.getValue("email") as string)?.endsWith(
+        "@desci.com"
+      );
       return (
         <div className="flex gap-1 items-center text-ellipsis">
-          
           <span>{row.getValue("email")}</span>
           {isDesciEmail ? (
-            <DicesIcon
-             className="mr-l h-4 w-4 text-muted-foreground" />
+            <DicesIcon className="mr-l h-4 w-4 text-muted-foreground" />
           ) : null}
         </div>
       );
@@ -117,38 +114,9 @@ export const columns: ColumnDef<User>[] = [
     },
     filterFn: (row, id, value) => {
       const isAdmin = row.getValue("isAdmin") === true;
-      // const include = [isAdmin ? 'admin' : 'user']
-      // console.log('filter', { isAdmin, filter: value.includes(row.getValue(id)), value, id } )
       return value.includes(isAdmin ? "admin" : "user");
     },
   },
-  // {
-  //   accessorKey: 'priority',
-  //   header: ({ column }) => (
-  //     <DataTableColumnHeader column={column} title='Priority' />
-  //   ),
-  //   cell: ({ row }) => {
-  //     const priority = priorities.find(
-  //       (priority) => priority.value === row.getValue('priority')
-  //     )
-
-  //     if (!priority) {
-  //       return null
-  //     }
-
-  //     return (
-  //       <div className='flex items-center'>
-  //         {priority.icon && (
-  //           <priority.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-  //         )}
-  //         <span>{priority.label}</span>
-  //       </div>
-  //     )
-  //   },
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id))
-  //   },
-  // },
   {
     accessorKey: "createdAt",
     header: ({ column }) => (

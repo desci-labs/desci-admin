@@ -15,11 +15,6 @@ export async function GET(request: NextRequest) {
     const { from, to, interval } = querySchema.parse(
       Object.fromEntries(searchParams)
     );
-    console.log({
-      from,
-      to,
-      interval,
-    });
 
     const client = await pool.connect();
     const result = await client.query(

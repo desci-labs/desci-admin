@@ -95,13 +95,11 @@ export default function AttestationForm({
   defaultValues,
   state,
   isEdit = false,
-}: // pending,
-{
+}: {
   formAction: (formData: FormData) => void;
   state: ReturnType<typeof createAttestation>;
   defaultValues?: FormValues;
   isEdit?: boolean;
-  // pending: boolean;
 }) {
   const router = useRouter();
   const [showDialog, setShowDialog] = useState(false);
@@ -115,7 +113,6 @@ export default function AttestationForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   function onSubmit(data: FormValues) {
-    console.log("onSubmit");
     const formData = new FormData();
 
     formData.append("name", data.name);
@@ -142,11 +139,6 @@ export default function AttestationForm({
       formData.append("verifiedImage", data.verifiedImage[0]);
     }
 
-    // Log the FormData (for demonstration purposes)
-    for (let [key, value] of Array.from(formData.entries())) {
-      console.log(`${key}: ${value}`);
-    }
-
     setShowDialog(false);
     formAction(formData);
   }
@@ -156,7 +148,6 @@ export default function AttestationForm({
   >;
 
   useEffect(() => {
-    console.log("attestationForm", formState.ok, form.formState.isLoading);
     if (formState?.ok) {
       getQueryClient().invalidateQueries({
         queryKey: [tags.attestations],
@@ -165,7 +156,6 @@ export default function AttestationForm({
         queryKey: [{ type: tags.attestations, id: defaultValues?.communityId }],
       });
       router.back();
-      // todo: show success toast
     }
   }, [defaultValues?.communityId, form, formState, router]);
 
@@ -473,14 +463,8 @@ export default function AttestationForm({
   );
 }
 
-// const SubmitButton: ComponentType<'button'> = (props) => {
-//   const { pending } = useFormStatus();
-
-//   return <Button {...props} />
-// };
-
 const SubmitButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ ...props }, ref) => {
     const { pending } = useFormStatus();
 
     return <Button ref={ref} {...props} disabled={pending || props.disabled} />;

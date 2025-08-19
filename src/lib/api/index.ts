@@ -371,7 +371,6 @@ export interface AnalyticsOrcidUser extends AnalyticsUser {
 export const getAnalytics = queryOptions({
   queryKey: [tags.analytics],
   queryFn: async () => {
-    // console.log('[cookies]', cookies().toString())
     const response = await apiRequest<Analytics>(
       `${NODES_API_URL}/v1/admin/analytics`
     );
@@ -459,11 +458,9 @@ interface UserProfile {
 export const searchUsers = queryOptions({
   queryKey: [tags.users],
   queryFn: async (context) => {
-    console.log("context", context);
     const response = await apiRequest<
       ApiResponse<PaginatedApiResponse<UserProfile[]>>
     >(`${NODES_API_URL}/v1/admin/users/search`);
-    console.log("[searchUsers]::", response);
     return response.data;
   },
 });

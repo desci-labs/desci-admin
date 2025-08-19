@@ -2,7 +2,6 @@ import { DesciResearchAnalytics } from "@/components/molecules/DesciResearchAnal
 import { startOfDay, subDays } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { endOfDay } from "date-fns";
-import { IS_PROD } from "@/lib/config";
 
 interface DataItem {
   date: string;
@@ -128,15 +127,6 @@ export default async function DesciResearch({
     getUserSessionsAnalytics(normalizedFrom, normalizedTo, groupBy),
     getDevicesAnalytics(normalizedFrom, normalizedTo, groupBy),
   ]);
-
-  console.log("PAGE ENV", {
-    IS_PROD,
-    NEXT_ENV: process.env.NEXT_ENV,
-    chats,
-    uniqueUsers,
-    userSessions,
-    devices,
-  });
 
   return (
     <DesciResearchAnalytics
