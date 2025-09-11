@@ -394,6 +394,10 @@ export function DesciResearchAnalytics({
 }) {
   const router = useRouter();
   const userSessionsData = useMemo(() => {
+    if (!Array.isArray(userSessions)) {
+      console.error('userSessions is not an array:', userSessions);
+      return [];
+    }
     return userSessions.map((item) => ({
       date: formatDate(item.date, "dd MMM"),
       value: item.sessionCount,
@@ -401,6 +405,10 @@ export function DesciResearchAnalytics({
   }, [userSessions]);
 
   const userSessionsDurationData = useMemo(() => {
+    if (!Array.isArray(userSessions)) {
+      console.error('userSessions is not an array:', userSessions);
+      return [];
+    }
     return userSessions.map((item) => ({
       date: formatDate(item.date, "dd MMM"),
       value: item.durationInSeconds,

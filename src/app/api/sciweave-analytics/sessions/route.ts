@@ -9,7 +9,7 @@ const querySchema = z.object({
   interval: z.enum(["day", "week", "month"]),
 });
 
-export async function GET(request: NextRequest) {
+async function handleRequest(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const { from, to, interval } = querySchema.parse(
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
               )
               ${IS_PROD ? "AND username NOT LIKE '%@desci.com'" : ""}
               AND created_at >= $1
-              AND created_at <= $2
+              AND created_at < $2
           ORDER BY
               username,
               created_at
@@ -133,4 +133,22 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+export async function GET(request: NextRequest) {
+  return handleRequest(request);
+}
+
+export async function POST(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const isGet = searchParams.get("get") === "true";
+  
+  if (isGet) {
+    return handleRequest(request);
+  }
+  
+  return NextResponse.json(
+    { error: "POST method requires ?get=true parameter for replica compatibility" },
+    { status: 400 }
+  );
 }
