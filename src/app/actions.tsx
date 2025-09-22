@@ -3,9 +3,6 @@
 import { NODES_API_URL, RETURN_DEV_TOKEN } from "@/lib/config";
 import { AUTH_COOKIE_FIELDNAME } from "@/lib/constants";
 import { cookies } from "next/headers";
-// import { redirect } from "next/navigation";
-
-// const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export type LoginUserData = {
   email: string;
@@ -30,9 +27,6 @@ export async function login(prevState: any, formData: FormData) {
   let response = await res.json();
 
   if (response.ok && response.user) {
-    console.log("[login]:: ", response, RETURN_DEV_TOKEN);
-    const cookie = await cookies();
-    console.log("[login]:: ", cookie.toString());
     // Set cookie
     cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
       path: "/",
@@ -57,13 +51,6 @@ export async function login(prevState: any, formData: FormData) {
     }
 
     if (process.env.NEXT_ENV === "production") {
-      // cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
-      //   path: "/",
-      //   expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
-      //   httpOnly: true,
-      //   secure: true,
-      //   domain: ".desci.com",
-      // });
       cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
         path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
@@ -73,7 +60,6 @@ export async function login(prevState: any, formData: FormData) {
       });
     }
 
-    // cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token);
     return {
       ok: true,
       email,
