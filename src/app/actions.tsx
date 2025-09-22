@@ -86,11 +86,6 @@ export async function logout() {
   });
 
   cookies().delete(AUTH_COOKIE_FIELDNAME);
-  // if (logoutRes.ok && logoutRes.status === 200) {
-  //   for (const field of Array.from(cookies().getAll())) {
-  //     cookies().delete(field.name);
-  //   }
-  // }
 
   console.log("[LOGOUT]", {
     cookies: cookies().toString(),
@@ -109,13 +104,13 @@ export async function logout() {
       });
     }
 
-    cookies().set(AUTH_COOKIE_FIELDNAME, "", {
-      value: "",
-      maxAge: 0,
-      domain: ".desci.com",
-    });
-    // if (process.env.NEXT_ENV === "production") {
-    // }
+    if (process.env.NEXT_ENV === "production") {
+      cookies().set(AUTH_COOKIE_FIELDNAME, "", {
+        value: "",
+        maxAge: 0,
+        domain: ".desci.com",
+      });
+    }
 
     console.log("[LOGOUT]", {
       cookies: cookies().toString(),
