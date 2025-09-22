@@ -111,7 +111,9 @@ export async function logout() {
 
     if (process.env.NEXT_ENV === "production") {
       cookies().set(AUTH_COOKIE_FIELDNAME, "", {
+        value: "",
         maxAge: 0,
+        domain: ".desci.com",
       });
     }
 
