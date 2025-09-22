@@ -92,7 +92,11 @@ export async function logout() {
     }
   }
 
-  console.log("[LOGOUT]", { cookies: cookies().toString() });
+  console.log("[LOGOUT]", {
+    cookies: cookies().toString(),
+    AUTH_COOKIE_FIELDNAME,
+    NEXT_ENV: process.env.NEXT_ENV,
+  });
 
   if (logoutRes.ok) {
     // Set cookie
@@ -104,14 +108,12 @@ export async function logout() {
     ) {
       cookies().set("auth-dev", "", {
         maxAge: 0,
-        domain: ".desci.com",
       });
     }
 
     if (process.env.NEXT_ENV === "production") {
       cookies().set(AUTH_COOKIE_FIELDNAME, "", {
         maxAge: 0,
-        domain: ".desci.com",
       });
     }
 
