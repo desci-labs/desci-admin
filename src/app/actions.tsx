@@ -65,7 +65,6 @@ export async function login(prevState: any, formData: FormData) {
       email,
       user: response.user,
     };
-    // redirect("/");
   } else if (response.ok && !response.user) {
     return {
       ok: true,
@@ -74,8 +73,56 @@ export async function login(prevState: any, formData: FormData) {
   } else {
     return response;
   }
+}
 
-  // return response;
+export async function logout() {
+  const logoutRes = await fetch(`${NODES_API_URL}/v1/auth/logout`, {
+    method: "delete",
+    credentials: "include",
+    headers: {
+      cookie: cookies().toString(),
+    },
+  });
+
+  cookies().delete(AUTH_COOKIE_FIELDNAME);
+  if (logoutRes.ok && logoutRes.status === 200) {
+    for (const field of Array.from(cookies().getAll())) {
+      cookies().delete(field.name);
+    }
+  }
+
+  if (logoutRes.ok) {
+    // Set cookie
+    cookies().delete(AUTH_COOKIE_FIELDNAME);
+
+    if (
+      AUTH_COOKIE_FIELDNAME === "auth-dev" &&
+      process.env.NEXT_ENV === "development"
+    ) {
+      cookies().set("auth", "", {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 2 hours
+        httpOnly: true,
+        secure: true,
+      });
+    }
+
+    if (process.env.NEXT_ENV === "production") {
+      cookies().set(AUTH_COOKIE_FIELDNAME, "", {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
+        httpOnly: true,
+        secure: true,
+        domain: ".desci.com",
+      });
+    }
+
+    return {
+      ok: true,
+    };
+  }
+
+  return { ok: false };
 }
 
 type CreateCommunityState =

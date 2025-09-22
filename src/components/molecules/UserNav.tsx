@@ -15,6 +15,7 @@ import { removeDevCookies } from "@/lib/api/cookies";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { logout } from "@/app/actions";
 
 export function UserNav() {
   const { data: user } = useSuspenseQuery(authUser);
@@ -52,12 +53,14 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => {
+          onClick={async () => {
             toast.info("Signing out...");
-            fetch("/api/logout", { method: "DELETE" }).then(() => {
-              removeDevCookies();
-              router.refresh();
-            });
+            const res = await logout();
+            console.log("logout res", res);
+            // fetch("/api/logout", { method: "DELETE" }).then(() => {
+            removeDevCookies();
+            //   router.refresh();
+            // });
           }}
         >
           Log out
