@@ -103,20 +103,14 @@ export async function logout() {
       process.env.NEXT_ENV === "development"
     ) {
       cookies().set("auth-dev", "", {
-        path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 2 hours
-        httpOnly: true,
-        secure: true,
+        maxAge: 0,
         domain: ".desci.com",
       });
     }
 
     if (process.env.NEXT_ENV === "production") {
       cookies().set(AUTH_COOKIE_FIELDNAME, "", {
-        path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
-        httpOnly: true,
-        secure: true,
+        maxAge: 0,
         domain: ".desci.com",
       });
     }
