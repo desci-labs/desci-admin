@@ -103,10 +103,11 @@ export async function logout() {
     cookies().delete(AUTH_COOKIE_FIELDNAME);
 
     if (
-      AUTH_COOKIE_FIELDNAME === "auth-dev" &&
-      process.env.NEXT_ENV === "development"
+      AUTH_COOKIE_FIELDNAME === "auth-dev"
+      // &&
+      // process.env.NEXT_ENV === "development"
     ) {
-      cookies().set("auth-dev", "", {
+      cookies().set("auth-dev", "delete-cookie", {
         maxAge: 0,
       });
     }
