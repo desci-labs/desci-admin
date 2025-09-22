@@ -109,13 +109,13 @@ export async function logout() {
       });
     }
 
-    if (process.env.NEXT_ENV === "production") {
-      cookies().set(AUTH_COOKIE_FIELDNAME, "", {
-        value: "",
-        maxAge: 0,
-        domain: ".desci.com",
-      });
-    }
+    cookies().set(AUTH_COOKIE_FIELDNAME, "", {
+      value: "",
+      maxAge: 0,
+      domain: ".desci.com",
+    });
+    // if (process.env.NEXT_ENV === "production") {
+    // }
 
     console.log("[LOGOUT]", {
       cookies: cookies().toString(),
