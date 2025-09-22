@@ -95,7 +95,6 @@ export async function logout() {
   console.log("[LOGOUT]", {
     cookies: cookies().toString(),
     AUTH_COOKIE_FIELDNAME,
-    NEXT_ENV: process.env.NEXT_ENV,
   });
 
   if (logoutRes.ok) {
@@ -108,6 +107,7 @@ export async function logout() {
       // process.env.NEXT_ENV === "development"
     ) {
       cookies().set("auth-dev", "delete-cookie", {
+        value: "xxx",
         maxAge: 0,
       });
     }
@@ -117,6 +117,11 @@ export async function logout() {
         maxAge: 0,
       });
     }
+
+    console.log("[LOGOUT]", {
+      cookies: cookies().toString(),
+      AUTH_COOKIE_FIELDNAME,
+    });
 
     return {
       ok: true,
