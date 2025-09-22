@@ -76,6 +76,7 @@ export async function login(prevState: any, formData: FormData) {
 }
 
 export async function logout() {
+  console.log("[PRE LOGOUT]", { cookies: cookies().toString() });
   const logoutRes = await fetch(`${NODES_API_URL}/v1/auth/logout`, {
     method: "delete",
     credentials: "include",
@@ -91,6 +92,8 @@ export async function logout() {
     }
   }
 
+  console.log("[LOGOUT]", { cookies: cookies().toString() });
+
   if (logoutRes.ok) {
     // Set cookie
     cookies().delete(AUTH_COOKIE_FIELDNAME);
@@ -99,11 +102,12 @@ export async function logout() {
       AUTH_COOKIE_FIELDNAME === "auth-dev" &&
       process.env.NEXT_ENV === "development"
     ) {
-      cookies().set("auth", "", {
+      cookies().set("auth-dev", "", {
         path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 2 hours
         httpOnly: true,
         secure: true,
+        domain: ".desci.com",
       });
     }
 

@@ -57,9 +57,9 @@ export function UserNav() {
             toast.info("Signing out...");
             const res = await logout();
             console.log("logout res", res);
-            // fetch("/api/logout", { method: "DELETE" }).then(() => {
             removeDevCookies();
             router.refresh();
+            // fetch("/api/logout", { method: "DELETE" }).then(() => {
             // });
           }}
         >
