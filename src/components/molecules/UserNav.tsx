@@ -59,7 +59,7 @@ export function UserNav() {
             console.log("logout res", res);
             // fetch("/api/logout", { method: "DELETE" }).then(() => {
             removeDevCookies();
-            //   router.refresh();
+            router.refresh();
             // });
           }}
         >
