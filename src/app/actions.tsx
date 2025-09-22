@@ -57,13 +57,13 @@ export async function login(prevState: any, formData: FormData) {
     }
 
     if (process.env.NEXT_ENV === "production") {
-      cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
-        path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
-        httpOnly: true,
-        secure: true,
-        domain: "nodes.desci.com",
-      });
+      // cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
+      //   path: "/",
+      //   expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
+      //   httpOnly: true,
+      //   secure: true,
+      //   domain: ".desci.com",
+      // });
       cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
         path: "/",
         expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
@@ -73,7 +73,7 @@ export async function login(prevState: any, formData: FormData) {
       });
     }
 
-    cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token);
+    // cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token);
     return {
       ok: true,
       email,
