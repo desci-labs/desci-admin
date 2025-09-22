@@ -86,11 +86,11 @@ export async function logout() {
   });
 
   cookies().delete(AUTH_COOKIE_FIELDNAME);
-  if (logoutRes.ok && logoutRes.status === 200) {
-    for (const field of Array.from(cookies().getAll())) {
-      cookies().delete(field.name);
-    }
-  }
+  // if (logoutRes.ok && logoutRes.status === 200) {
+  //   for (const field of Array.from(cookies().getAll())) {
+  //     cookies().delete(field.name);
+  //   }
+  // }
 
   console.log("[LOGOUT]", {
     cookies: cookies().toString(),
@@ -101,14 +101,11 @@ export async function logout() {
     // Set cookie
     cookies().delete(AUTH_COOKIE_FIELDNAME);
 
-    if (
-      AUTH_COOKIE_FIELDNAME === "auth-dev"
-      // &&
-      // process.env.NEXT_ENV === "development"
-    ) {
-      cookies().set("auth-dev", "delete-cookie", {
-        value: "xxx",
+    if (AUTH_COOKIE_FIELDNAME === "auth-dev") {
+      cookies().set("auth-dev", "", {
+        value: "",
         maxAge: 0,
+        domain: ".desci.com",
       });
     }
 
