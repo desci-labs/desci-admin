@@ -76,7 +76,6 @@ export async function login(prevState: any, formData: FormData) {
 }
 
 export async function logout() {
-  console.log("[PRE LOGOUT]", { cookies: cookies().toString() });
   const logoutRes = await fetch(`${NODES_API_URL}/v1/auth/logout`, {
     method: "delete",
     credentials: "include",
@@ -86,11 +85,6 @@ export async function logout() {
   });
 
   cookies().delete(AUTH_COOKIE_FIELDNAME);
-
-  console.log("[LOGOUT]", {
-    cookies: cookies().toString(),
-    AUTH_COOKIE_FIELDNAME,
-  });
 
   if (logoutRes.ok) {
     // Set cookie
@@ -112,11 +106,6 @@ export async function logout() {
       });
     }
 
-    console.log("[LOGOUT]", {
-      cookies: cookies().toString(),
-      AUTH_COOKIE_FIELDNAME,
-    });
-
     return {
       ok: true,
     };
@@ -124,18 +113,6 @@ export async function logout() {
 
   return { ok: false };
 }
-
-type CreateCommunityState =
-  | {
-      ok: boolean;
-      message?: undefined;
-      error?: undefined;
-    }
-  | {
-      ok: boolean;
-      message: string;
-      error: string[] | undefined;
-    };
 
 export async function createCommunity(_prevState: any, formData: FormData) {
   const res = await fetch(`${NODES_API_URL}/v1/admin/communities`, {

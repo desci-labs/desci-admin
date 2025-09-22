@@ -11,6 +11,8 @@ import { useGetLayout, useSetLayout } from "@/contexts/resizeable-panels";
 import { LogOutIcon } from "lucide-react";
 import { Layout, LayoutHeader } from "./Layout";
 import { toast } from "sonner";
+import { logout } from "@/app/actions";
+import { removeDevCookies } from "@/lib/api/cookies";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -55,11 +57,11 @@ export default function Sidebar() {
             "justify-center text-red-500  hover:bg-red-500/30",
             isOpen ? "m-4 bg-red-500/20" : "m-.5 bg-transparent shadow-none"
           )}
-          onClick={() => {
-            toast.info('Signing out...')
-            fetch("/api/logout", { method: "DELETE" }).then(() => {
-              router.refresh();
-            });
+          onClick={async () => {
+            toast.info("Signing out...");
+            const res = await logout();
+            removeDevCookies();
+            router.refresh();
           }}
         >
           {isOpen ? "Sign out" : <LogOutIcon size={18} />}

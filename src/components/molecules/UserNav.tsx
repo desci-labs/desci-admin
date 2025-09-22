@@ -56,11 +56,8 @@ export function UserNav() {
           onClick={async () => {
             toast.info("Signing out...");
             const res = await logout();
-            console.log("logout res", res);
             removeDevCookies();
             router.refresh();
-            // fetch("/api/logout", { method: "DELETE" }).then(() => {
-            // });
           }}
         >
           Log out
