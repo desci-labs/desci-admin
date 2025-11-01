@@ -86,7 +86,19 @@ async function getUserSessionsAnalytics(
       },
     }
   );
-  return res.json() as Promise<UserSessionsDataItem[]>;
+  
+  if (!res.ok) {
+    console.error('Failed to fetch user sessions:', res.status, res.statusText);
+    return [];
+  }
+  
+  const data = await res.json();
+  if (!Array.isArray(data)) {
+    console.error('Expected array from user sessions API, got:', data);
+    return [];
+  }
+  
+  return data as UserSessionsDataItem[];
 }
 
 async function getDevicesAnalytics(from: string, to: string, interval: string) {
