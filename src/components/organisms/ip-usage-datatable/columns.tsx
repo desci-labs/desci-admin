@@ -53,7 +53,7 @@ export const columns: ColumnDef<IpUsage>[] = [
   {
     accessorKey: "auth_hits",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Auth Hits" />
+      <DataTableColumnHeader column={column} title="User Hits" />
     ),
     cell: ({ row }) => (
       <div className="text-center text-muted-foreground">

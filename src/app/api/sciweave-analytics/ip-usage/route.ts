@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     // Build the query using Supabase query builder
     let query = supabase
       .from("search_logs")
-      .select("ip_address, username, created_at")
+      .select("ip_address, username, created_at", { count: "exact" })
       .is("thread_id", null);
 
     // Add date filters if provided
@@ -48,10 +48,26 @@ export async function GET(request: NextRequest) {
       query = query.not("username", "like", "%@desci.com");
     }
 
-    const { data: rawData, error } = await query;
+    // Fetch ALL data - Supabase defaults to 1000 rows, so we need to paginate
+    let allData: SearchLogRow[] = [];
+    let hasMore = true;
+    let offset = 0;
+    const limit = 1000;
 
-    if (error) {
-      throw error;
+    while (hasMore) {
+      const { data: rawData, error } = await query.range(offset, offset + limit - 1);
+      
+      if (error) {
+        throw error;
+      }
+
+      if (rawData && rawData.length > 0) {
+        allData = allData.concat(rawData as SearchLogRow[]);
+        offset += limit;
+        hasMore = rawData.length === limit;
+      } else {
+        hasMore = false;
+      }
     }
 
     // Aggregate data by IP address in JavaScript
@@ -63,7 +79,7 @@ export async function GET(request: NextRequest) {
       last_seen: string;
     }>();
 
-    (rawData as SearchLogRow[] || []).forEach((row) => {
+    (allData || []).forEach((row) => {
       const existing = ipMap.get(row.ip_address);
       const isAnon = row.username.startsWith("anon");
 
