@@ -51,13 +51,13 @@ export const columns: ColumnDef<IpUsage>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: "auth_hits",
+    accessorKey: "user_hits",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="User Hits" />
     ),
     cell: ({ row }) => (
       <div className="text-center text-muted-foreground">
-        {row.getValue("auth_hits")}
+        {row.getValue("user_hits")}
       </div>
     ),
     enableSorting: true,

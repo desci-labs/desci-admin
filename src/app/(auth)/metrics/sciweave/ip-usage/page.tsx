@@ -3,6 +3,7 @@
 import { useState } from "react";
 import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { DataTable } from "@/components/organisms/ip-usage-datatable/data-table";
 import { columns } from "@/components/organisms/ip-usage-datatable/columns";
 import { IpUsage } from "@/components/organisms/ip-usage-datatable/schema";
@@ -10,7 +11,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { format, subMonths, subYears } from "date-fns";
 import { CalendarIcon, Loader2, ShieldAlert, Users, Globe } from "lucide-react";
@@ -50,7 +50,7 @@ export default function IpUsagePage() {
   const [loadingTime, setLoadingTime] = useState(0);
   const loadingTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const { data = [], isLoading, error, isFetching } = useQuery({
+  const { data = [], isLoading, error, isFetching, dataUpdatedAt } = useQuery({
     queryKey: ["ip-usage", dateRange.from?.toISOString(), dateRange.to?.toISOString()],
     queryFn: () => fetchIpUsage(dateRange.from, dateRange.to),
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -121,37 +121,63 @@ export default function IpUsagePage() {
   // Filter data based on user type
   const filteredData = data.filter((item) => {
     if (userType === "guests") return item.anon_hits > 0;
-    if (userType === "users") return item.auth_hits > 0;
+    if (userType === "users") return item.user_hits > 0;
     return true; // all
   });
 
   const totalHits = filteredData.reduce((sum, item) => sum + item.total_hits, 0);
   const totalAnonHits = filteredData.reduce((sum, item) => sum + item.anon_hits, 0);
-  const totalAuthHits = filteredData.reduce((sum, item) => sum + item.auth_hits, 0);
+  const totalUserHits = filteredData.reduce((sum, item) => sum + item.user_hits, 0);
   const overallAnonPct = totalHits > 0 ? (totalAnonHits / totalHits) * 100 : 0;
+  const overallUserPct = totalHits > 0 ? (totalUserHits / totalHits) * 100 : 0;
 
   const hasFilters = dateRange.from || dateRange.to || userType !== "guests";
 
   return (
     <div className="flex-1 space-y-6 p-4 pt-6 md:p-8">
-      <div className="flex flex-col gap-2">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="flex flex-col gap-2"
+      >
         <div>
           <h2 className="text-3xl font-bold tracking-tight">SciWeave Usage Monitoring</h2>
           <p className="text-muted-foreground mt-1">
             Monitor usage patterns and detect potential abuse by IP address
           </p>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+        className="grid gap-4 md:grid-cols-4"
+      >
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Unique IPs</CardTitle>
             <Globe className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{filteredData.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">IP addresses tracked</p>
+            <motion.div
+              key={isFetching ? "loading" : `${dataUpdatedAt}-${filteredData.length}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="text-2xl font-bold"
+            >
+              {isFetching ? "-" : filteredData.length}
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+              className="text-xs text-muted-foreground mt-1"
+            >
+              IP addresses tracked
+            </motion.p>
           </CardContent>
         </Card>
         <Card>
@@ -160,8 +186,23 @@ export default function IpUsagePage() {
             <ShieldAlert className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalHits.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">Search queries</p>
+            <motion.div
+              key={isFetching ? "loading" : `${dataUpdatedAt}-${totalHits}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="text-2xl font-bold"
+            >
+              {isFetching ? "-" : totalHits.toLocaleString()}
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+              className="text-xs text-muted-foreground mt-1"
+            >
+              Search queries
+            </motion.p>
           </CardContent>
         </Card>
         <Card>
@@ -170,10 +211,24 @@ export default function IpUsagePage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalAnonHits.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {overallAnonPct.toFixed(1)}% of total
-            </p>
+            <motion.div
+              key={isFetching ? "loading" : `${dataUpdatedAt}-${totalAnonHits}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="text-2xl font-bold"
+            >
+              {isFetching ? "-" : totalAnonHits.toLocaleString()}
+            </motion.div>
+            <motion.p
+              key={isFetching ? "loading-pct" : `${dataUpdatedAt}-${overallAnonPct}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+              className="text-xs text-muted-foreground mt-1"
+            >
+              {isFetching ? "-" : `${overallAnonPct.toFixed(1)}% of total`}
+            </motion.p>
           </CardContent>
         </Card>
         <Card>
@@ -182,15 +237,34 @@ export default function IpUsagePage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalAuthHits.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {totalHits > 0 ? ((totalAuthHits / totalHits) * 100).toFixed(1) : 0}% of total
-            </p>
+            <motion.div
+              key={isFetching ? "loading" : `${dataUpdatedAt}-${totalUserHits}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="text-2xl font-bold"
+            >
+              {isFetching ? "-" : totalUserHits.toLocaleString()}
+            </motion.div>
+            <motion.p
+              key={isFetching ? "loading-pct" : `${dataUpdatedAt}-${overallUserPct}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+              className="text-xs text-muted-foreground mt-1"
+            >
+              {isFetching ? "-" : `${overallUserPct.toFixed(1)}% of total`}
+            </motion.p>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
 
-      <Card>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+      >
+        <Card>
         <CardHeader>
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
@@ -202,66 +276,78 @@ export default function IpUsagePage() {
               </CardDescription>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <Tabs value={userType} onValueChange={(v: string) => setUserType(v as UserType)}>
-                <TabsList>
-                  <TabsTrigger value="guests">Guests</TabsTrigger>
-                  <TabsTrigger value="users">Users</TabsTrigger>
-                  <TabsTrigger value="all">All</TabsTrigger>
-                </TabsList>
-              </Tabs>
-              
-              <div className="flex items-center gap-1 rounded-lg border p-1">
-                <Button
-                  variant={datePreset === "1m" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-8 px-3"
-                  onClick={() => handleDatePreset("1m")}
-                >
-                  1M
-                </Button>
-                <Button
-                  variant={datePreset === "3m" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-8 px-3"
-                  onClick={() => handleDatePreset("3m")}
-                >
-                  3M
-                </Button>
-                <Button
-                  variant={datePreset === "6m" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-8 px-3"
-                  onClick={() => handleDatePreset("6m")}
-                >
-                  6M
-                </Button>
-                <Button
-                  variant={datePreset === "1y" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-8 px-3"
-                  onClick={() => handleDatePreset("1y")}
-                >
-                  1Y
-                </Button>
-                <Button
-                  variant={datePreset === "all" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="h-8 px-3"
-                  onClick={() => handleDatePreset("all")}
-                >
-                  All Time
-                </Button>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={datePreset === "custom" ? "secondary" : "ghost"}
-                      size="sm"
-                      className="h-8 px-3"
+              <LayoutGroup id="user-type">
+                <div className="flex items-center gap-1 rounded-lg border p-1 bg-muted/50">
+                  {(["guests", "users", "all"] as const).map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setUserType(type)}
+                      className={cn(
+                        "relative px-3 h-8 text-sm font-medium transition-colors rounded-md",
+                        userType === type
+                          ? "text-foreground"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
                     >
-                      <CalendarIcon className="mr-1 h-3 w-3" />
-                      Custom
-                    </Button>
-                  </PopoverTrigger>
+                      {userType === type && (
+                        <motion.div
+                          layoutId="user-type-indicator"
+                          className="absolute inset-0 bg-background rounded-md shadow-sm"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <span className="relative z-10 capitalize">{type}</span>
+                    </button>
+                  ))}
+                </div>
+              </LayoutGroup>
+              
+              <LayoutGroup id="date-preset">
+                <div className="flex items-center gap-1 rounded-lg border p-1 bg-muted/50">
+                  {(["1m", "3m", "6m", "1y", "all"] as const).map((preset) => (
+                    <button
+                      key={preset}
+                      onClick={() => handleDatePreset(preset)}
+                      className={cn(
+                        "relative px-3 h-8 text-sm font-medium transition-colors rounded-md",
+                        datePreset === preset
+                          ? "text-foreground"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {datePreset === preset && (
+                        <motion.div
+                          layoutId="date-preset-indicator"
+                          className="absolute inset-0 bg-background rounded-md shadow-sm"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <span className="relative z-10">
+                        {preset === "all" ? "All Time" : preset.toUpperCase()}
+                      </span>
+                    </button>
+                  ))}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button
+                        className={cn(
+                          "relative px-3 h-8 text-sm font-medium transition-colors rounded-md flex items-center gap-1",
+                          datePreset === "custom"
+                            ? "text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        )}
+                      >
+                        {datePreset === "custom" && (
+                          <motion.div
+                            layoutId="date-preset-indicator"
+                            className="absolute inset-0 bg-background rounded-md shadow-sm"
+                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                        <CalendarIcon className="relative z-10 h-3 w-3" />
+                        <span className="relative z-10">Custom</span>
+                      </button>
+                    </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="end">
                     <div className="p-3 space-y-3">
                       <div className="space-y-2">
@@ -297,8 +383,9 @@ export default function IpUsagePage() {
                       </div>
                     </div>
                   </PopoverContent>
-                </Popover>
-              </div>
+                  </Popover>
+                </div>
+              </LayoutGroup>
             </div>
           </div>
         </CardHeader>
@@ -311,19 +398,46 @@ export default function IpUsagePage() {
             <div className="relative min-h-[400px]">
               <DataTable columns={columns} data={filteredData} />
               
-              {isFetching && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-50">
-                  <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-                  <p className="text-lg font-medium">Loading data...</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    {loadingTime.toFixed(1)}s elapsed
-                  </p>
-                </div>
-              )}
+              <AnimatePresence>
+                {isFetching && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-50"
+                  >
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.1, duration: 0.3 }}
+                    >
+                      <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+                    </motion.div>
+                    <motion.p
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2, duration: 0.3 }}
+                      className="text-lg font-medium"
+                    >
+                      Loading data...
+                    </motion.p>
+                    <motion.p
+                      initial={{ y: 10, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.3, duration: 0.3 }}
+                      className="text-sm text-muted-foreground mt-2"
+                    >
+                      {loadingTime.toFixed(1)}s elapsed
+                    </motion.p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
         </CardContent>
-      </Card>
+        </Card>
+      </motion.div>
     </div>
   );
 }

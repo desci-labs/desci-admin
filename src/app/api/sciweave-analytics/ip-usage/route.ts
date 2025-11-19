@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     const ipMap = new Map<string, {
       total_hits: number;
       anon_hits: number;
-      auth_hits: number;
+      user_hits: number;
       first_seen: string;
       last_seen: string;
     }>();
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
         if (isAnon) {
           existing.anon_hits++;
         } else {
-          existing.auth_hits++;
+          existing.user_hits++;
         }
         if (row.created_at < existing.first_seen) {
           existing.first_seen = row.created_at;
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
         ipMap.set(row.ip_address, {
           total_hits: 1,
           anon_hits: isAnon ? 1 : 0,
-          auth_hits: isAnon ? 0 : 1,
+          user_hits: isAnon ? 0 : 1,
           first_seen: row.created_at,
           last_seen: row.created_at,
         });
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
         ip_address,
         total_hits: stats.total_hits,
         anon_hits: stats.anon_hits,
-        auth_hits: stats.auth_hits,
+        user_hits: stats.user_hits,
         anon_pct: (stats.anon_hits / stats.total_hits) * 100,
         first_seen: stats.first_seen,
         last_seen: stats.last_seen,
