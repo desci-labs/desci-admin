@@ -22,15 +22,15 @@ export function DataTableToolbar<TData>({
           onChange={(event) => {
             table.getColumn("ip_address")?.setFilterValue(event.target.value);
           }}
-          className="h-8 w-[250px] lg:h-10 lg:w-[350px]"
+          className="h-10 w-[250px] lg:w-[350px]"
         />
         {isFiltered && (
           <Button
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3"
+            className="h-10 px-2 lg:px-3"
           >
-            Reset
+            Clear
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
         )}

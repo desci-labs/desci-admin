@@ -16,14 +16,12 @@ interface SearchLogRow {
 
 export async function GET(request: NextRequest) {
   try {
-
     if (!supabase) {
       return NextResponse.json(
         { error: "Supabase client not configured" },
         { status: 500 }
       );
     }
-    debugger
 
     const { searchParams } = new URL(request.url);
     const { from, to } = querySchema.parse(
@@ -110,8 +108,7 @@ export async function GET(request: NextRequest) {
           return b.anon_hits - a.anon_hits;
         }
         return b.total_hits - a.total_hits;
-      })
-      .slice(0, 500); // Limit to top 500
+      });
 
     return NextResponse.json(transformedData);
   } catch (error) {
