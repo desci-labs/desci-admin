@@ -17,6 +17,7 @@ import {
   TrendingUpIcon,
   UsersRoundIcon,
   DatabaseIcon,
+  NetworkIcon,
 } from "lucide-react";
 
 export interface NavLink {
@@ -120,6 +121,12 @@ export const sidelinks: SideLink[] = [
         label: "",
         href: "/metrics/sciweave",
         icon: <ChartNoAxesColumnIncreasing size={18} />,
+      },
+      {
+        title: "SciWeave IP Usage",
+        label: "",
+        href: "/metrics/sciweave/ip-usage",
+        icon: <NetworkIcon size={18} />,
       },
       {
         title: "User Engagement",
