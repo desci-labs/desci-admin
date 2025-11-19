@@ -131,7 +131,6 @@ export default function IpUsagePage() {
   const overallAnonPct = totalHits > 0 ? (totalAnonHits / totalHits) * 100 : 0;
 
   const hasFilters = dateRange.from || dateRange.to || userType !== "guests";
-  const loading = isLoading || isFetching;
 
   return (
     <div className="flex-1 space-y-6 p-4 pt-6 md:p-8">
@@ -151,11 +150,7 @@ export default function IpUsagePage() {
             <Globe className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loading && data.length === 0 ? (
-              <div className="text-2xl font-bold text-muted-foreground">-</div>
-            ) : (
-              <div className="text-2xl font-bold">{filteredData.length}</div>
-            )}
+            <div className="text-2xl font-bold">{filteredData.length}</div>
             <p className="text-xs text-muted-foreground mt-1">IP addresses tracked</p>
           </CardContent>
         </Card>
@@ -165,11 +160,7 @@ export default function IpUsagePage() {
             <ShieldAlert className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loading && data.length === 0 ? (
-              <div className="text-2xl font-bold text-muted-foreground">-</div>
-            ) : (
-              <div className="text-2xl font-bold">{totalHits.toLocaleString()}</div>
-            )}
+            <div className="text-2xl font-bold">{totalHits.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground mt-1">Search queries</p>
           </CardContent>
         </Card>
@@ -179,13 +170,9 @@ export default function IpUsagePage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loading && data.length === 0 ? (
-              <div className="text-2xl font-bold text-muted-foreground">-</div>
-            ) : (
-              <div className="text-2xl font-bold">{totalAnonHits.toLocaleString()}</div>
-            )}
+            <div className="text-2xl font-bold">{totalAnonHits.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {loading && data.length === 0 ? "-" : `${overallAnonPct.toFixed(1)}% of total`}
+              {overallAnonPct.toFixed(1)}% of total
             </p>
           </CardContent>
         </Card>
@@ -195,13 +182,9 @@ export default function IpUsagePage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loading && data.length === 0 ? (
-              <div className="text-2xl font-bold text-muted-foreground">-</div>
-            ) : (
-              <div className="text-2xl font-bold">{totalAuthHits.toLocaleString()}</div>
-            )}
+            <div className="text-2xl font-bold">{totalAuthHits.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {loading && data.length === 0 ? "-" : `${totalHits > 0 ? ((totalAuthHits / totalHits) * 100).toFixed(1) : 0}% of total`}
+              {totalHits > 0 ? ((totalAuthHits / totalHits) * 100).toFixed(1) : 0}% of total
             </p>
           </CardContent>
         </Card>
@@ -320,27 +303,24 @@ export default function IpUsagePage() {
           </div>
         </CardHeader>
         <CardContent>
-          {loading ? (
-            <div className="relative">
-              {data.length > 0 && (
-                <div className="opacity-30 pointer-events-none">
-                  <DataTable columns={columns} data={filteredData} />
-                </div>
-              )}
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
-                <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-                <p className="text-lg font-medium">Loading data...</p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  {loadingTime.toFixed(1)}s elapsed
-                </p>
-              </div>
-            </div>
-          ) : error ? (
+          {error ? (
             <div className="flex h-48 items-center justify-center">
               <p className="text-destructive">{error instanceof Error ? error.message : "An error occurred"}</p>
             </div>
           ) : (
-            <DataTable columns={columns} data={filteredData} />
+            <div className="relative min-h-[400px]">
+              <DataTable columns={columns} data={filteredData} />
+              
+              {isFetching && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-50">
+                  <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+                  <p className="text-lg font-medium">Loading data...</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {loadingTime.toFixed(1)}s elapsed
+                  </p>
+                </div>
+              )}
+            </div>
           )}
         </CardContent>
       </Card>
