@@ -12,12 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { format, subMonths, subYears } from "date-fns";
+import { format, subMonths, subYears, subDays, subWeeks } from "date-fns";
 import { CalendarIcon, Loader2, ShieldAlert, Users, Globe } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 type UserType = "guests" | "users" | "all";
-type DatePreset = "1m" | "3m" | "6m" | "1y" | "all" | "custom";
+type DatePreset = "1d" | "1w" | "1m" | "3m" | "6m" | "1y" | "all" | "custom";
 
 const fetchIpUsage = async (from?: Date, to?: Date): Promise<IpUsage[]> => {
   const params = new URLSearchParams();
@@ -42,11 +42,11 @@ const fetchIpUsage = async (from?: Date, to?: Date): Promise<IpUsage[]> => {
 
 export default function IpUsagePage() {
   const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
-    from: subMonths(new Date(), 1),
+    from: subDays(new Date(), 1),
     to: new Date(),
   });
   const [userType, setUserType] = useState<UserType>("guests");
-  const [datePreset, setDatePreset] = useState<DatePreset | null>("1m");
+  const [datePreset, setDatePreset] = useState<DatePreset | null>("1d");
   const [loadingTime, setLoadingTime] = useState(0);
   const loadingTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
@@ -84,6 +84,12 @@ export default function IpUsagePage() {
     let newRange = { from: undefined as Date | undefined, to: undefined as Date | undefined };
     
     switch (preset) {
+      case "1d":
+        newRange = { from: subDays(today, 1), to: today };
+        break;
+      case "1w":
+        newRange = { from: subWeeks(today, 1), to: today };
+        break;
       case "1m":
         newRange = { from: subMonths(today, 1), to: today };
         break;
@@ -304,7 +310,7 @@ export default function IpUsagePage() {
               
               <LayoutGroup id="date-preset">
                 <div className="flex items-center gap-1 rounded-lg border p-1 bg-muted/50">
-                  {(["1m", "3m", "6m", "1y", "all"] as const).map((preset) => (
+                  {(["1d", "1w", "1m", "3m", "6m", "1y", "all"] as const).map((preset) => (
                     <button
                       key={preset}
                       onClick={() => handleDatePreset(preset)}
