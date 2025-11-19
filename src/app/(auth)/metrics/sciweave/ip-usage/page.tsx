@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import * as React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { DataTable } from "@/components/organisms/ip-usage-datatable/data-table";
 import { columns } from "@/components/organisms/ip-usage-datatable/columns";
 import { IpUsage } from "@/components/organisms/ip-usage-datatable/schema";
@@ -17,51 +19,63 @@ import { Badge } from "@/components/ui/badge";
 type UserType = "guests" | "users" | "all";
 type DatePreset = "1m" | "3m" | "6m" | "1y" | "all" | "custom";
 
+const fetchIpUsage = async (from?: Date, to?: Date): Promise<IpUsage[]> => {
+  const params = new URLSearchParams();
+  if (from) {
+    params.set("from", from.toISOString());
+  }
+  if (to) {
+    params.set("to", to.toISOString());
+  }
+
+  const queryString = params.toString();
+  const url = `/api/sciweave-analytics/ip-usage${queryString ? `?${queryString}` : ""}`;
+  
+  const response = await fetch(url);
+  
+  if (!response.ok) {
+    throw new Error("Failed to fetch usage data");
+  }
+  
+  return response.json();
+};
+
 export default function IpUsagePage() {
-  const [data, setData] = useState<IpUsage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
     from: subMonths(new Date(), 1),
     to: new Date(),
   });
   const [userType, setUserType] = useState<UserType>("guests");
   const [datePreset, setDatePreset] = useState<DatePreset | null>("1m");
+  const [loadingTime, setLoadingTime] = useState(0);
+  const loadingTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const params = new URLSearchParams();
-      if (dateRange.from) {
-        params.set("from", dateRange.from.toISOString());
-      }
-      if (dateRange.to) {
-        params.set("to", dateRange.to.toISOString());
-      }
+  const { data = [], isLoading, error, isFetching } = useQuery({
+    queryKey: ["ip-usage", dateRange.from?.toISOString(), dateRange.to?.toISOString()],
+    queryFn: () => fetchIpUsage(dateRange.from, dateRange.to),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
-      const queryString = params.toString();
-      const url = `/api/sciweave-analytics/ip-usage${queryString ? `?${queryString}` : ""}`;
-      
-      const response = await fetch(url);
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch usage data");
+  // Track loading time
+  React.useEffect(() => {
+    if (isFetching) {
+      setLoadingTime(0);
+      loadingTimerRef.current = setInterval(() => {
+        setLoadingTime((prev) => prev + 0.1);
+      }, 100);
+    } else {
+      if (loadingTimerRef.current) {
+        clearInterval(loadingTimerRef.current);
+        loadingTimerRef.current = null;
       }
-      
-      const result = await response.json();
-      setData(result);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
     }
-  };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+    return () => {
+      if (loadingTimerRef.current) {
+        clearInterval(loadingTimerRef.current);
+      }
+    };
+  }, [isFetching]);
 
   const handleDatePreset = (preset: DatePreset) => {
     const today = new Date();
@@ -91,25 +105,17 @@ export default function IpUsagePage() {
     }
     
     setDateRange(newRange);
-    
-    // Fetch data with new range
-    setTimeout(() => {
-      fetchData();
-    }, 0);
+    // fetchData will be called automatically via useEffect
   };
 
   const handleApplyCustomDates = () => {
     setDatePreset("custom");
-    fetchData();
   };
 
   const handleResetFilters = () => {
     setDateRange({ from: undefined, to: undefined });
     setDatePreset(null);
     setUserType("guests");
-    setTimeout(() => {
-      fetchData();
-    }, 0);
   };
 
   // Filter data based on user type
@@ -125,6 +131,7 @@ export default function IpUsagePage() {
   const overallAnonPct = totalHits > 0 ? (totalAnonHits / totalHits) * 100 : 0;
 
   const hasFilters = dateRange.from || dateRange.to || userType !== "guests";
+  const loading = isLoading || isFetching;
 
   return (
     <div className="flex-1 space-y-6 p-4 pt-6 md:p-8">
@@ -144,7 +151,11 @@ export default function IpUsagePage() {
             <Globe className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{filteredData.length}</div>
+            {loading && data.length === 0 ? (
+              <div className="text-2xl font-bold text-muted-foreground">-</div>
+            ) : (
+              <div className="text-2xl font-bold">{filteredData.length}</div>
+            )}
             <p className="text-xs text-muted-foreground mt-1">IP addresses tracked</p>
           </CardContent>
         </Card>
@@ -154,7 +165,11 @@ export default function IpUsagePage() {
             <ShieldAlert className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalHits.toLocaleString()}</div>
+            {loading && data.length === 0 ? (
+              <div className="text-2xl font-bold text-muted-foreground">-</div>
+            ) : (
+              <div className="text-2xl font-bold">{totalHits.toLocaleString()}</div>
+            )}
             <p className="text-xs text-muted-foreground mt-1">Search queries</p>
           </CardContent>
         </Card>
@@ -164,9 +179,13 @@ export default function IpUsagePage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalAnonHits.toLocaleString()}</div>
+            {loading && data.length === 0 ? (
+              <div className="text-2xl font-bold text-muted-foreground">-</div>
+            ) : (
+              <div className="text-2xl font-bold">{totalAnonHits.toLocaleString()}</div>
+            )}
             <p className="text-xs text-muted-foreground mt-1">
-              {overallAnonPct.toFixed(1)}% of total
+              {loading && data.length === 0 ? "-" : `${overallAnonPct.toFixed(1)}% of total`}
             </p>
           </CardContent>
         </Card>
@@ -176,9 +195,13 @@ export default function IpUsagePage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalAuthHits.toLocaleString()}</div>
+            {loading && data.length === 0 ? (
+              <div className="text-2xl font-bold text-muted-foreground">-</div>
+            ) : (
+              <div className="text-2xl font-bold">{totalAuthHits.toLocaleString()}</div>
+            )}
             <p className="text-xs text-muted-foreground mt-1">
-              {totalHits > 0 ? ((totalAuthHits / totalHits) * 100).toFixed(1) : 0}% of total
+              {loading && data.length === 0 ? "-" : `${totalHits > 0 ? ((totalAuthHits / totalHits) * 100).toFixed(1) : 0}% of total`}
             </p>
           </CardContent>
         </Card>
@@ -297,13 +320,24 @@ export default function IpUsagePage() {
           </div>
         </CardHeader>
         <CardContent>
-          {loading && data.length === 0 ? (
-            <div className="flex h-48 items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          {loading ? (
+            <div className="relative">
+              {data.length > 0 && (
+                <div className="opacity-30 pointer-events-none">
+                  <DataTable columns={columns} data={filteredData} />
+                </div>
+              )}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
+                <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+                <p className="text-lg font-medium">Loading data...</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  {loadingTime.toFixed(1)}s elapsed
+                </p>
+              </div>
             </div>
           ) : error ? (
             <div className="flex h-48 items-center justify-center">
-              <p className="text-destructive">{error}</p>
+              <p className="text-destructive">{error instanceof Error ? error.message : "An error occurred"}</p>
             </div>
           ) : (
             <DataTable columns={columns} data={filteredData} />
