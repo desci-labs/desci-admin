@@ -11,13 +11,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { format, subMonths, subYears, subDays, subWeeks } from "date-fns";
-import { CalendarIcon, Loader2, ShieldAlert, Users, Globe } from "lucide-react";
+import { CalendarIcon, Loader2, ShieldAlert, Users, Globe, ShieldCheck, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 type UserType = "guests" | "users" | "all";
 type DatePreset = "1d" | "1w" | "1m" | "3m" | "6m" | "1y" | "all" | "custom";
+
+// Default whitelist with local IPs
+const DEFAULT_WHITELIST: Record<string, string> = {
+  "127.0.0.1": "Local IPv4",
+  "::1": "Local IPv6",
+};
+
+const WHITELIST_STORAGE_KEY = "sciweave-ip-whitelist";
+const WHITELIST_ENABLED_KEY = "sciweave-whitelist-enabled";
 
 const fetchIpUsage = async (from?: Date, to?: Date): Promise<IpUsage[]> => {
   const params = new URLSearchParams();
@@ -49,6 +62,64 @@ export default function IpUsagePage() {
   const [datePreset, setDatePreset] = useState<DatePreset | null>("1d");
   const [loadingTime, setLoadingTime] = useState(0);
   const loadingTimerRef = React.useRef<NodeJS.Timeout | null>(null);
+  
+  // Whitelist state
+  const [whitelist, setWhitelist] = useState<Record<string, string>>({});
+  const [whitelistEnabled, setWhitelistEnabled] = useState(false);
+  const [whitelistDialogOpen, setWhitelistDialogOpen] = useState(false);
+  const [newIp, setNewIp] = useState("");
+  const [newNote, setNewNote] = useState("");
+
+  // Initialize whitelist from localStorage
+  React.useEffect(() => {
+    const stored = localStorage.getItem(WHITELIST_STORAGE_KEY);
+    const enabledStored = localStorage.getItem(WHITELIST_ENABLED_KEY);
+    
+    if (stored) {
+      setWhitelist(JSON.parse(stored));
+    } else {
+      // First time, use defaults
+      setWhitelist(DEFAULT_WHITELIST);
+      localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(DEFAULT_WHITELIST));
+    }
+    
+    if (enabledStored) {
+      setWhitelistEnabled(enabledStored === "true");
+    }
+  }, []);
+
+  // Save whitelist to localStorage whenever it changes
+  React.useEffect(() => {
+    if (Object.keys(whitelist).length > 0) {
+      localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(whitelist));
+    }
+  }, [whitelist]);
+
+  // Save enabled state to localStorage
+  React.useEffect(() => {
+    localStorage.setItem(WHITELIST_ENABLED_KEY, String(whitelistEnabled));
+  }, [whitelistEnabled]);
+
+  const handleAddToWhitelist = () => {
+    if (newIp.trim()) {
+      setWhitelist((prev) => ({ ...prev, [newIp.trim()]: newNote.trim() }));
+      setNewIp("");
+      setNewNote("");
+    }
+  };
+
+  const handleRemoveFromWhitelist = (ip: string) => {
+    setWhitelist((prev) => {
+      const updated = { ...prev };
+      delete updated[ip];
+      return updated;
+    });
+  };
+
+  const handleResetWhitelist = () => {
+    setWhitelist(DEFAULT_WHITELIST);
+    localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(DEFAULT_WHITELIST));
+  };
 
   const { data = [], isLoading, error, isFetching, dataUpdatedAt } = useQuery({
     queryKey: ["ip-usage", dateRange.from?.toISOString(), dateRange.to?.toISOString()],
@@ -125,8 +196,14 @@ export default function IpUsagePage() {
     setUserType("guests");
   };
 
-  // Filter data based on user type
+  // Filter data based on user type and whitelist
   const filteredData = data.filter((item) => {
+    // Apply whitelist filter if enabled - hide whitelisted (known/trusted) IPs
+    if (whitelistEnabled && whitelist[item.ip_address]) {
+      return false;
+    }
+    
+    // Apply user type filter
     if (userType === "guests") return item.anon_hits > 0;
     if (userType === "users") return item.user_hits > 0;
     return true; // all
@@ -142,20 +219,6 @@ export default function IpUsagePage() {
 
   return (
     <div className="flex-1 space-y-6 p-4 pt-6 md:p-8">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="flex flex-col gap-2"
-      >
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">SciWeave Usage Monitoring</h2>
-          <p className="text-muted-foreground mt-1">
-            Monitor usage patterns and detect potential abuse by IP address
-          </p>
-        </div>
-      </motion.div>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -394,6 +457,127 @@ export default function IpUsagePage() {
                 </div>
               </LayoutGroup>
             </div>
+          </div>
+          
+          {/* Whitelist Controls */}
+          <div className="flex items-center gap-3 px-6 pb-2">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                id="whitelist-enabled"
+                checked={whitelistEnabled}
+                onCheckedChange={(checked) => setWhitelistEnabled(checked as boolean)}
+              />
+              <Label htmlFor="whitelist-enabled" className="text-sm font-medium cursor-pointer">
+                Hide Known IPs
+              </Label>
+              {whitelistEnabled && (
+                <Badge variant="secondary" className="ml-1">
+                  {Object.keys(whitelist).length} IPs
+                </Badge>
+              )}
+            </div>
+            
+            <Dialog open={whitelistDialogOpen} onOpenChange={setWhitelistDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <ShieldCheck className="h-4 w-4" />
+                  Manage Whitelist
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+                <DialogHeader>
+                  <DialogTitle>IP Whitelist Management</DialogTitle>
+                  <DialogDescription>
+                    Mark known/trusted IP addresses (e.g., internal team, dev IPs) to hide them from the monitoring view.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <div className="space-y-4 flex-1 overflow-y-auto">
+                  {/* Add IP Section */}
+                  <div className="space-y-3 p-4 rounded-lg border bg-muted/50">
+                    <h3 className="font-medium text-sm">Add Known IP to Whitelist</h3>
+                    <div className="grid gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="new-ip">IP Address</Label>
+                        <Input
+                          id="new-ip"
+                          placeholder="e.g., 192.168.1.1"
+                          value={newIp}
+                          onChange={(e) => setNewIp(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleAddToWhitelist();
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="new-note">Note (optional)</Label>
+                        <Input
+                          id="new-note"
+                          placeholder="e.g., Internal team, Dev environment"
+                          value={newNote}
+                          onChange={(e) => setNewNote(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleAddToWhitelist();
+                            }
+                          }}
+                        />
+                      </div>
+                      <Button onClick={handleAddToWhitelist} disabled={!newIp.trim()} className="w-full">
+                        Add to Whitelist
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Whitelist Table */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-sm">Whitelisted IPs ({Object.keys(whitelist).length})</h3>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleResetWhitelist}
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        Reset to Default
+                      </Button>
+                    </div>
+                    
+                    {Object.keys(whitelist).length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground text-sm">
+                        No IPs whitelisted
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {Object.entries(whitelist).map(([ip, note]) => (
+                          <div
+                            key={ip}
+                            className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                          >
+                            <div className="flex-1">
+                              <div className="font-mono font-medium">{ip}</div>
+                              {note && (
+                                <div className="text-sm text-muted-foreground mt-1">{note}</div>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveFromWhitelist(ip)}
+                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </CardHeader>
         <CardContent>
