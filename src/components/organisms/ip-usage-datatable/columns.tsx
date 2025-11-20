@@ -4,9 +4,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { IpUsage } from "./schema";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { format } from "date-fns";
+import { EyeOff } from "lucide-react";
 
-export const columns: ColumnDef<IpUsage>[] = [
+export const createColumns = (onWhitelist: (ip: string) => void): ColumnDef<IpUsage>[] => [
   {
     accessorKey: "ip_address",
     header: ({ column }) => (
@@ -20,7 +23,9 @@ export const columns: ColumnDef<IpUsage>[] = [
   {
     accessorKey: "total_hits",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Total Hits" />
+      <div className="text-center">
+        <DataTableColumnHeader column={column} title="Total Hits" />
+      </div>
     ),
     cell: ({ row }) => (
       <div className="text-center font-semibold">
@@ -32,19 +37,39 @@ export const columns: ColumnDef<IpUsage>[] = [
   {
     accessorKey: "anon_hits",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Guest Hits" />
+      <div className="text-center">
+        <DataTableColumnHeader column={column} title="Guest Hits" />
+      </div>
     ),
     cell: ({ row }) => {
       const anonHits = row.getValue("anon_hits") as number;
-      const isHighUsage = anonHits > 100;
+      const isHighUsage = anonHits >= 10;
       return (
         <div className="text-center">
-          <Badge
-            variant={isHighUsage ? "destructive" : "secondary"}
-            className="font-semibold"
-          >
-            {anonHits}
-          </Badge>
+          {isHighUsage ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex">
+                  <Badge
+                    variant="destructive"
+                    className="font-semibold"
+                  >
+                    {anonHits}
+                  </Badge>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>High usage: ≥ 10 guest queries</p>
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <Badge
+              variant="secondary"
+              className="font-semibold"
+            >
+              {anonHits}
+            </Badge>
+          )}
         </div>
       );
     },
@@ -53,7 +78,9 @@ export const columns: ColumnDef<IpUsage>[] = [
   {
     accessorKey: "user_hits",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="User Hits" />
+      <div className="text-center">
+        <DataTableColumnHeader column={column} title="User Hits" />
+      </div>
     ),
     cell: ({ row }) => (
       <div className="text-center text-muted-foreground">
@@ -65,16 +92,34 @@ export const columns: ColumnDef<IpUsage>[] = [
   {
     accessorKey: "anon_pct",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Guest %" />
+      <div className="text-center">
+        <DataTableColumnHeader column={column} title="Guest %" />
+      </div>
     ),
     cell: ({ row }) => {
       const pct = row.getValue("anon_pct") as number;
-      const isHighPct = pct >= 80;
+      const totalHits = row.getValue("total_hits") as number;
+      const isHighPct = pct >= 80 && totalHits >= 10;
       return (
         <div className="text-center">
-          <Badge variant={isHighPct ? "destructive" : "outline"}>
-            {pct.toFixed(1)}%
-          </Badge>
+          {isHighPct ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="inline-flex">
+                  <Badge variant="destructive">
+                    {pct.toFixed(1)}%
+                  </Badge>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>High guest usage: ≥ 80% with ≥ 10 total queries</p>
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <Badge variant="outline">
+              {pct.toFixed(1)}%
+            </Badge>
+          )}
         </div>
       );
     },
@@ -109,6 +154,33 @@ export const columns: ColumnDef<IpUsage>[] = [
       );
     },
     enableSorting: true,
+  },
+  {
+    id: "actions",
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => {
+      const ip = row.getValue("ip_address") as string;
+      return (
+        <div className="text-center">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onWhitelist(ip)}
+                className="h-8 w-8 p-0"
+              >
+                <EyeOff className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Hide IP (add to whitelist)</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      );
+    },
+    enableSorting: false,
   },
 ];
 

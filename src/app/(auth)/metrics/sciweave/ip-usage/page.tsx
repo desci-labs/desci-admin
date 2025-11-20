@@ -5,7 +5,7 @@ import * as React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { DataTable } from "@/components/organisms/ip-usage-datatable/data-table";
-import { columns } from "@/components/organisms/ip-usage-datatable/columns";
+import { createColumns } from "@/components/organisms/ip-usage-datatable/columns";
 import { IpUsage } from "@/components/organisms/ip-usage-datatable/schema";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { format, subMonths, subYears, subDays, subWeeks } from "date-fns";
 import { CalendarIcon, Loader2, ShieldAlert, Users, Globe, ShieldCheck, Trash2 } from "lucide-react";
@@ -69,6 +70,7 @@ export default function IpUsagePage() {
   const [whitelistDialogOpen, setWhitelistDialogOpen] = useState(false);
   const [newIp, setNewIp] = useState("");
   const [newNote, setNewNote] = useState("");
+  const noteInputRef = React.useRef<HTMLInputElement>(null);
 
   // Initialize whitelist from localStorage
   React.useEffect(() => {
@@ -120,6 +122,21 @@ export default function IpUsagePage() {
     setWhitelist(DEFAULT_WHITELIST);
     localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(DEFAULT_WHITELIST));
   };
+
+  const handleWhitelistFromTable = (ip: string) => {
+    setNewIp(ip);
+    setWhitelistDialogOpen(true);
+  };
+
+  // Focus note field when dialog opens with prefilled IP
+  React.useEffect(() => {
+    if (whitelistDialogOpen && newIp && noteInputRef.current) {
+      // Small delay to ensure dialog is fully rendered
+      setTimeout(() => {
+        noteInputRef.current?.focus();
+      }, 100);
+    }
+  }, [whitelistDialogOpen, newIp]);
 
   const { data = [], isLoading, error, isFetching, dataUpdatedAt } = useQuery({
     queryKey: ["ip-usage", dateRange.from?.toISOString(), dateRange.to?.toISOString()],
@@ -216,6 +233,12 @@ export default function IpUsagePage() {
   const overallUserPct = totalHits > 0 ? (totalUserHits / totalHits) * 100 : 0;
 
   const hasFilters = dateRange.from || dateRange.to || userType !== "guests";
+  
+  // Create columns with whitelist handler
+  const columns = React.useMemo(
+    () => createColumns(handleWhitelistFromTable),
+    []
+  );
 
   return (
     <div className="flex-1 space-y-6 p-4 pt-6 md:p-8">
@@ -341,37 +364,20 @@ export default function IpUsagePage() {
               <CardTitle>Usage by IP Address</CardTitle>
               <CardDescription className="mt-1">
                 Track usage patterns per IP address. IPs with high guest usage (
-                <Badge variant="destructive" className="mx-1 py-0 h-5">High</Badge>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="inline-flex mx-1">
+                      <Badge variant="destructive" className="py-0 h-5">High</Badge>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>≥ 10 guest queries or ≥ 80% with ≥ 10 total queries</p>
+                  </TooltipContent>
+                </Tooltip>
                 ) may indicate potential abuse.
               </CardDescription>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <LayoutGroup id="user-type">
-                <div className="flex items-center gap-1 rounded-lg border p-1 bg-muted/50">
-                  {(["guests", "users", "all"] as const).map((type) => (
-                    <button
-                      key={type}
-                      onClick={() => setUserType(type)}
-                      className={cn(
-                        "relative px-3 h-8 text-sm font-medium transition-colors rounded-md",
-                        userType === type
-                          ? "text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      )}
-                    >
-                      {userType === type && (
-                        <motion.div
-                          layoutId="user-type-indicator"
-                          className="absolute inset-0 bg-background rounded-md shadow-sm"
-                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                        />
-                      )}
-                      <span className="relative z-10 capitalize">{type}</span>
-                    </button>
-                  ))}
-                </div>
-              </LayoutGroup>
-              
+            <div className="flex flex-col items-end gap-2 lg:flex-row-reverse lg:items-center">
               <LayoutGroup id="date-preset">
                 <div className="flex items-center gap-1 rounded-lg border p-1 bg-muted/50">
                   {(["1d", "1w", "1m", "3m", "6m", "1y", "all"] as const).map((preset) => (
@@ -379,7 +385,7 @@ export default function IpUsagePage() {
                       key={preset}
                       onClick={() => handleDatePreset(preset)}
                       className={cn(
-                        "relative px-3 h-8 text-sm font-medium transition-colors rounded-md",
+                        "relative px-3 h-8 text-sm font-medium transition-colors rounded-md whitespace-nowrap",
                         datePreset === preset
                           ? "text-foreground"
                           : "text-muted-foreground hover:text-foreground"
@@ -401,7 +407,7 @@ export default function IpUsagePage() {
                     <PopoverTrigger asChild>
                       <button
                         className={cn(
-                          "relative px-3 h-8 text-sm font-medium transition-colors rounded-md flex items-center gap-1",
+                          "relative px-3 h-8 text-sm font-medium transition-colors rounded-md flex items-center gap-1 whitespace-nowrap",
                           datePreset === "custom"
                             ? "text-foreground"
                             : "text-muted-foreground hover:text-foreground"
@@ -456,6 +462,32 @@ export default function IpUsagePage() {
                   </Popover>
                 </div>
               </LayoutGroup>
+              
+              <LayoutGroup id="user-type">
+                <div className="flex items-center gap-1 rounded-lg border p-1 bg-muted/50">
+                  {(["guests", "users", "all"] as const).map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => setUserType(type)}
+                      className={cn(
+                        "relative px-3 h-8 text-sm font-medium transition-colors rounded-md whitespace-nowrap",
+                        userType === type
+                          ? "text-foreground"
+                          : "text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {userType === type && (
+                        <motion.div
+                          layoutId="user-type-indicator"
+                          className="absolute inset-0 bg-background rounded-md shadow-sm"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        />
+                      )}
+                      <span className="relative z-10 capitalize">{type}</span>
+                    </button>
+                  ))}
+                </div>
+              </LayoutGroup>
             </div>
           </div>
           
@@ -494,14 +526,14 @@ export default function IpUsagePage() {
                 
                 <div className="space-y-4 flex-1 overflow-y-auto">
                   {/* Add IP Section */}
-                  <div className="space-y-3 p-4 rounded-lg border bg-muted/50">
+                  <div className="space-y-2 p-3 rounded-lg border bg-muted/50">
                     <h3 className="font-medium text-sm">Add Known IP to Whitelist</h3>
-                    <div className="grid gap-3">
-                      <div className="space-y-2">
-                        <Label htmlFor="new-ip">IP Address</Label>
+                    <div className="flex items-end gap-2">
+                      <div className="space-y-1.5 w-[180px]">
+                        <Label htmlFor="new-ip" className="text-xs">IP Address</Label>
                         <Input
                           id="new-ip"
-                          placeholder="e.g., 192.168.1.1"
+                          placeholder="192.168.1.1"
                           value={newIp}
                           onChange={(e) => setNewIp(e.target.value)}
                           onKeyDown={(e) => {
@@ -509,13 +541,15 @@ export default function IpUsagePage() {
                               handleAddToWhitelist();
                             }
                           }}
+                          className="h-9"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="new-note">Note (optional)</Label>
+                      <div className="space-y-1.5 flex-1">
+                        <Label htmlFor="new-note" className="text-xs">Note (optional)</Label>
                         <Input
+                          ref={noteInputRef}
                           id="new-note"
-                          placeholder="e.g., Internal team, Dev environment"
+                          placeholder="Internal team, Dev environment"
                           value={newNote}
                           onChange={(e) => setNewNote(e.target.value)}
                           onKeyDown={(e) => {
@@ -523,10 +557,11 @@ export default function IpUsagePage() {
                               handleAddToWhitelist();
                             }
                           }}
+                          className="h-9"
                         />
                       </div>
-                      <Button onClick={handleAddToWhitelist} disabled={!newIp.trim()} className="w-full">
-                        Add to Whitelist
+                      <Button onClick={handleAddToWhitelist} disabled={!newIp.trim()} size="sm" className="h-9">
+                        Add
                       </Button>
                     </div>
                   </div>
@@ -539,7 +574,7 @@ export default function IpUsagePage() {
                         variant="ghost"
                         size="sm"
                         onClick={handleResetWhitelist}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground hover:text-foreground h-8"
                       >
                         Reset to Default
                       </Button>
@@ -550,28 +585,36 @@ export default function IpUsagePage() {
                         No IPs whitelisted
                       </div>
                     ) : (
-                      <div className="space-y-2">
-                        {Object.entries(whitelist).map(([ip, note]) => (
-                          <div
-                            key={ip}
-                            className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
-                          >
-                            <div className="flex-1">
-                              <div className="font-mono font-medium">{ip}</div>
-                              {note && (
-                                <div className="text-sm text-muted-foreground mt-1">{note}</div>
-                              )}
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleRemoveFromWhitelist(ip)}
-                              className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        ))}
+                      <div className="rounded-md border">
+                        <table className="w-full">
+                          <thead className="border-b bg-muted/50">
+                            <tr>
+                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">IP Address</th>
+                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">Note</th>
+                              <th className="w-[60px] py-2 px-3"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Object.entries(whitelist).map(([ip, note]) => (
+                              <tr key={ip} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+                                <td className="py-2 px-3 font-mono text-sm">{ip}</td>
+                                <td className="py-2 px-3 text-sm text-muted-foreground">
+                                  {note || <span className="italic text-xs">—</span>}
+                                </td>
+                                <td className="py-2 px-3 text-right">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleRemoveFromWhitelist(ip)}
+                                    className="h-7 w-7 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     )}
                   </div>
