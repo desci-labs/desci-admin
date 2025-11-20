@@ -31,13 +31,17 @@ import { DataTableToolbar } from './data-table-toolbar'
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  columnVisibility?: VisibilityState
+  onColumnVisibilityChange?: (visibility: VisibilityState) => void
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  columnVisibility: externalColumnVisibility,
+  onColumnVisibilityChange,
 }: DataTableProps<TData, TValue>) {
-  const [columnVisibility, setColumnVisibility] =
+  const [internalColumnVisibility, setInternalColumnVisibility] =
     React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -45,6 +49,9 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([
     { id: "anon_hits", desc: true }
   ])
+  
+  const columnVisibility = externalColumnVisibility !== undefined ? externalColumnVisibility : internalColumnVisibility
+  const setColumnVisibility = onColumnVisibilityChange || setInternalColumnVisibility
 
   const table = useReactTable({
     data,

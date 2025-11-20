@@ -18,8 +18,9 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { format, subMonths, subYears, subDays, subWeeks } from "date-fns";
-import { CalendarIcon, Loader2, ShieldAlert, Users, Globe, ShieldCheck, Trash2 } from "lucide-react";
+import { CalendarIcon, Loader2, ShieldAlert, Users, Globe, ShieldCheck, Trash2, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 type UserType = "guests" | "users" | "all";
 type DatePreset = "1d" | "1w" | "1m" | "3m" | "6m" | "1y" | "all" | "custom";
@@ -32,6 +33,18 @@ const DEFAULT_WHITELIST: Record<string, string> = {
 
 const WHITELIST_STORAGE_KEY = "sciweave-ip-whitelist";
 const WHITELIST_ENABLED_KEY = "sciweave-whitelist-enabled";
+const COLUMN_VISIBILITY_KEY = "sciweave-column-visibility";
+
+const DEFAULT_COLUMN_VISIBILITY = {
+  ip_address: true,
+  total_hits: true,
+  anon_hits: true,
+  user_hits: true,
+  anon_pct: true,
+  first_seen: true,
+  last_seen: true,
+  actions: true,
+};
 
 const fetchIpUsage = async (from?: Date, to?: Date): Promise<IpUsage[]> => {
   const params = new URLSearchParams();
@@ -66,16 +79,21 @@ export default function IpUsagePage() {
   
   // Whitelist state
   const [whitelist, setWhitelist] = useState<Record<string, string>>({});
-  const [whitelistEnabled, setWhitelistEnabled] = useState(false);
+  const [whitelistEnabled, setWhitelistEnabled] = useState(true); // Default to true
   const [whitelistDialogOpen, setWhitelistDialogOpen] = useState(false);
   const [newIp, setNewIp] = useState("");
   const [newNote, setNewNote] = useState("");
   const noteInputRef = React.useRef<HTMLInputElement>(null);
+  
+  // Settings state
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>(DEFAULT_COLUMN_VISIBILITY);
 
   // Initialize whitelist from localStorage
   React.useEffect(() => {
     const stored = localStorage.getItem(WHITELIST_STORAGE_KEY);
     const enabledStored = localStorage.getItem(WHITELIST_ENABLED_KEY);
+    const columnVisStored = localStorage.getItem(COLUMN_VISIBILITY_KEY);
     
     if (stored) {
       setWhitelist(JSON.parse(stored));
@@ -87,6 +105,14 @@ export default function IpUsagePage() {
     
     if (enabledStored) {
       setWhitelistEnabled(enabledStored === "true");
+    } else {
+      // Default to true on first load
+      setWhitelistEnabled(true);
+      localStorage.setItem(WHITELIST_ENABLED_KEY, "true");
+    }
+    
+    if (columnVisStored) {
+      setColumnVisibility(JSON.parse(columnVisStored));
     }
   }, []);
 
@@ -101,6 +127,11 @@ export default function IpUsagePage() {
   React.useEffect(() => {
     localStorage.setItem(WHITELIST_ENABLED_KEY, String(whitelistEnabled));
   }, [whitelistEnabled]);
+  
+  // Save column visibility to localStorage
+  React.useEffect(() => {
+    localStorage.setItem(COLUMN_VISIBILITY_KEY, JSON.stringify(columnVisibility));
+  }, [columnVisibility]);
 
   const handleAddToWhitelist = () => {
     if (newIp.trim()) {
@@ -378,6 +409,189 @@ export default function IpUsagePage() {
               </CardDescription>
             </div>
             <div className="flex flex-col items-end gap-2 lg:flex-row-reverse lg:items-center">
+              {/* Settings Button */}
+              <Popover open={settingsOpen} onOpenChange={setSettingsOpen}>
+                <PopoverTrigger asChild>
+                  <button className="flex items-center justify-center px-3 h-[43px] rounded-lg border p-1 bg-muted/50 text-muted-foreground hover:text-foreground transition-colors">
+                    <Settings className="h-4 w-4" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-80" align="end">
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium text-sm mb-3">Column Visibility</h4>
+                      <div className="space-y-2">
+                        {[
+                          { key: "ip_address", label: "IP Address" },
+                          { key: "total_hits", label: "Total Hits" },
+                          { key: "anon_hits", label: "Guest Hits" },
+                          { key: "user_hits", label: "User Hits" },
+                          { key: "anon_pct", label: "Guest %" },
+                          { key: "first_seen", label: "First Seen" },
+                          { key: "last_seen", label: "Last Seen" },
+                          { key: "actions", label: "Actions" },
+                        ].map((column) => (
+                          <div key={column.key} className="flex items-center gap-2">
+                            <Checkbox
+                              id={`col-${column.key}`}
+                              checked={columnVisibility[column.key] !== false}
+                              onCheckedChange={(checked) => {
+                                setColumnVisibility((prev) => ({
+                                  ...prev,
+                                  [column.key]: checked as boolean,
+                                }));
+                              }}
+                            />
+                            <Label
+                              htmlFor={`col-${column.key}`}
+                              className="text-sm font-normal cursor-pointer"
+                            >
+                              {column.label}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div>
+                      <h4 className="font-medium text-sm mb-3">Filters</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="whitelist-enabled-settings"
+                            checked={whitelistEnabled}
+                            onCheckedChange={(checked) => setWhitelistEnabled(checked as boolean)}
+                          />
+                          <Label htmlFor="whitelist-enabled-settings" className="text-sm font-normal cursor-pointer">
+                            Hide Known IPs
+                          </Label>
+                          {whitelistEnabled && (
+                            <Badge variant="secondary" className="ml-auto">
+                              {Object.keys(whitelist).length}
+                            </Badge>
+                          )}
+                        </div>
+                        
+                        <Dialog open={whitelistDialogOpen} onOpenChange={setWhitelistDialogOpen}>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="sm" className="w-full gap-2">
+                              <ShieldCheck className="h-4 w-4" />
+                              Manage Whitelist
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+                <DialogHeader>
+                  <DialogTitle>IP Whitelist Management</DialogTitle>
+                  <DialogDescription>
+                    Mark known/trusted IP addresses (e.g., internal team, dev IPs) to hide them from the monitoring view.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <div className="space-y-4 flex-1 overflow-y-auto">
+                  {/* Add IP Section */}
+                  <div className="space-y-2 p-3 rounded-lg border bg-muted/50">
+                    <h3 className="font-medium text-sm">Add Known IP to Whitelist</h3>
+                    <div className="flex items-end gap-2">
+                      <div className="space-y-1.5 w-[180px]">
+                        <Label htmlFor="new-ip" className="text-xs">IP Address</Label>
+                        <Input
+                          id="new-ip"
+                          placeholder="192.168.1.1"
+                          value={newIp}
+                          onChange={(e) => setNewIp(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleAddToWhitelist();
+                            }
+                          }}
+                          className="h-9"
+                        />
+                      </div>
+                      <div className="space-y-1.5 flex-1">
+                        <Label htmlFor="new-note" className="text-xs">Note (optional)</Label>
+                        <Input
+                          ref={noteInputRef}
+                          id="new-note"
+                          placeholder="Internal team, Dev environment"
+                          value={newNote}
+                          onChange={(e) => setNewNote(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              handleAddToWhitelist();
+                            }
+                          }}
+                          className="h-9"
+                        />
+                      </div>
+                      <Button onClick={handleAddToWhitelist} disabled={!newIp.trim()} size="sm" className="h-9">
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Whitelist Table */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium text-sm">Whitelisted IPs ({Object.keys(whitelist).length})</h3>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleResetWhitelist}
+                        className="text-muted-foreground hover:text-foreground h-8"
+                      >
+                        Reset to Default
+                      </Button>
+                    </div>
+                    
+                    {Object.keys(whitelist).length === 0 ? (
+                      <div className="text-center py-8 text-muted-foreground text-sm">
+                        No IPs whitelisted
+                      </div>
+                    ) : (
+                      <div className="rounded-md border">
+                        <table className="w-full">
+                          <thead className="border-b bg-muted/50">
+                            <tr>
+                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">IP Address</th>
+                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">Note</th>
+                              <th className="w-[60px] py-2 px-3"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Object.entries(whitelist).map(([ip, note]) => (
+                              <tr key={ip} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+                                <td className="py-2 px-3 font-mono text-sm">{ip}</td>
+                                <td className="py-2 px-3 text-sm text-muted-foreground">
+                                  {note || <span className="italic text-xs">—</span>}
+                                </td>
+                                <td className="py-2 px-3 text-right">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleRemoveFromWhitelist(ip)}
+                                    className="h-7 w-7 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                                  >
+                                    <Trash2 className="h-3.5 w-3.5" />
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+                      </div>
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+              
               <LayoutGroup id="date-preset">
                 <div className="flex items-center gap-1 rounded-lg border p-1 bg-muted/50">
                   {(["1d", "1w", "1m", "3m", "6m", "1y", "all"] as const).map((preset) => (
@@ -490,138 +704,6 @@ export default function IpUsagePage() {
               </LayoutGroup>
             </div>
           </div>
-          
-          {/* Whitelist Controls */}
-          <div className="flex items-center gap-3 px-6 pb-2">
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="whitelist-enabled"
-                checked={whitelistEnabled}
-                onCheckedChange={(checked) => setWhitelistEnabled(checked as boolean)}
-              />
-              <Label htmlFor="whitelist-enabled" className="text-sm font-medium cursor-pointer">
-                Hide Known IPs
-              </Label>
-              {whitelistEnabled && (
-                <Badge variant="secondary" className="ml-1">
-                  {Object.keys(whitelist).length} IPs
-                </Badge>
-              )}
-            </div>
-            
-            <Dialog open={whitelistDialogOpen} onOpenChange={setWhitelistDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <ShieldCheck className="h-4 w-4" />
-                  Manage Whitelist
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
-                <DialogHeader>
-                  <DialogTitle>IP Whitelist Management</DialogTitle>
-                  <DialogDescription>
-                    Mark known/trusted IP addresses (e.g., internal team, dev IPs) to hide them from the monitoring view.
-                  </DialogDescription>
-                </DialogHeader>
-                
-                <div className="space-y-4 flex-1 overflow-y-auto">
-                  {/* Add IP Section */}
-                  <div className="space-y-2 p-3 rounded-lg border bg-muted/50">
-                    <h3 className="font-medium text-sm">Add Known IP to Whitelist</h3>
-                    <div className="flex items-end gap-2">
-                      <div className="space-y-1.5 w-[180px]">
-                        <Label htmlFor="new-ip" className="text-xs">IP Address</Label>
-                        <Input
-                          id="new-ip"
-                          placeholder="192.168.1.1"
-                          value={newIp}
-                          onChange={(e) => setNewIp(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleAddToWhitelist();
-                            }
-                          }}
-                          className="h-9"
-                        />
-                      </div>
-                      <div className="space-y-1.5 flex-1">
-                        <Label htmlFor="new-note" className="text-xs">Note (optional)</Label>
-                        <Input
-                          ref={noteInputRef}
-                          id="new-note"
-                          placeholder="Internal team, Dev environment"
-                          value={newNote}
-                          onChange={(e) => setNewNote(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleAddToWhitelist();
-                            }
-                          }}
-                          className="h-9"
-                        />
-                      </div>
-                      <Button onClick={handleAddToWhitelist} disabled={!newIp.trim()} size="sm" className="h-9">
-                        Add
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Whitelist Table */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-sm">Whitelisted IPs ({Object.keys(whitelist).length})</h3>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleResetWhitelist}
-                        className="text-muted-foreground hover:text-foreground h-8"
-                      >
-                        Reset to Default
-                      </Button>
-                    </div>
-                    
-                    {Object.keys(whitelist).length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground text-sm">
-                        No IPs whitelisted
-                      </div>
-                    ) : (
-                      <div className="rounded-md border">
-                        <table className="w-full">
-                          <thead className="border-b bg-muted/50">
-                            <tr>
-                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">IP Address</th>
-                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">Note</th>
-                              <th className="w-[60px] py-2 px-3"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Object.entries(whitelist).map(([ip, note]) => (
-                              <tr key={ip} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
-                                <td className="py-2 px-3 font-mono text-sm">{ip}</td>
-                                <td className="py-2 px-3 text-sm text-muted-foreground">
-                                  {note || <span className="italic text-xs">—</span>}
-                                </td>
-                                <td className="py-2 px-3 text-right">
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handleRemoveFromWhitelist(ip)}
-                                    className="h-7 w-7 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                                  >
-                                    <Trash2 className="h-3.5 w-3.5" />
-                                  </Button>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
         </CardHeader>
         <CardContent>
           {error ? (
@@ -631,7 +713,12 @@ export default function IpUsagePage() {
           ) : (
             <div className="relative">
               <div className={cn("transition-all duration-300", isFetching && "blur-sm opacity-60")}>
-                <DataTable columns={columns} data={filteredData} />
+                <DataTable 
+                  columns={columns} 
+                  data={filteredData}
+                  columnVisibility={columnVisibility}
+                  onColumnVisibilityChange={setColumnVisibility}
+                />
               </div>
               
               <AnimatePresence>
@@ -677,4 +764,3 @@ export default function IpUsagePage() {
     </div>
   );
 }
-
