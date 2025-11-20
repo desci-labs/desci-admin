@@ -54,6 +54,7 @@ export default function IpUsagePage() {
     queryKey: ["ip-usage", dateRange.from?.toISOString(), dateRange.to?.toISOString()],
     queryFn: () => fetchIpUsage(dateRange.from, dateRange.to),
     staleTime: 5 * 60 * 1000, // 5 minutes
+    placeholderData: (previousData) => previousData, // Keep previous data while loading
   });
 
   // Track loading time
@@ -401,8 +402,10 @@ export default function IpUsagePage() {
               <p className="text-destructive">{error instanceof Error ? error.message : "An error occurred"}</p>
             </div>
           ) : (
-            <div className="relative min-h-[400px]">
-              <DataTable columns={columns} data={filteredData} />
+            <div className="relative">
+              <div className={cn("transition-all duration-300", isFetching && "blur-sm opacity-60")}>
+                <DataTable columns={columns} data={filteredData} />
+              </div>
               
               <AnimatePresence>
                 {isFetching && (
@@ -411,7 +414,7 @@ export default function IpUsagePage() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-50"
+                    className="absolute inset-0 flex flex-col items-center justify-center z-50 pointer-events-none"
                   >
                     <motion.div
                       initial={{ scale: 0.8, opacity: 0 }}
