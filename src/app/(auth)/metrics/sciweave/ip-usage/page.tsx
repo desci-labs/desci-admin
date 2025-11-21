@@ -21,6 +21,7 @@ import { format, subMonths, subYears, subDays, subWeeks } from "date-fns";
 import { CalendarIcon, Loader2, ShieldAlert, Users, Globe, ShieldCheck, Trash2, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { getInstitutionInfo } from "@/lib/ip-utils";
 
 type UserType = "guests" | "users" | "all";
 type DatePreset = "1d" | "1w" | "1m" | "3m" | "6m" | "1y" | "all" | "custom";
@@ -34,6 +35,7 @@ const DEFAULT_WHITELIST: Record<string, string> = {
 const WHITELIST_STORAGE_KEY = "sciweave-ip-whitelist";
 const WHITELIST_ENABLED_KEY = "sciweave-whitelist-enabled";
 const COLUMN_VISIBILITY_KEY = "sciweave-column-visibility";
+const SHOW_INSTITUTIONS_KEY = "sciweave-show-institutions";
 
 const DEFAULT_COLUMN_VISIBILITY = {
   ip_address: true,
@@ -88,12 +90,14 @@ export default function IpUsagePage() {
   // Settings state
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>(DEFAULT_COLUMN_VISIBILITY);
+  const [showInstitutions, setShowInstitutions] = useState(false); // Default to false (hide institutions)
 
   // Initialize whitelist from localStorage
   React.useEffect(() => {
     const stored = localStorage.getItem(WHITELIST_STORAGE_KEY);
     const enabledStored = localStorage.getItem(WHITELIST_ENABLED_KEY);
     const columnVisStored = localStorage.getItem(COLUMN_VISIBILITY_KEY);
+    const showInstitutionsStored = localStorage.getItem(SHOW_INSTITUTIONS_KEY);
     
     if (stored) {
       setWhitelist(JSON.parse(stored));
@@ -114,6 +118,10 @@ export default function IpUsagePage() {
     if (columnVisStored) {
       setColumnVisibility(JSON.parse(columnVisStored));
     }
+    
+    if (showInstitutionsStored) {
+      setShowInstitutions(showInstitutionsStored === "true");
+    }
   }, []);
 
   // Save whitelist to localStorage whenever it changes
@@ -132,6 +140,11 @@ export default function IpUsagePage() {
   React.useEffect(() => {
     localStorage.setItem(COLUMN_VISIBILITY_KEY, JSON.stringify(columnVisibility));
   }, [columnVisibility]);
+  
+  // Save show institutions state to localStorage
+  React.useEffect(() => {
+    localStorage.setItem(SHOW_INSTITUTIONS_KEY, String(showInstitutions));
+  }, [showInstitutions]);
 
   const handleAddToWhitelist = () => {
     if (newIp.trim()) {
@@ -244,10 +257,15 @@ export default function IpUsagePage() {
     setUserType("guests");
   };
 
-  // Filter data based on user type and whitelist
+  // Filter data based on user type, whitelist, and institutions
   const filteredData = data.filter((item) => {
     // Apply whitelist filter if enabled - hide whitelisted (known/trusted) IPs
     if (whitelistEnabled && whitelist[item.ip_address]) {
+      return false;
+    }
+    
+    // Apply institution filter - hide institutions if showInstitutions is false (default)
+    if (!showInstitutions && getInstitutionInfo(item.ip_address)) {
       return false;
     }
     
@@ -472,6 +490,17 @@ export default function IpUsagePage() {
                               {Object.keys(whitelist).length}
                             </Badge>
                           )}
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="show-institutions-settings"
+                            checked={showInstitutions}
+                            onCheckedChange={(checked) => setShowInstitutions(checked as boolean)}
+                          />
+                          <Label htmlFor="show-institutions-settings" className="text-sm font-normal cursor-pointer">
+                            Show Institutions
+                          </Label>
                         </div>
                         
                         <Dialog open={whitelistDialogOpen} onOpenChange={setWhitelistDialogOpen}>

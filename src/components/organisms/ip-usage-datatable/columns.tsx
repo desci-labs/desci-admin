@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { format } from "date-fns";
-import { EyeOff } from "lucide-react";
+import { EyeOff, GraduationCap } from "lucide-react";
+import { getInstitutionInfo, getCountryFlag } from "@/lib/ip-utils";
 
 export const createColumns = (onWhitelist: (ip: string) => void): ColumnDef<IpUsage>[] => [
   {
@@ -15,9 +16,34 @@ export const createColumns = (onWhitelist: (ip: string) => void): ColumnDef<IpUs
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="IP Address" />
     ),
-    cell: ({ row }) => (
-      <div className="font-mono text-sm">{row.getValue("ip_address")}</div>
-    ),
+    cell: ({ row }) => {
+      const ip = row.getValue("ip_address") as string;
+      const institutionInfo = getInstitutionInfo(ip);
+      
+      return (
+        <div className="flex items-center gap-2">
+          <div className="font-mono text-sm">{ip}</div>
+          {institutionInfo && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="flex items-center gap-1">
+                  <Badge variant="outline" className="gap-1 text-xs">
+                    <GraduationCap className="h-3 w-3" />
+                    <span>{getCountryFlag(institutionInfo.country)}</span>
+                  </Badge>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="text-xs">
+                  <p className="font-semibold">{institutionInfo.name}</p>
+                  <p className="text-muted-foreground">{institutionInfo.region}</p>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
+      );
+    },
     enableSorting: true,
   },
   {
