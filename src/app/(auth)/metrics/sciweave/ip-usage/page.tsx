@@ -291,6 +291,114 @@ export default function IpUsagePage() {
 
   return (
     <div className="flex-1 space-y-6 p-4 pt-6 md:p-8">
+      {/* Whitelist Dialog - Moved outside of Popover to fix visibility issue */}
+      <Dialog open={whitelistDialogOpen} onOpenChange={setWhitelistDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>IP Whitelist Management</DialogTitle>
+            <DialogDescription>
+              Mark known/trusted IP addresses (e.g., internal team, dev IPs) to hide them from the monitoring view.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 flex-1 overflow-y-auto">
+            {/* Add IP Section */}
+            <div className="space-y-2 p-3 rounded-lg border bg-muted/50">
+              <h3 className="font-medium text-sm">Add Known IP to Whitelist</h3>
+              <div className="flex items-end gap-2">
+                <div className="space-y-1.5 w-[180px]">
+                  <Label htmlFor="new-ip" className="text-xs">IP Address</Label>
+                  <Input
+                    id="new-ip"
+                    placeholder="192.168.1.1"
+                    value={newIp}
+                    onChange={(e) => setNewIp(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleAddToWhitelist();
+                      }
+                    }}
+                    className="h-9"
+                  />
+                </div>
+                <div className="space-y-1.5 flex-1">
+                  <Label htmlFor="new-note" className="text-xs">Note (optional)</Label>
+                  <Input
+                    ref={noteInputRef}
+                    id="new-note"
+                    placeholder="Internal team, Dev environment"
+                    value={newNote}
+                    onChange={(e) => setNewNote(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleAddToWhitelist();
+                      }
+                    }}
+                    className="h-9"
+                  />
+                </div>
+                <Button onClick={handleAddToWhitelist} disabled={!newIp.trim()} size="sm" className="h-9">
+                  Add
+                </Button>
+              </div>
+            </div>
+
+            {/* Whitelist Table */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="font-medium text-sm">Whitelisted IPs ({Object.keys(whitelist).length})</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleResetWhitelist}
+                  className="text-muted-foreground hover:text-foreground h-8"
+                >
+                  Reset to Default
+                </Button>
+              </div>
+              
+              {Object.keys(whitelist).length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground text-sm">
+                  No IPs whitelisted
+                </div>
+              ) : (
+                <div className="rounded-md border">
+                  <table className="w-full">
+                    <thead className="border-b bg-muted/50">
+                      <tr>
+                        <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">IP Address</th>
+                        <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">Note</th>
+                        <th className="w-[60px] py-2 px-3"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Object.entries(whitelist).map(([ip, note]) => (
+                        <tr key={ip} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+                          <td className="py-2 px-3 font-mono text-sm">{ip}</td>
+                          <td className="py-2 px-3 text-sm text-muted-foreground">
+                            {note || <span className="italic text-xs">—</span>}
+                          </td>
+                          <td className="py-2 px-3 text-right">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveFromWhitelist(ip)}
+                              className="h-7 w-7 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -503,118 +611,15 @@ export default function IpUsagePage() {
                           </Label>
                         </div>
                         
-                        <Dialog open={whitelistDialogOpen} onOpenChange={setWhitelistDialogOpen}>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="w-full gap-2">
-                              <ShieldCheck className="h-4 w-4" />
-                              Manage Whitelist
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
-                <DialogHeader>
-                  <DialogTitle>IP Whitelist Management</DialogTitle>
-                  <DialogDescription>
-                    Mark known/trusted IP addresses (e.g., internal team, dev IPs) to hide them from the monitoring view.
-                  </DialogDescription>
-                </DialogHeader>
-                
-                <div className="space-y-4 flex-1 overflow-y-auto">
-                  {/* Add IP Section */}
-                  <div className="space-y-2 p-3 rounded-lg border bg-muted/50">
-                    <h3 className="font-medium text-sm">Add Known IP to Whitelist</h3>
-                    <div className="flex items-end gap-2">
-                      <div className="space-y-1.5 w-[180px]">
-                        <Label htmlFor="new-ip" className="text-xs">IP Address</Label>
-                        <Input
-                          id="new-ip"
-                          placeholder="192.168.1.1"
-                          value={newIp}
-                          onChange={(e) => setNewIp(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleAddToWhitelist();
-                            }
-                          }}
-                          className="h-9"
-                        />
-                      </div>
-                      <div className="space-y-1.5 flex-1">
-                        <Label htmlFor="new-note" className="text-xs">Note (optional)</Label>
-                        <Input
-                          ref={noteInputRef}
-                          id="new-note"
-                          placeholder="Internal team, Dev environment"
-                          value={newNote}
-                          onChange={(e) => setNewNote(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              handleAddToWhitelist();
-                            }
-                          }}
-                          className="h-9"
-                        />
-                      </div>
-                      <Button onClick={handleAddToWhitelist} disabled={!newIp.trim()} size="sm" className="h-9">
-                        Add
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Whitelist Table */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-sm">Whitelisted IPs ({Object.keys(whitelist).length})</h3>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleResetWhitelist}
-                        className="text-muted-foreground hover:text-foreground h-8"
-                      >
-                        Reset to Default
-                      </Button>
-                    </div>
-                    
-                    {Object.keys(whitelist).length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground text-sm">
-                        No IPs whitelisted
-                      </div>
-                    ) : (
-                      <div className="rounded-md border">
-                        <table className="w-full">
-                          <thead className="border-b bg-muted/50">
-                            <tr>
-                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">IP Address</th>
-                              <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground">Note</th>
-                              <th className="w-[60px] py-2 px-3"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Object.entries(whitelist).map(([ip, note]) => (
-                              <tr key={ip} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
-                                <td className="py-2 px-3 font-mono text-sm">{ip}</td>
-                                <td className="py-2 px-3 text-sm text-muted-foreground">
-                                  {note || <span className="italic text-xs">—</span>}
-                                </td>
-                                <td className="py-2 px-3 text-right">
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handleRemoveFromWhitelist(ip)}
-                                    className="h-7 w-7 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                                  >
-                                    <Trash2 className="h-3.5 w-3.5" />
-                                  </Button>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full gap-2"
+                          onClick={() => setWhitelistDialogOpen(true)}
+                        >
+                          <ShieldCheck className="h-4 w-4" />
+                          Manage Whitelist
+                        </Button>
                       </div>
                     </div>
                   </div>
