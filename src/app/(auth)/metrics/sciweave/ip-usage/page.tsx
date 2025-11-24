@@ -146,31 +146,31 @@ export default function IpUsagePage() {
     localStorage.setItem(SHOW_INSTITUTIONS_KEY, String(showInstitutions));
   }, [showInstitutions]);
 
-  const handleAddToWhitelist = () => {
+  const handleAddToWhitelist = React.useCallback(() => {
     if (newIp.trim()) {
       setWhitelist((prev) => ({ ...prev, [newIp.trim()]: newNote.trim() }));
       setNewIp("");
       setNewNote("");
     }
-  };
+  }, [newIp, newNote]);
 
-  const handleRemoveFromWhitelist = (ip: string) => {
+  const handleRemoveFromWhitelist = React.useCallback((ip: string) => {
     setWhitelist((prev) => {
       const updated = { ...prev };
       delete updated[ip];
       return updated;
     });
-  };
+  }, []);
 
-  const handleResetWhitelist = () => {
+  const handleResetWhitelist = React.useCallback(() => {
     setWhitelist(DEFAULT_WHITELIST);
     localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(DEFAULT_WHITELIST));
-  };
+  }, []);
 
-  const handleWhitelistFromTable = (ip: string) => {
+  const handleWhitelistFromTable = React.useCallback((ip: string) => {
     setNewIp(ip);
     setWhitelistDialogOpen(true);
-  };
+  }, []);
 
   // Focus note field when dialog opens with prefilled IP
   React.useEffect(() => {
@@ -210,7 +210,7 @@ export default function IpUsagePage() {
     };
   }, [isFetching]);
 
-  const handleDatePreset = (preset: DatePreset) => {
+  const handleDatePreset = React.useCallback((preset: DatePreset) => {
     const today = new Date();
     setDatePreset(preset);
     
@@ -245,48 +245,60 @@ export default function IpUsagePage() {
     
     setDateRange(newRange);
     // fetchData will be called automatically via useEffect
-  };
+  }, []);
 
-  const handleApplyCustomDates = () => {
+  const handleApplyCustomDates = React.useCallback(() => {
     setDatePreset("custom");
-  };
+  }, []);
 
-  const handleResetFilters = () => {
+  const handleResetFilters = React.useCallback(() => {
     setDateRange({ from: undefined, to: undefined });
     setDatePreset(null);
     setUserType("guests");
-  };
+  }, []);
 
   // Filter data based on user type, whitelist, and institutions
-  const filteredData = data.filter((item) => {
-    // Apply whitelist filter if enabled - hide whitelisted (known/trusted) IPs
-    if (whitelistEnabled && whitelist[item.ip_address]) {
-      return false;
-    }
-    
-    // Apply institution filter - hide institutions if showInstitutions is false (default)
-    if (!showInstitutions && getInstitutionInfo(item.ip_address)) {
-      return false;
-    }
-    
-    // Apply user type filter
-    if (userType === "guests") return item.anon_hits > 0;
-    if (userType === "users") return item.user_hits > 0;
-    return true; // all
-  });
+  const filteredData = React.useMemo(() => {
+    return data.filter((item) => {
+      // Apply whitelist filter if enabled - hide whitelisted (known/trusted) IPs
+      if (whitelistEnabled && whitelist[item.ip_address]) {
+        return false;
+      }
+      
+      // Apply institution filter - hide institutions if showInstitutions is false (default)
+      if (!showInstitutions && getInstitutionInfo(item.ip_address)) {
+        return false;
+      }
+      
+      // Apply user type filter
+      if (userType === "guests") return item.anon_hits > 0;
+      if (userType === "users") return item.user_hits > 0;
+      return true; // all
+    });
+  }, [data, whitelistEnabled, whitelist, showInstitutions, userType]);
 
-  const totalHits = filteredData.reduce((sum, item) => sum + item.total_hits, 0);
-  const totalAnonHits = filteredData.reduce((sum, item) => sum + item.anon_hits, 0);
-  const totalUserHits = filteredData.reduce((sum, item) => sum + item.user_hits, 0);
-  const overallAnonPct = totalHits > 0 ? (totalAnonHits / totalHits) * 100 : 0;
-  const overallUserPct = totalHits > 0 ? (totalUserHits / totalHits) * 100 : 0;
+  const { totalHits, totalAnonHits, totalUserHits, overallAnonPct, overallUserPct } = React.useMemo(() => {
+    const hits = filteredData.reduce((sum, item) => sum + item.total_hits, 0);
+    const anonHits = filteredData.reduce((sum, item) => sum + item.anon_hits, 0);
+    const userHits = filteredData.reduce((sum, item) => sum + item.user_hits, 0);
+    const anonPct = hits > 0 ? (anonHits / hits) * 100 : 0;
+    const userPct = hits > 0 ? (userHits / hits) * 100 : 0;
+    
+    return {
+      totalHits: hits,
+      totalAnonHits: anonHits,
+      totalUserHits: userHits,
+      overallAnonPct: anonPct,
+      overallUserPct: userPct
+    };
+  }, [filteredData]);
 
   const hasFilters = dateRange.from || dateRange.to || userType !== "guests";
   
   // Create columns with whitelist handler
   const columns = React.useMemo(
     () => createColumns(handleWhitelistFromTable),
-    []
+    [handleWhitelistFromTable]
   );
 
   return (
