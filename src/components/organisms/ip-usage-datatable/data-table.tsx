@@ -4,6 +4,7 @@ import * as React from 'react'
 import {
   ColumnDef,
   ColumnFiltersState,
+  OnChangeFn,
   SortingState,
   VisibilityState,
   flexRender,
@@ -32,7 +33,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   columnVisibility?: VisibilityState
-  onColumnVisibilityChange?: (visibility: VisibilityState) => void
+  onColumnVisibilityChange?: OnChangeFn<VisibilityState>
 }
 
 export function DataTable<TData, TValue>({
