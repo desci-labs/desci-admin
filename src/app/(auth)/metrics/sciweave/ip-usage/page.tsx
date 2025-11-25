@@ -92,43 +92,63 @@ export default function IpUsagePage() {
   const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>(DEFAULT_COLUMN_VISIBILITY);
   const [showInstitutions, setShowInstitutions] = useState(false); // Default to false (hide institutions)
 
+  // Helper function to safely parse localStorage with fallback
+  const safeParseJSON = <T,>(
+    key: string,
+    defaultValue: T,
+    setter: (value: T) => void
+  ): void => {
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setter(parsed);
+      } catch (error) {
+        console.error(`Failed to parse localStorage key "${key}":`, error);
+        localStorage.removeItem(key);
+        setter(defaultValue);
+        localStorage.setItem(key, JSON.stringify(defaultValue));
+      }
+    } else {
+      setter(defaultValue);
+      localStorage.setItem(key, JSON.stringify(defaultValue));
+    }
+  };
+
+  // Helper function to safely parse boolean from localStorage
+  const safeParseBool = (
+    key: string,
+    defaultValue: boolean,
+    setter: (value: boolean) => void
+  ): void => {
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      try {
+        const boolValue = stored === "true";
+        setter(boolValue);
+      } catch (error) {
+        console.error(`Failed to parse boolean localStorage key "${key}":`, error);
+        localStorage.removeItem(key);
+        setter(defaultValue);
+        localStorage.setItem(key, String(defaultValue));
+      }
+    } else {
+      setter(defaultValue);
+      localStorage.setItem(key, String(defaultValue));
+    }
+  };
+
   // Initialize whitelist from localStorage
   React.useEffect(() => {
-    const stored = localStorage.getItem(WHITELIST_STORAGE_KEY);
-    const enabledStored = localStorage.getItem(WHITELIST_ENABLED_KEY);
-    const columnVisStored = localStorage.getItem(COLUMN_VISIBILITY_KEY);
-    const showInstitutionsStored = localStorage.getItem(SHOW_INSTITUTIONS_KEY);
-    
-    if (stored) {
-      setWhitelist(JSON.parse(stored));
-    } else {
-      // First time, use defaults
-      setWhitelist(DEFAULT_WHITELIST);
-      localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(DEFAULT_WHITELIST));
-    }
-    
-    if (enabledStored) {
-      setWhitelistEnabled(enabledStored === "true");
-    } else {
-      // Default to true on first load
-      setWhitelistEnabled(true);
-      localStorage.setItem(WHITELIST_ENABLED_KEY, "true");
-    }
-    
-    if (columnVisStored) {
-      setColumnVisibility(JSON.parse(columnVisStored));
-    }
-    
-    if (showInstitutionsStored) {
-      setShowInstitutions(showInstitutionsStored === "true");
-    }
+    safeParseJSON(WHITELIST_STORAGE_KEY, DEFAULT_WHITELIST, setWhitelist);
+    safeParseBool(WHITELIST_ENABLED_KEY, true, setWhitelistEnabled);
+    safeParseJSON(COLUMN_VISIBILITY_KEY, DEFAULT_COLUMN_VISIBILITY, setColumnVisibility);
+    safeParseBool(SHOW_INSTITUTIONS_KEY, false, setShowInstitutions);
   }, []);
 
   // Save whitelist to localStorage whenever it changes
   React.useEffect(() => {
-    if (Object.keys(whitelist).length > 0) {
-      localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(whitelist));
-    }
+    localStorage.setItem(WHITELIST_STORAGE_KEY, JSON.stringify(whitelist));
   }, [whitelist]);
 
   // Save enabled state to localStorage
@@ -244,7 +264,6 @@ export default function IpUsagePage() {
     }
     
     setDateRange(newRange);
-    // fetchData will be called automatically via useEffect
   }, []);
 
   const handleApplyCustomDates = React.useCallback(() => {
@@ -261,7 +280,7 @@ export default function IpUsagePage() {
   const filteredData = React.useMemo(() => {
     return data.filter((item) => {
       // Apply whitelist filter if enabled - hide whitelisted (known/trusted) IPs
-      if (whitelistEnabled && whitelist[item.ip_address]) {
+      if (whitelistEnabled && item.ip_address in whitelist) {
         return false;
       }
       

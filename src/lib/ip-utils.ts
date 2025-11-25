@@ -1,3 +1,4 @@
+import ipaddr from "ipaddr.js";
 import institutionIpMap from "@/data/institution-ip-map.json";
 
 export interface InstitutionInfo {
@@ -7,35 +8,26 @@ export interface InstitutionInfo {
 }
 
 /**
- * Convert IP address to 32-bit integer
- */
-function ipToInt(ip: string): number {
-  const parts = ip.split(".");
-  return (
-    (parseInt(parts[0]) << 24) +
-    (parseInt(parts[1]) << 16) +
-    (parseInt(parts[2]) << 8) +
-    parseInt(parts[3])
-  );
-}
-
-/**
  * Check if IP address is in CIDR range
+ * Handles both IPv4 and IPv6 using ipaddr.js
  */
 function isIpInCidr(ip: string, cidr: string): boolean {
-  // Handle IPv6 - for now, simple string prefix matching
-  if (ip.includes(":") || cidr.includes(":")) {
-    const [prefix] = cidr.split("/");
-    return ip.startsWith(prefix.substring(0, Math.min(prefix.length, ip.length)));
+  try {
+    const parsedIp = ipaddr.process(ip);
+    const [rangeStr, prefixLengthStr] = cidr.split("/");
+    const parsedRange = ipaddr.process(rangeStr);
+    const prefixLength = parseInt(prefixLengthStr);
+    
+    // Both IP and range must be the same type (IPv4 or IPv6)
+    if (parsedIp.kind() !== parsedRange.kind()) {
+      return false;
+    }
+    
+    return parsedIp.match(parsedRange, prefixLength);
+  } catch (error) {
+    // Return false on invalid input
+    return false;
   }
-  
-  // IPv4
-  const [range, bits] = cidr.split("/");
-  const mask = -1 << (32 - parseInt(bits));
-  const ipInt = ipToInt(ip);
-  const rangeInt = ipToInt(range);
-  
-  return (ipInt & mask) === (rangeInt & mask);
 }
 
 /**
