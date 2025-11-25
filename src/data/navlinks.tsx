@@ -17,6 +17,8 @@ import {
   TrendingUpIcon,
   UsersRoundIcon,
   DatabaseIcon,
+  NetworkIcon,
+  ShieldCheckIcon,
 } from "lucide-react";
 
 export interface NavLink {
@@ -106,6 +108,20 @@ export const sidelinks: SideLink[] = [
         label: "",
         href: "/journals/new",
         icon: <IconTablePlus size={18} />,
+      },
+    ],
+  },
+  {
+    title: "Security & Monitoring",
+    label: "",
+    href: "/security",
+    icon: <ShieldCheckIcon size={18} />,
+    sub: [
+      {
+        title: "SciWeave Usage Monitoring",
+        label: "",
+        href: "/metrics/sciweave/ip-usage",
+        icon: <NetworkIcon size={18} />,
       },
     ],
   },
