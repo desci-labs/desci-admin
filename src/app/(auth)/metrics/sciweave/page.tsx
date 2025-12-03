@@ -108,6 +108,28 @@ async function getDevicesAnalytics(from: string, to: string, interval: string) {
   return res.json() as Promise<DevicesDataItem[]>;
 }
 
+async function getEngagementStats(from: string, to: string) {
+  const params = new URLSearchParams();
+  params.set("from", from);
+  params.set("to", to);
+
+  const res = await fetch(
+    `${
+      process.env.NEXT_PUBLIC_BASE_URL
+    }/api/sciweave-analytics/engagement-stats?${params.toString()}`,
+    {
+      next: {
+        revalidate: 3600,
+      },
+    }
+  );
+  return res.json() as Promise<{
+    totalChats: number;
+    followupPercentage: number;
+    avgChatsPerUser: number;
+  }>;
+}
+
 export default async function DesciResearch({
   searchParams,
 }: {
@@ -121,12 +143,14 @@ export default async function DesciResearch({
   const normalizedFrom = startOfDay(fromDate, { in: tz("UTC") }).toISOString();
   const normalizedTo = endOfDay(toDate, { in: tz("UTC") }).toISOString();
 
-  const [chats, uniqueUsers, userSessions, devices] = await Promise.all([
-    getChatsAnalytics(normalizedFrom, normalizedTo, groupBy),
-    getUniqueUsersAnalytics(normalizedFrom, normalizedTo, groupBy),
-    getUserSessionsAnalytics(normalizedFrom, normalizedTo, groupBy),
-    getDevicesAnalytics(normalizedFrom, normalizedTo, groupBy),
-  ]);
+  const [chats, uniqueUsers, userSessions, devices, engagementStats] =
+    await Promise.all([
+      getChatsAnalytics(normalizedFrom, normalizedTo, groupBy),
+      getUniqueUsersAnalytics(normalizedFrom, normalizedTo, groupBy),
+      getUserSessionsAnalytics(normalizedFrom, normalizedTo, groupBy),
+      getDevicesAnalytics(normalizedFrom, normalizedTo, groupBy),
+      getEngagementStats(normalizedFrom, normalizedTo),
+    ]);
 
   return (
     <DesciResearchAnalytics
@@ -139,6 +163,7 @@ export default async function DesciResearch({
         to: toDate,
       }}
       interval={groupBy}
+      engagementStats={engagementStats}
     />
   );
 }

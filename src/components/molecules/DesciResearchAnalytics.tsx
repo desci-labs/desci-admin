@@ -13,7 +13,13 @@ import { useRouter } from "next/navigation";
 import { formatDate } from "date-fns";
 import { toast } from "sonner";
 
-import { TrendingDown, TrendingUp } from "lucide-react";
+import {
+  TrendingDown,
+  TrendingUp,
+  MessageSquare,
+  Users,
+  BarChart3,
+} from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import {
@@ -53,6 +59,12 @@ interface DevicesDataItem {
   windows: number;
   otherDesktops: number;
   unknown: number;
+}
+
+interface EngagementStats {
+  totalChats: number;
+  followupPercentage: number;
+  avgChatsPerUser: number;
 }
 
 function ChartAreaDefault(props: {
@@ -384,6 +396,7 @@ export function DesciResearchAnalytics({
   devices,
   selectedDates,
   interval,
+  engagementStats,
 }: {
   chats: DataItem[];
   uniqueUsers: DataItem[];
@@ -391,6 +404,7 @@ export function DesciResearchAnalytics({
   devices: DevicesDataItem[];
   selectedDates: DateRange;
   interval: "day" | "week" | "month";
+  engagementStats: EngagementStats;
 }) {
   const router = useRouter();
   const userSessionsData = useMemo(() => {
@@ -478,6 +492,58 @@ export function DesciResearchAnalytics({
             </SelectContent>
           </Select>
         </div>
+      </div>
+
+      {/* Engagement Stats Cards */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="group hover:border-btn-surface-primary-focus duration-150">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Chats</CardTitle>
+            <MessageSquare className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {engagementStats.totalChats.toLocaleString()}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Within the time period
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="group hover:border-btn-surface-primary-focus duration-150">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Follow-up Questions
+            </CardTitle>
+            <BarChart3 className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {engagementStats.followupPercentage.toFixed(1)}%
+            </div>
+            <p className="text-xs text-muted-foreground">
+              % of users who write follow-up questions
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="group hover:border-btn-surface-primary-focus duration-150">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Avg Chats per User
+            </CardTitle>
+            <Users className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {engagementStats.avgChatsPerUser.toFixed(2)}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Average number of chats per user
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">

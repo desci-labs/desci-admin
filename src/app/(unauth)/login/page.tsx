@@ -24,13 +24,7 @@ export default function Login() {
 
   useEffect(() => {
     if (state?.user) {
-      console.log(
-        "[login]:: ",
-        RETURN_DEV_TOKEN,
-        process.env.NEXT_ENV,
-        state.user
-      );
-      if (RETURN_DEV_TOKEN || process.env.NEXT_ENV === "development") {
+      if (RETURN_DEV_TOKEN) {
         applyDevCookies(state.user.token);
       }
       toast.success("Login in successful 🎉");

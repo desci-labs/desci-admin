@@ -13,7 +13,7 @@ export type LoginUserData = {
 export async function login(prevState: any, formData: FormData) {
   const email = formData.get("email") ?? prevState?.email;
   const code = formData.get("code");
-
+  console.log("login", NODES_API_URL, RETURN_DEV_TOKEN);
   const res = await fetch(`${NODES_API_URL}/v1/auth/magic`, {
     method: "POST",
     body: JSON.stringify({
