@@ -1,7 +1,11 @@
-import { DesciResearchAnalytics } from "@/components/molecules/DesciResearchAnalytics";
+import {
+  DesciResearchAnalytics,
+  SciweaveUserAnalytics,
+} from "@/components/molecules/DesciResearchAnalytics";
 import { startOfDay, subDays } from "date-fns";
 import { tz } from "@date-fns/tz";
 import { endOfDay } from "date-fns";
+import { cookies } from "next/headers";
 
 interface DataItem {
   date: string;
@@ -127,7 +131,45 @@ async function getEngagementStats(from: string, to: string) {
     totalChats: number;
     followupPercentage: number;
     avgChatsPerUser: number;
+    activeUsers: number;
+    errorRate: number;
+    totalQuestions: number;
+    emptyResponses: number;
   }>;
+}
+
+async function getNewUsersAnalytics(
+  from: string,
+  to: string,
+  interval: string
+) {
+  const params = new URLSearchParams();
+  params.set("from", from);
+  params.set("to", to);
+  params.set("interval", interval);
+  console.log("getNewUsersAnalytics", {
+    params: params.toString(),
+    cookies: cookies().toString(),
+  });
+  const res = await fetch(
+    `${
+      process.env.NEXT_PUBLIC_API_URL
+    }/v1/admin/analytics/new-sciweave-users?${params.toString()}`,
+    {
+      credentials: "include",
+      headers: {
+        cookie: cookies().toString(),
+        "Content-Type": "application/json",
+      },
+      next: {
+        revalidate: 3600,
+      },
+    }
+  );
+  const data = (await res.json()) as {
+    data: SciweaveUserAnalytics;
+  };
+  return data.data;
 }
 
 export default async function DesciResearch({
@@ -138,18 +180,21 @@ export default async function DesciResearch({
   const { from, to, interval } = await searchParams;
   const fromDate = from ? new Date(from) : subDays(new Date(), 29);
   const toDate = to ? new Date(to) : new Date();
-  const groupBy = interval ? (interval as "day" | "week" | "month") : "week";
+  const groupBy = interval
+    ? (interval as "daily" | "weekly" | "monthly")
+    : "weekly";
 
   const normalizedFrom = startOfDay(fromDate, { in: tz("UTC") }).toISOString();
   const normalizedTo = endOfDay(toDate, { in: tz("UTC") }).toISOString();
 
-  const [chats, uniqueUsers, userSessions, devices, engagementStats] =
+  const [chats, uniqueUsers, userSessions, devices, engagementStats, newUsers] =
     await Promise.all([
       getChatsAnalytics(normalizedFrom, normalizedTo, groupBy),
       getUniqueUsersAnalytics(normalizedFrom, normalizedTo, groupBy),
       getUserSessionsAnalytics(normalizedFrom, normalizedTo, groupBy),
       getDevicesAnalytics(normalizedFrom, normalizedTo, groupBy),
       getEngagementStats(normalizedFrom, normalizedTo),
+      getNewUsersAnalytics(normalizedFrom, normalizedTo, groupBy),
     ]);
 
   return (
@@ -164,6 +209,7 @@ export default async function DesciResearch({
       }}
       interval={groupBy}
       engagementStats={engagementStats}
+      newUsers={newUsers}
     />
   );
 }

@@ -19,6 +19,9 @@ import {
   MessageSquare,
   Users,
   BarChart3,
+  Download,
+  AlertTriangle,
+  UserPlus,
 } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
@@ -38,11 +41,25 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface DataItem {
   date: string;
   value: string | number;
+}
+
+export interface SciweaveUserAnalytics {
+  analytics: {
+    date: string;
+    value: number;
+  }[];
+  count: number;
+  meta: {
+    from: string;
+    to: string;
+    diffInDays: number;
+  };
 }
 
 interface UserSessionsDataItem {
@@ -63,13 +80,17 @@ interface DevicesDataItem {
 
 interface EngagementStats {
   totalChats: number;
+  activeUsers: number;
   followupPercentage: number;
   avgChatsPerUser: number;
+  errorRate: number;
+  totalQuestions: number;
+  emptyResponses: number;
 }
 
 function ChartAreaDefault(props: {
   data: DataItem[];
-  interval: "day" | "week" | "month";
+  interval: "daily" | "weekly" | "monthly" | "yearly";
   selectedDates: DateRange;
   title: string;
   description: string;
@@ -199,7 +220,7 @@ const devicesChartConfig = {
 
 function ChartAreaInteractive(props: {
   data: DevicesDataItem[];
-  interval: "day" | "week" | "month";
+  interval: "daily" | "weekly" | "monthly" | "yearly";
   selectedDates: DateRange;
   title: string;
   description: string;
@@ -397,16 +418,72 @@ export function DesciResearchAnalytics({
   selectedDates,
   interval,
   engagementStats,
+  newUsers,
 }: {
   chats: DataItem[];
   uniqueUsers: DataItem[];
   userSessions: UserSessionsDataItem[];
   devices: DevicesDataItem[];
   selectedDates: DateRange;
-  interval: "day" | "week" | "month";
+  interval: "daily" | "weekly" | "monthly" | "yearly";
   engagementStats: EngagementStats;
+  newUsers: SciweaveUserAnalytics;
 }) {
   const router = useRouter();
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExport = async () => {
+    if (!selectedDates.from || !selectedDates.to) {
+      toast.warning("Please select a date range");
+      return;
+    }
+
+    try {
+      setIsExporting(true);
+      const params = new URLSearchParams();
+      params.set("from", selectedDates.from.toISOString());
+      params.set("to", selectedDates.to.toISOString());
+      params.set("interval", interval);
+
+      const response = await fetch(
+        `/api/sciweave-analytics/export?${params.toString()}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to export analytics");
+      }
+
+      const blob = await response.blob();
+      const fileURL = URL.createObjectURL(blob);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = fileURL;
+      downloadLink.download = `sciweave-analytics-${interval}-${
+        selectedDates.from.toISOString().split("T")[0]
+      }-to-${selectedDates.to.toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(fileURL);
+
+      toast.success("Analytics exported successfully", {
+        description: "The file has been downloaded to your device.",
+      });
+    } catch (error) {
+      console.error("Error exporting analytics:", error);
+      toast.error("Failed to export analytics", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred. Please try again.",
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
   const userSessionsData = useMemo(() => {
     return userSessions.map((item) => ({
       date: formatDate(item.date, "dd MMM"),
@@ -421,38 +498,79 @@ export function DesciResearchAnalytics({
     }));
   }, [userSessions]);
 
+  const newUsersData = useMemo(() => {
+    return (
+      newUsers?.analytics?.map((item) => ({
+        date: formatDate(item.date, "dd MMM"),
+        value: item.value,
+      })) ?? []
+    );
+  }, [newUsers]);
+
   const trends = useMemo(() => {
     const chatsTrend =
-      (Number(chats[chats.length - 1].value) - Number(chats[0].value)) /
-      Number(chats[0].value);
+      chats.length > 0 && Number(chats[0].value) > 0
+        ? (Number(chats[chats.length - 1].value) - Number(chats[0].value)) /
+          Number(chats[0].value)
+        : 0;
     const uniqueUsersTrend =
-      (Number(uniqueUsers[uniqueUsers.length - 1].value) -
-        Number(uniqueUsers[0].value)) /
-      Number(uniqueUsers[0].value);
+      uniqueUsers.length > 0 && Number(uniqueUsers[0].value) > 0
+        ? (Number(uniqueUsers[uniqueUsers.length - 1].value) -
+            Number(uniqueUsers[0].value)) /
+          Number(uniqueUsers[0].value)
+        : 0;
     const userSessionsTrend =
-      (Number(userSessions[userSessions.length - 1].sessionCount) -
-        Number(userSessions[0].sessionCount)) /
-      Number(userSessions[0].sessionCount);
+      userSessions.length > 0 && Number(userSessions[0].sessionCount) > 0
+        ? (Number(userSessions[userSessions.length - 1].sessionCount) -
+            Number(userSessions[0].sessionCount)) /
+          Number(userSessions[0].sessionCount)
+        : 0;
     const userSessionsDurationTrend =
-      (Number(
-        userSessionsDurationData[userSessionsDurationData.length - 1].value
-      ) -
-        Number(userSessionsDurationData[0].value)) /
-      Number(userSessionsDurationData[0].value);
+      userSessionsDurationData.length > 0 &&
+      Number(userSessionsDurationData[0].value) > 0
+        ? (Number(
+            userSessionsDurationData[userSessionsDurationData.length - 1].value
+          ) -
+            Number(userSessionsDurationData[0].value)) /
+          Number(userSessionsDurationData[0].value)
+        : 0;
+    const newUsersTrend =
+      newUsersData.length > 0 && Number(newUsersData[0].value) > 0
+        ? (Number(newUsersData[newUsersData.length - 1].value) -
+            Number(newUsersData[0].value)) /
+          Number(newUsersData[0].value)
+        : 0;
 
     return {
       chats: Math.round(chatsTrend * 100),
       uniqueUsers: Math.round(uniqueUsersTrend * 100),
       userSessions: Math.round(userSessionsTrend * 100),
       userSessionsDuration: Math.round(userSessionsDurationTrend * 100),
+      newUsers: Math.round(newUsersTrend * 100),
     };
-  }, [chats, uniqueUsers, userSessions, userSessionsDurationData]);
+  }, [
+    chats,
+    uniqueUsers,
+    userSessions,
+    userSessionsDurationData,
+    newUsersData,
+  ]);
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between space-x-4">
         <p className="text-muted-foreground">Desci Research Usage Analytics</p>
         <div className="flex items-center justify-end gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExport}
+            disabled={isExporting || !selectedDates.from || !selectedDates.to}
+            className="flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            {isExporting ? "Exporting..." : "Export"}
+          </Button>
           <Filterbar
             maxDate={new Date()}
             minDate={new Date(2022, 0, 1)}
@@ -480,13 +598,13 @@ export function DesciResearchAnalytics({
               <SelectValue placeholder="Select Interval" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem className="px-2" value="day">
+              <SelectItem className="px-2" value="daily">
                 Day
               </SelectItem>
-              <SelectItem className="px-2" value="week">
+              <SelectItem className="px-2" value="weekly">
                 Week
               </SelectItem>
-              <SelectItem className="px-2" value="month">
+              <SelectItem className="px-2" value="monthly">
                 Month
               </SelectItem>
             </SelectContent>
@@ -495,7 +613,7 @@ export function DesciResearchAnalytics({
       </div>
 
       {/* Engagement Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card className="group hover:border-btn-surface-primary-focus duration-150">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Chats</CardTitle>
@@ -530,10 +648,27 @@ export function DesciResearchAnalytics({
 
         <Card className="group hover:border-btn-surface-primary-focus duration-150">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+            <Users className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {engagementStats?.activeUsers?.toLocaleString()}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Unique users who started a new chat
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="group hover:border-btn-surface-primary-focus duration-150">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Avg Chats per User
             </CardTitle>
-            <Users className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+            <BarChart3 className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -544,9 +679,42 @@ export function DesciResearchAnalytics({
             </p>
           </CardContent>
         </Card>
+
+        <Card className="group hover:border-btn-surface-primary-focus duration-150">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Error Rate</CardTitle>
+            <AlertTriangle className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {engagementStats?.errorRate?.toFixed(2) || "0.00"}%
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {engagementStats?.emptyResponses?.toLocaleString() || 0} empty
+              responses out of{" "}
+              {engagementStats?.totalQuestions?.toLocaleString() || 0} total
+              questions
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="group hover:border-btn-surface-primary-focus duration-150">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">New Users</CardTitle>
+            <UserPlus className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {newUsers?.count?.toString()}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              New users in the time period
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <ChartAreaDefault
           data={chats}
           trend={trends.chats}
@@ -574,6 +742,20 @@ export function DesciResearchAnalytics({
           }}
           title="Unique Users"
           description="Showing unique active users over the selected period"
+        />
+        <ChartAreaDefault
+          data={newUsersData}
+          trend={trends.newUsers}
+          interval={interval}
+          selectedDates={selectedDates}
+          config={{
+            value: {
+              label: "New Users",
+              color: "var(--chart-2)",
+            },
+          }}
+          title="New Users"
+          description="Showing new users over the selected period"
         />
         <ChartAreaDefault
           data={userSessionsData}
