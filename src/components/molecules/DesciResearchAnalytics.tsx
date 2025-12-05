@@ -163,13 +163,17 @@ function ChartAreaDefault(props: {
                     {props.trend > 0 ? (
                       <>
                         Trending up by{" "}
-                        <span className="text-green-500">{props.trend}%</span>{" "}
+                        <span className="text-green-500">
+                          {props.trend.toLocaleString()}%
+                        </span>{" "}
                         <TrendingUp className="h-4 w-4" />
                       </>
                     ) : (
                       <>
                         Trending down by{" "}
-                        <span className="text-red-500">{props.trend}%</span>{" "}
+                        <span className="text-red-500">
+                          {props.trend.toLocaleString()}%
+                        </span>{" "}
                         <TrendingDown className="h-4 w-4" />
                       </>
                     )}
