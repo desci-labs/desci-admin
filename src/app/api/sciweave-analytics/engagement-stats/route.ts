@@ -42,7 +42,6 @@ export async function GET(request: NextRequest) {
       unique_users AS (
         SELECT COUNT(DISTINCT username) as total_users
         FROM base_logs
-        WHERE thread_id IS NULL OR thread_id = id
       ),
       users_with_followups AS (
         SELECT COUNT(DISTINCT username) as users_with_followups

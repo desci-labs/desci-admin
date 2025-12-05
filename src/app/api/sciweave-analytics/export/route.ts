@@ -3,6 +3,7 @@ import pool from "@/lib/postgresClient";
 import { IS_PROD, NODES_API_URL } from "@/lib/config";
 import { analyticsQuerySchema, intervalToDateTrunc } from "@/lib/schema";
 import { cookies } from "next/headers";
+import { formatDate } from "date-fns";
 
 // Helper function to escape CSV values
 function escapeCsvValue(value: any): string {
@@ -256,9 +257,10 @@ export async function GET(request: NextRequest) {
     return new NextResponse(csvContent, {
       headers: {
         "Content-Type": "text/csv",
-        "Content-Disposition": `attachment; filename="sciweave-analytics-${interval}-${
-          from.toISOString().split("T")[0]
-        }-to-${to.toISOString().split("T")[0]}.csv"`,
+        "Content-Disposition": `attachment; filename="sciweave-analytics-${interval}-${formatDate(
+          from,
+          "dd-MM-yyyy"
+        )}-to-${formatDate(to, "dd-MM-yyyy")}.csv"`,
       },
     });
   } catch (error) {

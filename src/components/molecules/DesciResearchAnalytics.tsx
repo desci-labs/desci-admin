@@ -9,9 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { formatDate } from "date-fns";
 import { toast } from "sonner";
+import { useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import {
   TrendingDown,
@@ -430,7 +434,41 @@ export function DesciResearchAnalytics({
   newUsers: SciweaveUserAnalytics;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [isExporting, setIsExporting] = useState(false);
+  const [isExportingUsers, setIsExportingUsers] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const prevSearchParamsRef = useRef<string>(searchParams.toString());
+  const navigationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Detect route changes
+  useEffect(() => {
+    const currentParams = searchParams.toString();
+
+    // Check if search params have changed
+    if (prevSearchParamsRef.current !== currentParams) {
+      setIsLoading(true);
+
+      // Clear any existing timeout
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+
+      // Reset loading state after navigation completes
+      // This gives time for the new data to load
+      navigationTimeoutRef.current = setTimeout(() => {
+        setIsLoading(false);
+        prevSearchParamsRef.current = currentParams;
+      }, 1000);
+    }
+
+    return () => {
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+    };
+  }, [searchParams]);
 
   const handleExport = async () => {
     if (!selectedDates.from || !selectedDates.to) {
@@ -461,9 +499,10 @@ export function DesciResearchAnalytics({
 
       const downloadLink = document.createElement("a");
       downloadLink.href = fileURL;
-      downloadLink.download = `sciweave-analytics-${interval}-${
-        selectedDates.from.toISOString().split("T")[0]
-      }-to-${selectedDates.to.toISOString().split("T")[0]}.csv`;
+      downloadLink.download = `sciweave-analytics-${interval}-report-from-${formatDate(
+        selectedDates.from,
+        "dd-MM-yyyy"
+      )}-to-${formatDate(selectedDates.to, "dd-MM-yyyy")}.csv`;
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
@@ -482,6 +521,59 @@ export function DesciResearchAnalytics({
       });
     } finally {
       setIsExporting(false);
+    }
+  };
+
+  const handleExportUsers = async () => {
+    if (!selectedDates.from || !selectedDates.to) {
+      toast.warning("Please select a date range");
+      return;
+    }
+
+    try {
+      setIsExportingUsers(true);
+      const params = new URLSearchParams();
+      params.set("from", selectedDates.from.toISOString());
+      params.set("to", selectedDates.to.toISOString());
+
+      const response = await fetch(
+        `/api/sciweave-analytics/users/export?${params.toString()}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to export users metadata");
+      }
+
+      const blob = await response.blob();
+      const fileURL = URL.createObjectURL(blob);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = fileURL;
+      downloadLink.download = `sciweave-users-report-from-${formatDate(
+        selectedDates.from,
+        "dd-MM-yyyy"
+      )}-to-${formatDate(selectedDates.to, "dd-MM-yyyy")}.csv`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(fileURL);
+
+      toast.success("Users metadata exported successfully", {
+        description: "The file has been downloaded to your device.",
+      });
+    } catch (error) {
+      console.error("Error exporting users metadata:", error);
+      toast.error("Failed to export users metadata", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred. Please try again.",
+      });
+    } finally {
+      setIsExportingUsers(false);
     }
   };
   const userSessionsData = useMemo(() => {
@@ -557,8 +649,37 @@ export function DesciResearchAnalytics({
   ]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between space-x-4">
+    <div className="space-y-6 relative">
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 flex flex-col items-center justify-center z-50 pointer-events-none bg-background/80 backdrop-blur-sm rounded-lg"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ delay: 0.1, duration: 0.3 }}
+              className="flex flex-col items-center gap-3"
+            >
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm font-medium text-muted-foreground">
+                Loading analytics...
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div
+        className={cn(
+          "flex items-center justify-between space-x-4 transition-all duration-300",
+          isLoading && "opacity-60 blur-sm"
+        )}
+      >
         <p className="text-muted-foreground">Desci Research Usage Analytics</p>
         <div className="flex items-center justify-end gap-3">
           <Button
@@ -569,7 +690,19 @@ export function DesciResearchAnalytics({
             className="flex items-center gap-2"
           >
             <Download className="h-4 w-4" />
-            {isExporting ? "Exporting..." : "Export"}
+            {isExporting ? "Exporting..." : "Export analytics report"}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportUsers}
+            disabled={
+              isExportingUsers || !selectedDates.from || !selectedDates.to
+            }
+            className="flex items-center gap-2"
+          >
+            <Download className="h-4 w-4" />
+            {isExportingUsers ? "Exporting..." : "Export users metadata"}
           </Button>
           <Filterbar
             maxDate={new Date()}
@@ -581,6 +714,7 @@ export function DesciResearchAnalytics({
                 return;
               }
 
+              setIsLoading(true);
               router.push(
                 `/metrics/sciweave?from=${dates?.from?.toISOString()}&to=${dates?.to?.toISOString()}&interval=${interval}`
               );
@@ -589,6 +723,7 @@ export function DesciResearchAnalytics({
           <Select
             defaultValue={interval}
             onValueChange={(newInterval) => {
+              setIsLoading(true);
               router.push(
                 `/metrics/sciweave?from=${selectedDates.from?.toISOString()}&to=${selectedDates.to?.toISOString()}&interval=${newInterval}`
               );
@@ -612,187 +747,198 @@ export function DesciResearchAnalytics({
         </div>
       </div>
 
-      {/* Engagement Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="group hover:border-btn-surface-primary-focus duration-150">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Chats</CardTitle>
-            <MessageSquare className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {engagementStats.totalChats.toLocaleString()}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Within the time period
-            </p>
-          </CardContent>
-        </Card>
+      <div
+        className={cn(
+          "transition-all duration-300 space-y-6",
+          isLoading && "opacity-60 blur-sm"
+        )}
+      >
+        {/* Engagement Stats Cards */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="group hover:border-btn-surface-primary-focus duration-150">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Chats</CardTitle>
+              <MessageSquare className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {engagementStats.totalChats.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Within the time period
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card className="group hover:border-btn-surface-primary-focus duration-150">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Follow-up Questions
-            </CardTitle>
-            <BarChart3 className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {engagementStats.followupPercentage.toFixed(1)}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              % of users who write follow-up questions
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="group hover:border-btn-surface-primary-focus duration-150">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Follow-up Questions
+              </CardTitle>
+              <BarChart3 className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {engagementStats.followupPercentage.toFixed(1)}%
+              </div>
+              <p className="text-xs text-muted-foreground">
+                % of users who write follow-up questions
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card className="group hover:border-btn-surface-primary-focus duration-150">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-            <Users className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {engagementStats?.activeUsers?.toLocaleString()}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Unique users who started a new chat
-            </p>
-          </CardContent>
-        </Card>
+          <Card className="group hover:border-btn-surface-primary-focus duration-150">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Active Users
+              </CardTitle>
+              <Users className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {engagementStats?.activeUsers?.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Users who started or followed up on a new chat
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card className="group hover:border-btn-surface-primary-focus duration-150">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Avg Chats per User
+              </CardTitle>
+              <BarChart3 className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {engagementStats.avgChatsPerUser.toFixed(2)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Average number of chats per user
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="group hover:border-btn-surface-primary-focus duration-150">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Error Rate</CardTitle>
+              <AlertTriangle className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {engagementStats?.errorRate?.toFixed(2) || "0.00"}%
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {engagementStats?.emptyResponses?.toLocaleString() || 0} empty
+                responses out of{" "}
+                {engagementStats?.totalQuestions?.toLocaleString() || 0} total
+                questions
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="group hover:border-btn-surface-primary-focus duration-150">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">New Users</CardTitle>
+              <UserPlus className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {newUsers?.count?.toString()}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                New users in the time period
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ChartAreaDefault
+            data={chats}
+            trend={trends.chats}
+            interval={interval}
+            selectedDates={selectedDates}
+            config={{
+              value: {
+                label: "Chats",
+                color: "var(--chart-1)",
+              },
+            }}
+            title="Chats"
+            description="Showing chats activity over the selected period"
+          />
+          <ChartAreaDefault
+            data={uniqueUsers}
+            trend={trends.uniqueUsers}
+            interval={interval}
+            selectedDates={selectedDates}
+            config={{
+              value: {
+                label: "Users",
+                color: "var(--chart-1)",
+              },
+            }}
+            title="Unique Users"
+            description="Showing unique active users over the selected period"
+          />
+          <ChartAreaDefault
+            data={newUsersData}
+            trend={trends.newUsers}
+            interval={interval}
+            selectedDates={selectedDates}
+            config={{
+              value: {
+                label: "New Users",
+                color: "var(--chart-2)",
+              },
+            }}
+            title="New Users"
+            description="Showing new users over the selected period"
+          />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <ChartAreaDefault
+            data={userSessionsData}
+            trend={trends.userSessions}
+            interval={interval}
+            selectedDates={selectedDates}
+            config={{
+              value: {
+                label: "Sessions",
+                color: "var(--chart-3)",
+              },
+            }}
+            title="User Sessions"
+            description="User sessions for the selected period"
+          />
+          <ChartAreaDefault
+            data={userSessionsDurationData}
+            trend={trends.userSessionsDuration}
+            interval={interval}
+            selectedDates={selectedDates}
+            config={{
+              value: {
+                label: "Duration",
+                color: "var(--chart-3)",
+              },
+            }}
+            title="User Sessions Duration"
+            description="Average session duration for the selected period"
+          />
+        </div>
+        {/* <ChartAreaInteractive
+          data={devices}
+          interval={interval}
+          selectedDates={selectedDates}
+          title="Devices"
+          description="Analysis of devices used in each sessions for the selected period"
+        /> */}
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="group hover:border-btn-surface-primary-focus duration-150">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Avg Chats per User
-            </CardTitle>
-            <BarChart3 className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {engagementStats.avgChatsPerUser.toFixed(2)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Average number of chats per user
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="group hover:border-btn-surface-primary-focus duration-150">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Error Rate</CardTitle>
-            <AlertTriangle className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {engagementStats?.errorRate?.toFixed(2) || "0.00"}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {engagementStats?.emptyResponses?.toLocaleString() || 0} empty
-              responses out of{" "}
-              {engagementStats?.totalQuestions?.toLocaleString() || 0} total
-              questions
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="group hover:border-btn-surface-primary-focus duration-150">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">New Users</CardTitle>
-            <UserPlus className="w-4 h-4 text-muted-foreground group-hover:text-btn-surface-primary-focus" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {newUsers?.count?.toString()}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              New users in the time period
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <ChartAreaDefault
-          data={chats}
-          trend={trends.chats}
-          interval={interval}
-          selectedDates={selectedDates}
-          config={{
-            value: {
-              label: "Chats",
-              color: "var(--chart-1)",
-            },
-          }}
-          title="Chats"
-          description="Showing chats activity over the selected period"
-        />
-        <ChartAreaDefault
-          data={uniqueUsers}
-          trend={trends.uniqueUsers}
-          interval={interval}
-          selectedDates={selectedDates}
-          config={{
-            value: {
-              label: "Users",
-              color: "var(--chart-1)",
-            },
-          }}
-          title="Unique Users"
-          description="Showing unique active users over the selected period"
-        />
-        <ChartAreaDefault
-          data={newUsersData}
-          trend={trends.newUsers}
-          interval={interval}
-          selectedDates={selectedDates}
-          config={{
-            value: {
-              label: "New Users",
-              color: "var(--chart-2)",
-            },
-          }}
-          title="New Users"
-          description="Showing new users over the selected period"
-        />
-        <ChartAreaDefault
-          data={userSessionsData}
-          trend={trends.userSessions}
-          interval={interval}
-          selectedDates={selectedDates}
-          config={{
-            value: {
-              label: "Sessions",
-              color: "var(--chart-3)",
-            },
-          }}
-          title="User Sessions"
-          description="User sessions for the selected period"
-        />
-        <ChartAreaDefault
-          data={userSessionsDurationData}
-          trend={trends.userSessionsDuration}
-          interval={interval}
-          selectedDates={selectedDates}
-          config={{
-            value: {
-              label: "Duration",
-              color: "var(--chart-3)",
-            },
-          }}
-          title="User Sessions Duration"
-          description="Average session duration for the selected period"
-        />
-      </div>
-      <ChartAreaInteractive
-        data={devices}
-        interval={interval}
-        selectedDates={selectedDates}
-        title="Devices"
-        description="Analysis of devices used in each sessions for the selected period"
-      />
     </div>
   );
 }
