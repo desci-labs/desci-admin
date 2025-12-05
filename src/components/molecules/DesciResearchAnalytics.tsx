@@ -848,7 +848,7 @@ export function DesciResearchAnalytics({
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {newUsers?.count?.toString()}
+                {newUsers?.count?.toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground">
                 New users in the time period
