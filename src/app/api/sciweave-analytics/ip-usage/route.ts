@@ -9,9 +9,11 @@ const querySchema = z.object({
 });
 
 interface SearchLogRow {
+  id: string;
   ip_address: string;
   username: string;
   created_at: string;
+  thread_id: string | null;
 }
 
 export async function GET(request: NextRequest) {
@@ -31,8 +33,7 @@ export async function GET(request: NextRequest) {
     // Build the query using Supabase query builder
     let query = supabase
       .from("search_logs")
-      .select("ip_address, username, created_at", { count: "exact" })
-      .is("thread_id", null);
+      .select("id, ip_address, username, created_at, thread_id", { count: "exact" });
 
     // Add date filters if provided
     if (from) {
@@ -69,6 +70,9 @@ export async function GET(request: NextRequest) {
         hasMore = false;
       }
     }
+
+    // Filter for root threads: thread_id is null OR thread_id equals id
+    allData = allData.filter(row => row.thread_id === null || row.thread_id === row.id);
 
     // Aggregate data by IP address in JavaScript
     const ipMap = new Map<string, {
