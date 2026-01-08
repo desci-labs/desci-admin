@@ -40,6 +40,7 @@ export default function JournalDetailsPage({
           name: journal.name,
           description: journal?.description,
           iconCid: journal?.iconCid,
+          imageUrl: journal?.imageUrl,
         },
       }}
       pending={pending}

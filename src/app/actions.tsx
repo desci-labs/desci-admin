@@ -257,6 +257,7 @@ export async function createJournal(_prevState: any, formData: FormData) {
       name: formData.get("name"),
       description: formData.get("description"),
       iconCid: formData.get("iconCid"),
+      imageUrl: formData.get("imageUrl"),
     }),
     headers: {
       cookie: cookies().toString(),
@@ -299,6 +300,7 @@ export async function updateJournal(_prevState: any, formData: FormData) {
       name: formData.get("name"),
       description: formData.get("description"),
       iconCid: formData.get("iconCid"),
+      imageUrl: formData.get("imageUrl"),
     }),
     headers: {
       cookie: cookies().toString(),

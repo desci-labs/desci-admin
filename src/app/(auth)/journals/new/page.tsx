@@ -25,6 +25,7 @@ export default function Page() {
           name: "",
           description: "",
           iconCid: "",
+          imageUrl: "",
         },
       }}
       pending={pending}
