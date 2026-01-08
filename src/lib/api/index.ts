@@ -139,6 +139,7 @@ export interface Journal {
   name: string;
   description: string;
   iconCid: string;
+  imageUrl: string;
   createdAt: string;
 }
 
