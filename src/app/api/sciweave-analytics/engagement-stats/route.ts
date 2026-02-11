@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import pool from "@/lib/postgresClient";
-import { IS_PROD } from "@/lib/config";
+import { PROD_FILTER_AND } from "@/lib/config";
 import { analyticsQuerySchema } from "@/lib/schema";
 
 export async function GET(request: NextRequest) {
@@ -28,11 +28,7 @@ export async function GET(request: NextRequest) {
         WHERE
           created_at >= $1
           AND created_at <= $2
-          ${
-            IS_PROD
-              ? "AND username NOT LIKE '%@desci.com' AND host_name IN ('www.sciweave.com', 'legacy.sciweave.com', 'xqttmvkzpjfhelao4a7cbsw22a0gzbpg.lambda-url.us-east-2.on.aws', 'ifvqsr3wq6p56qgw2vunimygli0tsgiq.lambda-url.us-east-2.on.aws')"
-              : ""
-          }
+          ${PROD_FILTER_AND}
       ),
       initial_chats AS (
         SELECT COUNT(*) as total_chats
@@ -74,11 +70,7 @@ export async function GET(request: NextRequest) {
         FROM public.search_logs
         WHERE created_at >= $1
           AND created_at <= $2
-          ${
-            IS_PROD
-              ? "AND username NOT LIKE '%@desci.com' AND host_name IN ('www.sciweave.com', 'legacy.sciweave.com', 'xqttmvkzpjfhelao4a7cbsw22a0gzbpg.lambda-url.us-east-2.on.aws')"
-              : ""
-          }
+          ${PROD_FILTER_AND}
       )
       SELECT
         (SELECT total_chats FROM initial_chats)::integer as total_chats,

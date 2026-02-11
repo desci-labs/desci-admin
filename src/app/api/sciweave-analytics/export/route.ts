@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import pool from "@/lib/postgresClient";
-import { IS_PROD, NODES_API_URL } from "@/lib/config";
+import { PROD_FILTER_LEADING, NODES_API_URL } from "@/lib/config";
 import { analyticsQuerySchema, intervalToDateTrunc } from "@/lib/schema";
 import { cookies } from "next/headers";
 import { formatDate } from "date-fns";
@@ -43,11 +43,7 @@ export async function GET(request: NextRequest) {
         FROM
           public.search_logs
         WHERE
-          ${
-            IS_PROD
-              ? "username NOT LIKE '%@desci.com' AND host_name IN ('www.sciweave.com', 'legacy.sciweave.com', 'xqttmvkzpjfhelao4a7cbsw22a0gzbpg.lambda-url.us-east-2.on.aws') AND"
-              : ""
-          }
+          ${PROD_FILTER_LEADING}
           created_at >= $1
           AND created_at <= $2
       ),
