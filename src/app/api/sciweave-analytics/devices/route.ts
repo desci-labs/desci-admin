@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import pool from "@/lib/postgresClient";
-import { IS_PROD } from "@/lib/config";
+import { PROD_FILTER_AND } from "@/lib/config";
 import { analyticsQuerySchema, intervalToDateTrunc } from "@/lib/schema";
 
 export async function GET(request: NextRequest) {
@@ -56,11 +56,7 @@ export async function GET(request: NextRequest) {
         FROM search_logs
         WHERE created_at >= $1
         AND created_at <= $2
-        ${
-          IS_PROD
-            ? "AND username NOT LIKE '%@desci.com' AND host_name IN ('www.sciweave.com', 'legacy.sciweave.com', 'xqttmvkzpjfhelao4a7cbsw22a0gzbpg.lambda-url.us-east-2.on.aws')"
-            : ""
-        }
+        ${PROD_FILTER_AND}
         GROUP BY DATE
         ORDER BY DATE;
       `,
