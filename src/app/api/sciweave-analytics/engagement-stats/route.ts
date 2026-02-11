@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
           AND created_at <= $2
           ${
             IS_PROD
-              ? "AND username NOT LIKE '%@desci.com' AND host_name IN ('www.sciweave.com', 'legacy.sciweave.com', 'xqttmvkzpjfhelao4a7cbsw22a0gzbpg.lambda-url.us-east-2.on.aws')"
+              ? "AND username NOT LIKE '%@desci.com' AND host_name IN ('www.sciweave.com', 'legacy.sciweave.com', 'xqttmvkzpjfhelao4a7cbsw22a0gzbpg.lambda-url.us-east-2.on.aws', 'ifvqsr3wq6p56qgw2vunimygli0tsgiq.lambda-url.us-east-2.on.aws')"
               : ""
           }
       ),
