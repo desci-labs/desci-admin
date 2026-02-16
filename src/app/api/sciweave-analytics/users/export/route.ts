@@ -10,16 +10,22 @@ export async function GET(request: NextRequest) {
       Object.fromEntries(searchParams)
     );
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 18000); // 18s — before Vercel's 20s limit
+
     const response = await fetch(
       `${NODES_API_URL}/v1/admin/analytics/sciweave-users/export?from=${from.toISOString()}&to=${to.toISOString()}`,
       {
         credentials: "include",
+        signal: controller.signal,
         headers: {
           cookie: cookies().toString(),
           "Content-Type": "application/json",
         },
       }
     );
+
+    clearTimeout(timeout);
 
     if (response.status === 401) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -39,6 +45,12 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error exporting sciweave users:", error);
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return NextResponse.json(
+        { error: "Export timed out. Try a shorter date range." },
+        { status: 504 }
+      );
+    }
     return NextResponse.json(
       { error: "Failed to export sciweave users" },
       { status: 500 }

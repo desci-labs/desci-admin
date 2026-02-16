@@ -112,8 +112,14 @@ export async function GET(request: NextRequest) {
       totalQuestions,
       emptyResponses,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error fetching engagement stats:", error);
+    if (error?.message?.includes("statement timeout") || error?.message?.includes("query_timeout")) {
+      return NextResponse.json(
+        { error: "Query timed out. Try a shorter date range." },
+        { status: 504 }
+      );
+    }
     return NextResponse.json(
       { error: "Failed to fetch engagement stats" },
       { status: 500 }
