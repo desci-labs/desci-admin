@@ -14,7 +14,7 @@ export const getHeaders = () => {
 
   if (window?.localStorage)
     return {
-      Authorization: `Bearar ${
+      Authorization: `Bearer ${
         localStorage.getItem(AUTH_COOKIE_FIELDNAME) ?? ""
       }`,
       // Cookie: `${AUTH_COOKIE_FIELDNAME}=${localStorage.getItem(AUTH_COOKIE_FIELDNAME)}`

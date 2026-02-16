@@ -30,7 +30,7 @@ export async function login(prevState: any, formData: FormData) {
     // Set cookie
     cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
       path: "/",
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 3 hours
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 days
       httpOnly: true,
       secure: process.env.NEXT_ENV === "production",
       domain: process.env.NODE_ENV === "production" ? ".desci.com" : undefined,
@@ -43,7 +43,7 @@ export async function login(prevState: any, formData: FormData) {
       console.log("[cookie]", AUTH_COOKIE_FIELDNAME, process.env.NEXT_ENV);
       cookies().set("auth", response.user.token, {
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30 * 1), // 2 hours
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 days
         httpOnly: true,
         secure: true,
         // domain: '.desci.com',
@@ -53,7 +53,7 @@ export async function login(prevState: any, formData: FormData) {
     if (process.env.NEXT_ENV === "production") {
       cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 days
         httpOnly: true,
         secure: true,
         domain: ".desci.com",
