@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error exporting sciweave users:", error);
-    if (error instanceof DOMException && error.name === "AbortError") {
+    if ((error as any)?.name === "AbortError") {
       return NextResponse.json(
         { error: "Export timed out. Try a shorter date range." },
         { status: 504 }
