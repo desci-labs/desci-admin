@@ -416,6 +416,14 @@ export const verifyCode = ({
 
 export const authUser = queryOptions({
   queryKey: [tags.profile],
+  retry: (failureCount, error) => {
+    if (error instanceof ApiError && error.status === 401) {
+      return false;
+    }
+    return failureCount < 1;
+  },
+  staleTime: 5 * 60 * 1000,
+  gcTime: 10 * 60 * 1000,
   queryFn: async () => {
     try {
       const response = await apiRequest<{
