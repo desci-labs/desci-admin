@@ -109,6 +109,12 @@ export const sidelinks: SideLink[] = [
         href: "/journals/new",
         icon: <IconTablePlus size={18} />,
       },
+      {
+        title: "Journal Applications",
+        label: "",
+        href: "/journals/applications",
+        icon: <ListCheckIcon size={18} />,
+      },
     ],
   },
   {
