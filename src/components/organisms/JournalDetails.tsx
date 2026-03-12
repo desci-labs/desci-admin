@@ -3,10 +3,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Pen, BookOpen, Users, FileText, Settings, Clock } from "lucide-react";
+import { Pen, BookOpen, Users, FileText, Settings } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import ReactMarkdown from "react-markdown";
 import { Journal } from "@/lib/api";
 
 const IPFS_GATEWAY = "https://pub.desci.com/ipfs";
@@ -15,7 +15,13 @@ interface JournalProps {
   journal: Journal;
 }
 
-function DetailField({ label, children }: { label: string; children: React.ReactNode }) {
+function DetailField({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   if (!children) return null;
   return (
     <div>
@@ -26,10 +32,23 @@ function DetailField({ label, children }: { label: string; children: React.React
 }
 
 function MarkdownContent({ content }: { content: string | null }) {
-  if (!content) return <span className="text-sm text-muted-foreground italic">Not set</span>;
+  if (!content)
+    return (
+      <span className="text-sm text-muted-foreground italic">Not set</span>
+    );
   return (
     <div className="prose prose-sm dark:prose-invert max-w-none whitespace-pre-wrap text-sm">
-      {content}
+      <ReactMarkdown
+        components={{
+          a: ({ href, children }) => (
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              {children}
+            </a>
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   );
 }
@@ -40,8 +59,8 @@ export default function JournalDetails({ journal }: JournalProps) {
   const imageUrl = journal.imageUrl
     ? journal.imageUrl
     : journal.iconCid
-      ? `${IPFS_GATEWAY}/${journal.iconCid}`
-      : null;
+    ? `${IPFS_GATEWAY}/${journal.iconCid}`
+    : null;
 
   const publicationCount = journal.submissions?.length ?? 0;
 
@@ -69,7 +88,9 @@ export default function JournalDetails({ journal }: JournalProps) {
                 <div className="space-y-1">
                   <h1 className="text-3xl font-bold">{journal.name}</h1>
                   {journal.slug && (
-                    <p className="text-sm text-muted-foreground font-mono">/{journal.slug}</p>
+                    <p className="text-sm text-muted-foreground font-mono">
+                      /{journal.slug}
+                    </p>
                   )}
                 </div>
                 <Button
@@ -85,12 +106,15 @@ export default function JournalDetails({ journal }: JournalProps) {
               <p className="text-muted-foreground">{journal.description}</p>
               <div className="flex gap-3 pt-2">
                 <Badge variant="secondary">
-                  {publicationCount} publication{publicationCount !== 1 ? "s" : ""}
+                  {publicationCount} publication
+                  {publicationCount !== 1 ? "s" : ""}
                 </Badge>
                 <Badge variant="outline">ID: {journal.id}</Badge>
                 {journal.settings?.refereeCount && (
                   <Badge variant="outline">
-                    {journal.settings.refereeCount.value} referee{journal.settings.refereeCount.value !== 1 ? "s" : ""} per submission
+                    {journal.settings.refereeCount.value} referee
+                    {journal.settings.refereeCount.value !== 1 ? "s" : ""} per
+                    submission
                   </Badge>
                 )}
               </div>
@@ -120,19 +144,27 @@ export default function JournalDetails({ journal }: JournalProps) {
               </DetailField>
               <DetailField label="Slug">
                 {journal.slug ? (
-                  <code className="text-sm bg-muted px-2 py-0.5 rounded">{journal.slug}</code>
+                  <code className="text-sm bg-muted px-2 py-0.5 rounded">
+                    {journal.slug}
+                  </code>
                 ) : (
-                  <span className="text-sm text-muted-foreground italic">Not set</span>
+                  <span className="text-sm text-muted-foreground italic">
+                    Not set
+                  </span>
                 )}
               </DetailField>
               <DetailField label="Default Data License">
                 {journal.settings?.defaultDataLicense ?? (
-                  <span className="text-sm text-muted-foreground italic">Not set</span>
+                  <span className="text-sm text-muted-foreground italic">
+                    Not set
+                  </span>
                 )}
               </DetailField>
               <DetailField label="Default Code License">
                 {journal.settings?.defaultCodeLicense ?? (
-                  <span className="text-sm text-muted-foreground italic">Not set</span>
+                  <span className="text-sm text-muted-foreground italic">
+                    Not set
+                  </span>
                 )}
               </DetailField>
             </dl>
@@ -155,18 +187,42 @@ export default function JournalDetails({ journal }: JournalProps) {
               {journal.settings?.reviewDueHours && (
                 <DetailField label="Review Due (hours)">
                   <div className="flex gap-4 text-sm">
-                    <span>Min: <strong>{journal.settings.reviewDueHours.min}</strong></span>
-                    <span>Default: <strong>{journal.settings.reviewDueHours.default}</strong></span>
-                    <span>Max: <strong>{journal.settings.reviewDueHours.max}</strong></span>
+                    <span>
+                      Min:{" "}
+                      <strong>{journal.settings.reviewDueHours.min}</strong>
+                    </span>
+                    <span>
+                      Default:{" "}
+                      <strong>{journal.settings.reviewDueHours.default}</strong>
+                    </span>
+                    <span>
+                      Max:{" "}
+                      <strong>{journal.settings.reviewDueHours.max}</strong>
+                    </span>
                   </div>
                 </DetailField>
               )}
               {journal.settings?.refereeInviteExpiryHours && (
                 <DetailField label="Referee Invite Expiry (hours)">
                   <div className="flex gap-4 text-sm">
-                    <span>Min: <strong>{journal.settings.refereeInviteExpiryHours.min}</strong></span>
-                    <span>Default: <strong>{journal.settings.refereeInviteExpiryHours.default}</strong></span>
-                    <span>Max: <strong>{journal.settings.refereeInviteExpiryHours.max}</strong></span>
+                    <span>
+                      Min:{" "}
+                      <strong>
+                        {journal.settings.refereeInviteExpiryHours.min}
+                      </strong>
+                    </span>
+                    <span>
+                      Default:{" "}
+                      <strong>
+                        {journal.settings.refereeInviteExpiryHours.default}
+                      </strong>
+                    </span>
+                    <span>
+                      Max:{" "}
+                      <strong>
+                        {journal.settings.refereeInviteExpiryHours.max}
+                      </strong>
+                    </span>
                   </div>
                 </DetailField>
               )}
