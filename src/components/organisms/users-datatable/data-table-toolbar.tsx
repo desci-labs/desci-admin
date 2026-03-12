@@ -34,6 +34,9 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
   const [isExporting, setIsExporting] = useState(false);
   const [exportingFormat, setExportingFormat] = useState<string>("");
+  const [isExportingSciweave, setIsExportingSciweave] = useState(false);
+  const [exportingSciweaveFormat, setExportingSciweaveFormat] =
+    useState<string>("");
 
   const handleExportMarketingEmails = async (
     format: "csv" | "xls" | "xlsx" = "csv"
@@ -92,6 +95,69 @@ export function DataTableToolbar<TData>({
     } finally {
       setIsExporting(false);
       setExportingFormat("");
+    }
+  };
+
+  const handleExportSciweaveMarketingEmails = async (
+    format: "csv" | "xls" | "xlsx" = "csv"
+  ) => {
+    try {
+      setIsExportingSciweave(true);
+      setExportingSciweaveFormat(format);
+
+      const response = await fetch(
+        `/api/export-sciweave-marketing-consent?format=${format}`,
+        {
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || "Failed to export Sciweave marketing emails"
+        );
+      }
+
+      const blob = await response.blob();
+      const fileURL = URL.createObjectURL(blob);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = fileURL;
+      downloadLink.download = `sciweave-marketing-consent-emails.${
+        format === "csv" ? "csv" : format === "xls" ? "xls" : "xlsx"
+      }`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      URL.revokeObjectURL(fileURL);
+
+      // Success notification
+      const formatName =
+        format === "csv"
+          ? "CSV"
+          : format === "xls"
+          ? "Excel (.xls)"
+          : "Excel (.xlsx)";
+      toast.success(
+        `Sciweave marketing emails exported successfully as ${formatName}`,
+        {
+          description: "The file has been downloaded to your device.",
+        }
+      );
+    } catch (error) {
+      console.error("Error exporting Sciweave marketing emails:", error);
+
+      // Error notification
+      toast.error("Failed to export Sciweave marketing emails", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred. Please try again.",
+      });
+    } finally {
+      setIsExportingSciweave(false);
+      setExportingSciweaveFormat("");
     }
   };
 
@@ -199,6 +265,90 @@ export function DataTableToolbar<TData>({
                 <TooltipTrigger asChild>
                   <DropdownMenuItem
                     onClick={() => handleExportMarketingEmails("xls")}
+                    className="flex items-center gap-2"
+                  >
+                    <FileSpreadsheetIcon className="h-4 w-4" />
+                    <span>Export as Excel (.xls)</span>
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      Legacy
+                    </span>
+                  </DropdownMenuItem>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Legacy Excel format</p>
+                  <p className="text-xs text-muted-foreground">
+                    Compatible with older Excel versions
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={isExportingSciweave}
+              className="h-8 px-2 lg:px-3"
+            >
+              <DownloadIcon className="mr-2 h-4 w-4" />
+              {isExportingSciweave
+                ? `Exporting ${exportingSciweaveFormat.toUpperCase()}...`
+                : "Export Sciweave Marketing Emails"}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-64">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuItem
+                    onClick={() => handleExportSciweaveMarketingEmails("csv")}
+                    className="flex items-center gap-2"
+                  >
+                    <FileTextIcon className="h-4 w-4" />
+                    <span>Export as CSV</span>
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      Default
+                    </span>
+                  </DropdownMenuItem>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Comma-separated values format</p>
+                  <p className="text-xs text-muted-foreground">
+                    Best for data analysis and import
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <DropdownMenuSeparator />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuItem
+                    onClick={() => handleExportSciweaveMarketingEmails("xlsx")}
+                    className="flex items-center gap-2"
+                  >
+                    <FileSpreadsheetIcon className="h-4 w-4" />
+                    <span>Export as Excel (.xlsx)</span>
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      Modern
+                    </span>
+                  </DropdownMenuItem>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Modern Excel format</p>
+                  <p className="text-xs text-muted-foreground">
+                    Best for Excel 2007+ and Google Sheets
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuItem
+                    onClick={() => handleExportSciweaveMarketingEmails("xls")}
                     className="flex items-center gap-2"
                   >
                     <FileSpreadsheetIcon className="h-4 w-4" />

@@ -96,7 +96,7 @@ export default function Dashboard() {
               className="place-content-end self-end"
               onClick={download}
             >
-              {isDownloading ? "downlading..." : "Download Report"}
+              {isDownloading ? "Downloading..." : "Download Report"}
             </Button>
           </div>
           <TabsContent value="analytics" className="space-y-4">

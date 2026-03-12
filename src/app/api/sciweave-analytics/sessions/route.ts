@@ -1,52 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import z from "zod";
 import pool from "@/lib/postgresClient";
-import { IS_PROD } from "@/lib/config";
-
-const querySchema = z.object({
-  from: z.coerce.date(),
-  to: z.coerce.date(),
-  interval: z.enum(["day", "week", "month"]),
-});
+import { PROD_FILTER_LEADING } from "@/lib/config";
+import { analyticsQuerySchema, intervalToDateTrunc } from "@/lib/schema";
 
 async function handleRequest(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const { from, to, interval } = querySchema.parse(
+    const { from, to, interval } = analyticsQuerySchema.parse(
       Object.fromEntries(searchParams)
     );
 
     const client = await pool.connect();
     const result = await client.query(
       `
-      WITH excluded AS (
-          SELECT
-              UNNEST(
-                  ARRAY [
-      
-          'user_sina@desci.com',
-
-          'user_esther@desci.com',
-
-          'user_sina.iman@gmail.com'
-        ]
-              ) AS username
-      ),
-      filtered_logs AS (
+      WITH filtered_logs AS (
           SELECT
               *
           FROM
               search_logs
           WHERE
-              username NOT IN (
-                  SELECT
-                      username
-                  FROM
-                      excluded
-              )
-              ${IS_PROD ? "AND username NOT LIKE '%@desci.com'" : ""}
-              AND created_at >= $1
-              AND created_at < $2
+              ${PROD_FILTER_LEADING}
+              created_at >= $1
+              AND created_at <= $2
           ORDER BY
               username,
               created_at
@@ -116,7 +91,7 @@ async function handleRequest(request: NextRequest) {
       ORDER BY
           session_value;
       `,
-      [from, to, interval]
+      [from, to, intervalToDateTrunc(interval)]
     );
     client.release();
     const data = result.rows as {

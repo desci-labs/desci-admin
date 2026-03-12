@@ -1,18 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import z from "zod";
 import pool from "@/lib/postgresClient";
-import { IS_PROD } from "@/lib/config";
-
-const querySchema = z.object({
-  from: z.coerce.date(),
-  to: z.coerce.date(),
-  interval: z.enum(["day", "week", "month"]),
-});
+import { PROD_FILTER_AND } from "@/lib/config";
+import { analyticsQuerySchema, intervalToDateTrunc } from "@/lib/schema";
 
 async function handleRequest(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const { from, to, interval } = querySchema.parse(
+    const { from, to, interval } = analyticsQuerySchema.parse(
       Object.fromEntries(searchParams)
     );
 
@@ -25,16 +19,16 @@ async function handleRequest(request: NextRequest) {
     FROM
         public.search_logs
     WHERE
-        thread_id IS NULL
+        (thread_id IS NULL OR thread_id = id)
         AND created_at >= $1
-        AND created_at < $2
-        ${IS_PROD ? "AND username NOT LIKE '%@desci.com'" : ""}
+        AND created_at <= $2
+        ${PROD_FILTER_AND}
     GROUP BY
         DATE
     ORDER BY
         DATE
       `,
-      [from, to, interval]
+      [from, to, intervalToDateTrunc(interval)]
     );
     client.release();
     const data = result.rows as { day: string; value: number }[];

@@ -26,6 +26,7 @@ const createJournalSchema = z.object({
     name: z.string().min(1, "Journal name cannot be empty."),
     description: z.string().optional(),
     iconCid: z.string().optional(),
+    imageUrl: z.string().optional(),
   }),
 });
 
@@ -51,6 +52,7 @@ export default function JournalForm({
         name: "",
         description: "",
         iconCid: "",
+        imageUrl: "",
       },
     },
   });
@@ -67,6 +69,9 @@ export default function JournalForm({
     }
     if (data.body.iconCid) {
       formData.append("iconCid", data.body.iconCid);
+    }
+    if (data.body.imageUrl) {
+      formData.append("imageUrl", data.body.imageUrl);
     }
 
     formAction(formData);
@@ -137,6 +142,26 @@ export default function JournalForm({
                   </FormControl>
                   <FormDescription>
                     Optional: Provide an IPFS CID for the journal icon
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="body.imageUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image URL</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter image URL for the journal"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Optional: Provide a URL for the journal cover image
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

@@ -3,9 +3,6 @@
 import { NODES_API_URL, RETURN_DEV_TOKEN } from "@/lib/config";
 import { AUTH_COOKIE_FIELDNAME } from "@/lib/constants";
 import { cookies } from "next/headers";
-// import { redirect } from "next/navigation";
-
-// const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export type LoginUserData = {
   email: string;
@@ -16,7 +13,7 @@ export type LoginUserData = {
 export async function login(prevState: any, formData: FormData) {
   const email = formData.get("email") ?? prevState?.email;
   const code = formData.get("code");
-
+  console.log("login", NODES_API_URL, RETURN_DEV_TOKEN);
   const res = await fetch(`${NODES_API_URL}/v1/auth/magic`, {
     method: "POST",
     body: JSON.stringify({
@@ -30,9 +27,6 @@ export async function login(prevState: any, formData: FormData) {
   let response = await res.json();
 
   if (response.ok && response.user) {
-    console.log("[login]:: ", response, RETURN_DEV_TOKEN);
-    const cookie = await cookies();
-    console.log("[login]:: ", cookie.toString());
     // Set cookie
     cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
       path: "/",
@@ -62,24 +56,15 @@ export async function login(prevState: any, formData: FormData) {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
         httpOnly: true,
         secure: true,
-        domain: "nodes.desci.com",
-      });
-      cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token, {
-        path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 2 hours
-        httpOnly: true,
-        secure: true,
         domain: ".desci.com",
       });
     }
 
-    cookies().set(AUTH_COOKIE_FIELDNAME, response.user.token);
     return {
       ok: true,
       email,
       user: response.user,
     };
-    // redirect("/");
   } else if (response.ok && !response.user) {
     return {
       ok: true,
@@ -88,21 +73,46 @@ export async function login(prevState: any, formData: FormData) {
   } else {
     return response;
   }
-
-  // return response;
 }
 
-type CreateCommunityState =
-  | {
-      ok: boolean;
-      message?: undefined;
-      error?: undefined;
+export async function logout() {
+  const logoutRes = await fetch(`${NODES_API_URL}/v1/auth/logout`, {
+    method: "delete",
+    credentials: "include",
+    headers: {
+      cookie: cookies().toString(),
+    },
+  });
+
+  cookies().delete(AUTH_COOKIE_FIELDNAME);
+
+  if (logoutRes.ok) {
+    // Set cookie
+    cookies().delete(AUTH_COOKIE_FIELDNAME);
+
+    if (AUTH_COOKIE_FIELDNAME === "auth-dev") {
+      cookies().set("auth-dev", "", {
+        value: "",
+        maxAge: 0,
+        domain: ".desci.com",
+      });
     }
-  | {
-      ok: boolean;
-      message: string;
-      error: string[] | undefined;
+
+    if (process.env.NEXT_ENV === "production") {
+      cookies().set(AUTH_COOKIE_FIELDNAME, "", {
+        value: "",
+        maxAge: 0,
+        domain: ".desci.com",
+      });
+    }
+
+    return {
+      ok: true,
     };
+  }
+
+  return { ok: false };
+}
 
 export async function createCommunity(_prevState: any, formData: FormData) {
   const res = await fetch(`${NODES_API_URL}/v1/admin/communities`, {
@@ -247,6 +257,7 @@ export async function createJournal(_prevState: any, formData: FormData) {
       name: formData.get("name"),
       description: formData.get("description"),
       iconCid: formData.get("iconCid"),
+      imageUrl: formData.get("imageUrl"),
     }),
     headers: {
       cookie: cookies().toString(),
@@ -289,6 +300,7 @@ export async function updateJournal(_prevState: any, formData: FormData) {
       name: formData.get("name"),
       description: formData.get("description"),
       iconCid: formData.get("iconCid"),
+      imageUrl: formData.get("imageUrl"),
     }),
     headers: {
       cookie: cookies().toString(),

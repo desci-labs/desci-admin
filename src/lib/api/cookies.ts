@@ -14,7 +14,7 @@ export function forwardCrossDomainCookie(): Record<string, string> {
 
   const cookieName = AUTH_COOKIE_FIELDNAME;
 
-  console.log("[forwardCrossDomainCookie]:: ", document.cookie, cookieName);
+  console.log("[forwardCrossDomainCookie]:: ", cookieName, document.cookie);
   const cookies = document.cookie.split(";");
   for (const cookie of cookies) {
     const [name, value] = cookie.trim().split("=");

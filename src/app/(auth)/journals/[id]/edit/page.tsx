@@ -38,8 +38,9 @@ export default function JournalDetailsPage({
       defaultValues={{
         body: {
           name: journal.name,
-          description: journal?.description,
-          iconCid: journal?.iconCid,
+          description: journal?.description ?? undefined,
+          iconCid: journal?.iconCid ?? undefined,
+          imageUrl: journal?.imageUrl ?? undefined,
         },
       }}
       pending={pending}

@@ -19,6 +19,10 @@ export async function DELETE(_request: Request) {
         cookies().delete(field.name);
       }
     }
+    console.log("Logout", {
+      cookies: cookies().toString(),
+      AUTH_COOKIE_FIELDNAME,
+    });
     return NextResponse.json({ ok: logoutRes.ok });
   } catch (e) {
     return NextResponse.json({ error: e }, { status: 500 });

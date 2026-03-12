@@ -7,6 +7,7 @@ export enum tags {
   analytics = "analytics",
   analyticsChartData = "analytics-chart-data",
   journals = "journals",
+  journalApplications = "journal-applications",
   userEngagement = "user-engagement",
   publishingFunnel = "publishing-funnel",
   roStats = "ro-stats",

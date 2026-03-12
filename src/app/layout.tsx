@@ -3,6 +3,7 @@ import "./globals.css";
 
 import ThemeContext from "./ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -14,8 +15,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeContext>
-          <Toaster position="top-center" />
-          {children}
+          <TooltipProvider delayDuration={200} skipDelayDuration={0}>
+            <Toaster position="top-center" />
+            {children}
+          </TooltipProvider>
         </ThemeContext>
       </body>
     </html>
