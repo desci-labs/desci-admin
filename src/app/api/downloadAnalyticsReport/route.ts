@@ -2,6 +2,8 @@ import { NODES_API_URL } from "@/lib/config";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
+export const maxDuration = 300;
+
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -15,7 +17,27 @@ export async function GET(request: Request) {
         },
       }
     );
-    return response
+
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: "Failed to fetch report" },
+        { status: response.status }
+      );
+    }
+
+    if (!response.body) {
+      return NextResponse.json(
+        { error: "Missing response body" },
+        { status: 502 }
+      );
+    }
+
+    return new Response(response.body, {
+      headers: {
+        "Content-Type": "text/csv",
+        "Content-Disposition": 'attachment; filename="report.csv"',
+      },
+    });
   } catch (err) {
     return NextResponse.json({ error: err }, { status: 500 });
   }
