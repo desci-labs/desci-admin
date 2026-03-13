@@ -17,10 +17,17 @@ export async function GET(_request: Request) {
       }
     );
 
-    if (!response.ok || !response.body) {
+    if (!response.ok) {
       return NextResponse.json(
         { error: "Failed to fetch report" },
         { status: response.status }
+      );
+    }
+
+    if (!response.body) {
+      return NextResponse.json(
+        { error: "Missing response body" },
+        { status: 502 }
       );
     }
 

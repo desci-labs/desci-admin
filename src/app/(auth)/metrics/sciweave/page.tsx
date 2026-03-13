@@ -80,29 +80,34 @@ async function getUserSessionsAnalytics(
   params.set("to", to);
   params.set("interval", interval);
 
-  const res = await fetch(
-    `${
-      process.env.NEXT_PUBLIC_BASE_URL
-    }/api/sciweave-analytics/sessions?${params.toString()}`,
-    {
-      next: {
-        revalidate: 3600,
-      },
+  try {
+    const res = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_BASE_URL
+      }/api/sciweave-analytics/sessions?${params.toString()}`,
+      {
+        next: {
+          revalidate: 3600,
+        },
+      }
+    );
+
+    if (!res.ok) {
+      console.error('Failed to fetch user sessions:', res.status, res.statusText);
+      return [];
     }
-  );
-  
-  if (!res.ok) {
-    console.error('Failed to fetch user sessions:', res.status, res.statusText);
+
+    const data = await res.json();
+    if (!Array.isArray(data)) {
+      console.error('Expected array from user sessions API, got:', data);
+      return [];
+    }
+
+    return data as UserSessionsDataItem[];
+  } catch (error) {
+    console.error('Error fetching user sessions:', error);
     return [];
   }
-  
-  const data = await res.json();
-  if (!Array.isArray(data)) {
-    console.error('Expected array from user sessions API, got:', data);
-    return [];
-  }
-  
-  return data as UserSessionsDataItem[];
 }
 
 async function getDevicesAnalytics(from: string, to: string, interval: string) {
