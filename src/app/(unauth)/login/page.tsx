@@ -42,7 +42,7 @@ export default function Login() {
           login={formAction}
           email={state?.email}
           message={state?.error}
-          disabled={state?.user !== undefined}
+          disabled={!!state?.user}
         />
       </div>
     </div>

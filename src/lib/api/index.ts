@@ -137,10 +137,23 @@ export type PaginatedApiResponse<T> = {
 export interface Journal {
   id: number;
   name: string;
+  slug: string | null;
   description: string;
-  iconCid: string;
-  imageUrl: string;
+  iconCid: string | null;
+  imageUrl: string | null;
   createdAt: string;
+  aboutArticle: string | null;
+  editorialBoardArticle: string | null;
+  authorInstruction: string | null;
+  refereeInstruction: string | null;
+  settings: {
+    reviewDueHours: { min: number; max: number; default: number };
+    refereeInviteExpiryHours: { min: number; max: number; default: number };
+    refereeCount: { value: number };
+    defaultDataLicense: string | null;
+    defaultCodeLicense: string | null;
+  };
+  submissions: { id: number }[];
 }
 
 export const listJournalsQuery = queryOptions({
@@ -153,6 +166,55 @@ export const listJournalsQuery = queryOptions({
     return response.data?.journals ?? [];
   },
 });
+
+export interface JournalApplication {
+  id: number;
+  name: string;
+  description: string;
+  editorialBoard: { name: string; email: string; role: string }[];
+  instructionsForAuthors: string;
+  instructionsForReviewers: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  applicantId: number;
+  applicant: {
+    id: number;
+    name: string | null;
+    email: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const listJournalApplicationsQuery = queryOptions({
+  queryKey: [tags.journalApplications],
+  retry: 1,
+  queryFn: async () => {
+    const response = await apiRequest<
+      ApiResponse<{ applications: JournalApplication[] }>
+    >(`${NODES_API_URL}/v1/admin/journals/applications`);
+    return response.data?.applications ?? [];
+  },
+});
+
+export const approveJournalApplication = async (id: number) => {
+  return apiRequest<ApiResponse<{ journal: Journal }>>(
+    `${NODES_API_URL}/v1/admin/journals/applications/${id}/approve`,
+    {
+      method: "PATCH",
+      credentials: "include",
+    }
+  );
+};
+
+export const rejectJournalApplication = async (id: number) => {
+  return apiRequest<ApiResponse<{ application: JournalApplication }>>(
+    `${NODES_API_URL}/v1/admin/journals/applications/${id}/reject`,
+    {
+      method: "PATCH",
+      credentials: "include",
+    }
+  );
+};
 
 export const listCommunitiesQuery = queryOptions({
   queryKey: [tags.communities],

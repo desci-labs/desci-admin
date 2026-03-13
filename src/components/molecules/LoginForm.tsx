@@ -84,7 +84,7 @@ const SubmitButton = (
     if (props.email && pending) return "Verifying code";
     if (!props.email && pending) return "Verifying email";
     if (!props.email && !pending) return "Verify email";
-    if (props.email && !pending) return "Send code";
+    if (props.email && !pending) return "Verify code";
   }, [props.email, pending]);
   return (
     <Button
