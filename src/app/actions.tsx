@@ -33,7 +33,7 @@ export async function login(prevState: any, formData: FormData) {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 2), // 3 hours
       httpOnly: true,
       secure: process.env.NEXT_ENV === "production",
-      domain: process.env.NODE_ENV === "production" ? ".desci.com" : undefined,
+      domain: process.env.NEXT_ENV === "production" ? ".desci.com" : undefined,
     });
 
     if (
