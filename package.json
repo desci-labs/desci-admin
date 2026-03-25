@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@date-fns/tz": "^1.4.1",
-    "@desci-labs/nodes-lib": "^0.2.2",
+    "@desci-labs/nodes-lib": "^0.2.3",
     "@hookform/resolvers": "^3.9.0",
     "@internationalized/date": "^3.7.0",
     "@radix-ui/react-alert-dialog": "^1.1.15",
